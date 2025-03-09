@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Running Performance Analyzer</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --neutral: #d1d5db;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 1rem;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 5rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        h2 {
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-primary);
+        }
+        
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .upload-section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .file-input-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed var(--text-secondary);
+            border-radius: 8px;
+            padding: 2rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-input-container:hover {
+            border-color: var(--accent);
+        }
+        
+        .file-input-container svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .file-input-container p {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        #file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        #file-list {
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 1rem;
+        }
+        
+        .remove-file {
+            background-color: transparent;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            margin: 1rem 0;
+            width: 100%;
+        }
+        
+        .button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .button:disabled {
+            background-color: var(--bg-tertiary);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+        
+        .results-section {
+            display: none;
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .stat-subtext {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        
+        th {
+            text-align: left;
+            padding: 0.75rem;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .improved {
+            color: var(--success);
+        }
+        
+        .worse {
+            color: var(--danger);
+        }
+        
+        .unchanged {
+            color: var(--neutral);
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(18, 18, 18, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            display: none;
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .back-button {
+            background-color: transparent;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .alert {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Running Performance Analyzer</h1>
+            <p>Upload TCX files from your 10km runs to analyze your performance metrics</p>
+        </header>
+        
+        <div id="upload-section" class="upload-section">
+            <div class="file-input-container">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p><strong>Drag & drop TCX files here</strong></p>
+                <p>or click to browse</p>
+                <input type="file" id="file-input" accept=".tcx" multiple>
+            </div>
+            
+            <div id="file-list"></div>
+            
+            <div id="error-message" class="error-message"></div>
+            <div id="file-format-alert" class="alert">
+                Please make sure all runs are from the same 10km track for accurate analysis.
+            </div>
+            
+            <button id="analyze-button" class="button" disabled>Analyze Runs</button>
+        </div>
+        
+        <div id="results-section" class="results-section">
+            <button id="back-button" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y1="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Upload
+            </button>
+            
+            <h2>Performance Summary</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Best Pace</div>
+                    <div id="best-pace" class="stat-value">--:--</div>
+                    <div id="best-pace-details" class="stat-subtext">Date: --, Kilometer: --</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-title">Average Pace (excl. warm-up)</div>
+                    <div id="avg-pace" class="stat-value">--:--</div>
+                    <div class="stat-subtext">Excluding first kilometer</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-title">Best Track Segment</div>
+                    <div id="best-segment" class="stat-value">---</div>
+                    <div id="best-segment-details" class="stat-subtext">Average pace: --:--</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-title">Consistency Score</div>
+                    <div id="consistency-score" class="stat-value">--</div>
+                    <div class="stat-subtext">Lower is better</div>
+                </div>
+            </div>
+            
+            <h2>Session Details</h2>
+            
+            <div class="table-container">
+                <table id="sessions-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Avg Pace</th>
+                            <th>Elev. Gain</th>
+                            <th>km 1</th>
+                            <th>km 2</th>
+                            <th>km 3</th>
+                            <th>km 4</th>
+                            <th>km 5</th>
+                            <th>km 6</th>
+                            <th>km 7</th>
+                            <th>km 8</th>
+                            <th>km 9</th>
+                            <th>km 10</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Processing your runs...</p>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const fileInput = document.getElementById('file-input');
+        const fileList = document.getElementById('file-list');
+        const analyzeButton = document.getElementById('analyze-button');
+        const uploadSection = document.getElementById('upload-section');
+        const resultsSection = document.getElementById('results-section');
+        const backButton = document.getElementById('back-button');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const errorMessage = document.getElementById('error-message');
+        const fileFormatAlert = document.getElementById('file-format-alert');
+        
+        // Stats elements
+        const bestPaceElement = document.getElementById('best-pace');
+        const bestPaceDetailsElement = document.getElementById('best-pace-details');
+        const avgPaceElement = document.getElementById('avg-pace');
+        const bestSegmentElement = document.getElementById('best-segment');
+        const bestSegmentDetailsElement = document.getElementById('best-segment-details');
+        const consistencyScoreElement = document.getElementById('consistency-score');
+        const sessionsTableBody = document.querySelector('#sessions-table tbody');
+        
+        // State
+        let files = [];
+        let sessions = [];
+        
+        // Event Listeners
+        fileInput.addEventListener('change', handleFileSelection);
+        analyzeButton.addEventListener('click', analyzeFiles);
+        backButton.addEventListener('click', resetView);
+        
+        // Show alert after a delay
+        setTimeout(() => {
+            fileFormatAlert.style.display = 'block';
+        }, 1000);
+        
+        // Functions
+        function handleFileSelection(event) {
+            const selectedFiles = Array.from(event.target.files);
+            
+            if (selectedFiles.length === 0) return;
+            
+            // Filter for TCX files
+            const tcxFiles = selectedFiles.filter(file => file.name.toLowerCase().endsWith('.tcx'));
+            
+            if (tcxFiles.length !== selectedFiles.length) {
+                showError('Only TCX files are supported');
+                return;
+            }
+            
+            // Add files to our collection
+            files = [...files, ...tcxFiles];
+            renderFileList();
+            analyzeButton.disabled = files.length === 0;
+        }
+        
+        function renderFileList() {
+            fileList.innerHTML = '';
+            
+            files.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                const fileName = document.createElement('div');
+                fileName.className = 'file-name';
+                fileName.textContent = file.name;
+                
+                const removeButton = document.createElement('button');
+                removeButton.className = 'remove-file';
+                removeButton.innerHTML = '&times;';
+                removeButton.addEventListener('click', () => removeFile(index));
+                
+                fileItem.appendChild(fileName);
+                fileItem.appendChild(removeButton);
+                fileList.appendChild(fileItem);
+            });
+        }
+        
+        function removeFile(index) {
+            files.splice(index, 1);
+            renderFileList();
+            analyzeButton.disabled = files.length === 0;
+        }
+        
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
+        
+        function resetView() {
+            resultsSection.style.display = 'none';
+            uploadSection.style.display = 'block';
+        }
+        
+        async function analyzeFiles() {
+            if (files.length === 0) return;
+            
+            showLoading(true);
+            
+            try {
+                sessions = [];
+                
+                // Process each file
+                for (const file of files) {
+                    const session = await parseWorkout(file);
+                    if (session) {
+                        sessions.push(session);
+                    }
+                }
+                
+                if (sessions.length === 0) {
+                    showError('No valid running data found in the files');
+                    showLoading(false);
+                    return;
+                }
+                
+                // Sort sessions by date
+                sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
+                
+                // Process and display results
+                processResults();
+                showResults();
+            } catch (error) {
+                console.error('Error analyzing files:', error);
+                showError('An error occurred while processing files');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        function showLoading(show) {
+            loadingOverlay.style.display = show ? 'flex' : 'none';
+        }
+        
+        function showResults() {
+            uploadSection.style.display = 'none';
+            resultsSection.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+        
+        async function parseWorkout(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = async (event) => {
+                    try {
+                        const tcxContent = event.target.result;
+                        const parser = new DOMParser();
+                        const xmlDoc = parser.parseFromString(tcxContent, "text/xml");
+                        
+                        // Extract activity data
+                        const activity = xmlDoc.querySelector('Activity');
+                        
+                        if (!activity || activity.getAttribute('Sport') !== 'Running') {
+                            resolve(null); // Not a running activity
+                            return;
+                        }
+                        
+                        // Extract timestamp from the first trackpoint
+                        const firstTrackpoint = xmlDoc.querySelector('Trackpoint');
+                        const timeElement = firstTrackpoint.querySelector('Time');
+                        const date = new Date(timeElement.textContent);
+                        
+                        // Initialize session data
+                        const session = {
+                            id: file.name,
+                            date: date,
+                            formattedDate: formatDate(date),
+                            laps: [],
+                            totalDistance: 0,
+                            totalTime: 0,
+                            avgPace: 0,
+                            elevationGain: 0,
+                            kilometers: []
+                        };
+                        
+                        // Process trackpoints
+                        const trackpoints = Array.from(xmlDoc.querySelectorAll('Trackpoint'));
+                        let lastElevation = null;
+                        let lastDistance = 0;
+                        let currentKm = 1;
+                        let kmStartTime = null;
+                        let kmStartDistance = 0;
+                        
+                        for (let i = 0; i < trackpoints.length; i++) {
+                            const tp = trackpoints[i];
+                            
+                            const distanceElement = tp.querySelector('DistanceMeters');
+                            if (!distanceElement) continue;
+                            
+                            const distance = parseFloat(distanceElement.textContent);
+                            
+                            // Skip if distance isn't progressing
+                            if (distance <= lastDistance && i > 0) continue;
+                            
+                            const timeElement = tp.querySelector('Time');
+                            const timestamp = new Date(timeElement.textContent);
+                            
+                            // Initialize km data
+                            if (kmStartTime === null) {
+                                kmStartTime = timestamp;
+                                kmStartDistance = distance;
+                            }
+                            
+                            // Calculate elevation gain
+                            const elevationElement = tp.querySelector('AltitudeMeters');
+                            if (elevationElement) {
+                                const elevation = parseFloat(elevationElement.textContent);
+                                if (lastElevation !== null && elevation > lastElevation) {
+                                    session.elevationGain += (elevation - lastElevation);
+                                }
+                                lastElevation = elevation;
+                            }
+                            
+                            // Process completed kilometers
+                            if (distance >= currentKm * 1000) {
+                                // Calculate time for this km
+                                const kmEndTime = timestamp;
+                                const kmTime = (kmEndTime - kmStartTime) / 1000; // in seconds
+                                const kmPace = kmTime / 60; // in minutes
+                                
+                                session.kilometers.push({
+                                    km: currentKm,
+                                    time: kmTime,
+                                    pace: kmPace,
+                                    formattedPace: formatPace(kmPace)
+                                });
+                                
+                                // Prepare for next km
+                                currentKm++;
+                                kmStartTime = timestamp;
+                                kmStartDistance = distance;
+                            }
+                            
+                            lastDistance = distance;
+                        }
+                        
+                        // Calculate session totals if we have enough kilometer data
+                        if (session.kilometers.length >= 9) { // We need at least 9 complete km
+                            // Truncate to exactly 10km if we have more
+                            if (session.kilometers.length > 10) {
+                                session.kilometers = session.kilometers.slice(0, 10);
+                            }
+                            
+                            // Add missing kilometers if we have less than 10
+                            while (session.kilometers.length < 10) {
+                                const lastKm = session.kilometers[session.kilometers.length - 1];
+                                session.kilometers.push({
+                                    km: lastKm.km + 1,
+                                    time: lastKm.time, // Use same time as last km
+                                    pace: lastKm.pace,
+                                    formattedPace: lastKm.formattedPace
+                                });
+                            }
+                            
+                            // Calculate average pace (excluding first km)
+                            const totalTimeExcludingWarmup = session.kilometers
+                                .slice(1) // Skip first km
+                                .reduce((sum, km) => sum + km.time, 0);
+                            
+                            session.totalTime = session.kilometers.reduce((sum, km) => sum + km.time, 0);
+                            session.totalDistance = 10000; // 10km in meters
+                            session.avgPace = (totalTimeExcludingWarmup / 60) / 9; // minutes per km
+                            session.formattedAvgPace = formatPace(session.avgPace);
+                            session.elevationGain = Math.round(session.elevationGain);
+                            
+                            resolve(session);
+                        } else {
+                            // Not enough data
+                            resolve(null);
+                        }
+                    } catch (error) {
+                        console.error('Error parsing TCX:', error);
+                        resolve(null);
+                    }
+                };
+                
+                reader.onerror = () => {
+                    reject(new Error('Error reading file'));
+                };
+                
+                reader.readAsText(file);
+            });
+        }
+        
+        function processResults() {
+            if (sessions.length === 0) return;
+            
+            // Find best pace
+            let bestPace = { pace: Infinity, km: null, session: null };
+            for (const session of sessions) {
+                for (const km of session.kilometers) {
+                    if (km.pace < bestPace.pace) {
+                        bestPace = {
+                            pace: km.pace,
+                            formattedPace: km.formattedPace,
+                            km: km.km,
+                            session: session
+                        };
+                    }
+                }
+            }
+            
+            // Calculate average pace excluding warm-up
+            const totalPaceExcludingWarmup = sessions.reduce((sum, session) => {
+                const paceExcludingWarmup = session.kilometers
+                    .slice(1) // Skip first km
+                    .reduce((kmSum, km) => kmSum + km.pace, 0) / 9; // Average of 9 km
+                return sum + paceExcludingWarmup;
+            }, 0);
+            const overallAvgPace = totalPaceExcludingWarmup / sessions.length;
+            
+            // Find best track segment (3 consecutive km)
+            let bestSegment = { startKm: 0, avgPace: Infinity, session: null };
+            for (const session of sessions) {
+                for (let i = 0; i <= session.kilometers.length - 3; i++) {
+                    const segment = session.kilometers.slice(i, i + 3);
+                    const segmentAvgPace = segment.reduce((sum, km) => sum + km.pace, 0) / 3;
+                    
+                    if (segmentAvgPace < bestSegment.avgPace) {
+                        bestSegment = {
+                            startKm: i + 1, // 1-based km number
+                            endKm: i + 3,
+                            avgPace: segmentAvgPace,
+                            formattedPace: formatPace(segmentAvgPace),
+                            session: session
+                        };
+                    }
+                }
+            }
+            
+            // Calculate consistency score (standard deviation of pace)
+            const allKmPaces = sessions.flatMap(session => 
+                session.kilometers.map(km => km.pace)
+            );
+            const avgAllPaces = allKmPaces.reduce((sum, pace) => sum + pace, 0) / allKmPaces.length;
+            const variance = allKmPaces.reduce((sum, pace) => sum + Math.pow(pace - avgAllPaces, 2), 0) / allKmPaces.length;
+            const consistencyScore = Math.sqrt(variance);
+            
+            // Update the UI
+            updateStatsDisplay(bestPace, overallAvgPace, bestSegment, consistencyScore);
+            updateSessionsTable();
+        }
+        
+        function updateStatsDisplay(bestPace, overallAvgPace, bestSegment, consistencyScore) {
+            bestPaceElement.textContent = bestPace.formattedPace;
+            bestPaceDetailsElement.textContent = `Date: ${bestPace.session.formattedDate}, Kilometer: ${bestPace.km}`;
+            
+            avgPaceElement.textContent = formatPace(overallAvgPace);
+            
+            bestSegmentElement.textContent = `km ${bestSegment.startKm}-${bestSegment.endKm}`;
+            bestSegmentDetailsElement.textContent = `Average pace: ${bestSegment.formattedPace}`;
+            
+            consistencyScoreElement.textContent = consistencyScore.toFixed(2);
+        }
+        
+        function updateSessionsTable() {
+            sessionsTableBody.innerHTML = '';
+            
+            // For coloring (comparison with previous session)
+            let previousSession = null;
+            
+            for (const session of sessions) {
+                const row = document.createElement('tr');
+                
+                // Date
+                const dateCell = document.createElement('td');
+                dateCell.textContent = session.formattedDate;
+                row.appendChild(dateCell);
+                
+                // Average Pace
+                const avgPaceCell = document.createElement('td');
+                avgPaceCell.textContent = session.formattedAvgPace;
+                
+                // Color code compared to previous session
+                if (previousSession) {
+                    if (session.avgPace < previousSession.avgPace) {
+                        avgPaceCell.className = 'improved';
+                    } else if (session.avgPace > previousSession.avgPace) {
+                        avgPaceCell.className = 'worse';
+                    } else {
+                        avgPaceCell.className = 'unchanged';
+                    }
+                }
+                
+                row.appendChild(avgPaceCell);
+                
+                // Elevation
+                const elevationCell = document.createElement('td');
+                elevationCell.textContent = `${session.elevationGain}m`;
+                row.appendChild(elevationCell);
+                
+                // Kilometer splits
+                for (let i = 0; i < 10; i++) {
+                    const km = session.kilometers[i];
+                    const kmCell = document.createElement('td');
+                    kmCell.textContent = km.formattedPace;
+                    
+                    // Color code compared to previous session km
+                    if (previousSession && previousSession.kilometers[i]) {
+                        if (km.pace < previousSession.kilometers[i].pace) {
+                            kmCell.className = 'improved';
+                        } else if (km.pace > previousSession.kilometers[i].pace) {
+                            kmCell.className = 'worse';
+                        } else {
+                            kmCell.className = 'unchanged';
+                        }
+                    }
+                    
+                    row.appendChild(kmCell);
+                }
+                
+                sessionsTableBody.appendChild(row);
+                previousSession = session;
+            }
+        }
+        
+        // Helper Functions
+        function formatDate(date) {
+            return date.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        function formatPace(paceInMinutes) {
+            const minutes = Math.floor(paceInMinutes);
+            const seconds = Math.round((paceInMinutes - minutes) * 60);
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>
