@@ -229,6 +229,7 @@
 
         th {
             text-align: left;
+            border-bottom: 1px solid var(--bg-tertiary);
             padding: 0.6rem;
             background-color: var(--bg-tertiary);
             color: var(--text-primary);
@@ -333,6 +334,7 @@
         #altitude-header th {
             background-color: var(--bg-tertiary);
             color: var(--text-primary);
+            height: 2rem;
             font-weight: 600;
             text-align: center;
             margin-bottom: 0;
@@ -344,8 +346,13 @@
         }
 
         #altitude-graph-container {
+            background-color: rgba(79, 70, 229, 0.1);
+            border: 2px solid #63C73380;
+            /* Add a border */
+            border-radius: 2px;
+            /* Optional: Add rounded corners */
             width: 100%;
-            height: 75px;
+            height: 80px;
             /* Fixed height */
             margin-bottom: 3px;
             margin-top: 3px;
@@ -357,12 +364,7 @@
         }
 
         #altitude-graph {
-            /*border: 2px solid var(--accent);*/
-            /* Add a border */
-            /*border-radius: 8px;*/
-            /* Optional: Add rounded corners */
-            background-color: rgba(79, 70, 229, 0.1);
-            padding: 0;
+            padding: 2px;
             /* Lighter background color */
         }
 
@@ -371,7 +373,7 @@
             /* Color of the graph line */
             stroke-width: 2;
             /* Thickness of the graph line */
-            fill: none;
+            fill: #99353387;
             /* Ensure no fill for the polyline */
         }
 
@@ -379,6 +381,8 @@
             display: flex;
             justify-content: space-between;
             text-align: center;
+            margin-right: 1rem;
+            margin-left: 0rem;
             margin-top: 0;
             margin-bottom: 0.5rem;
             /* No margin */
@@ -494,7 +498,7 @@
             <div class="table-container">
                 <table id="sessions-table">
                     <thead>
-                        <tr>
+                        <tr style="height: 1rem">
                             <th>Date</th>
                             <th>Avg<br>Pace</th>
                             <th>km 1</th>
@@ -965,6 +969,7 @@
             const minAltitude = Math.min(...altitudeData.map(d => d.elevation));
             const maxAltitude = Math.max(...altitudeData.map(d => d.elevation));
             const altitudeRange = maxAltitude - minAltitude;
+            console.log('minAltitude', minAltitude);
 
             // Generate at least 100 points per kilometer
             const points = [];
