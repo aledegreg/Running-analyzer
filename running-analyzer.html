@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Running Performance Analyzer</title>
+    <title>10K Running Performance Analyzer</title>
     <style>
         :root {
             --bg-primary: #121212;
@@ -324,7 +324,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Running Performance Analyzer</h1>
+            <h1>10K Running Performance Analyzer</h1>
             <p>Upload TCX files from your 10km runs to analyze your performance metrics</p>
         </header>
         
@@ -393,7 +393,6 @@
                         <tr>
                             <th>Date</th>
                             <th>Avg Pace</th>
-                            <th>Elev. Gain</th>
                             <th>km 1</th>
                             <th>km 2</th>
                             <th>km 3</th>
@@ -808,9 +807,9 @@
                 row.appendChild(avgPaceCell);
                 
                 // Elevation
-                const elevationCell = document.createElement('td');
-                elevationCell.textContent = `${session.elevationGain}m`;
-                row.appendChild(elevationCell);
+                //const elevationCell = document.createElement('td');
+                //elevationCell.textContent = `${session.elevationGain}m`;
+                //row.appendChild(elevationCell);
                 
                 // Kilometer splits
                 for (let i = 0; i < 10; i++) {
