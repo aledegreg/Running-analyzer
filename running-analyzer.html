@@ -42,9 +42,23 @@
         }
 
         header {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            /* Space between icon and text */
             margin-bottom: 0.5rem;
             padding: 1rem;
+        }
+
+        .header-icon svg {
+            width: 120px;
+            height: 180px;
+            color: var(--accent);
+            /* Use your accent color */
+        }
+
+        .header-text {
+            flex: 1;
         }
 
         h1 {
@@ -179,10 +193,25 @@
         }
 
         .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            /* Space between icon and content */
             background-color: var(--bg-tertiary);
             border-radius: 8px;
             padding: 1rem;
             margin-bottom: 1rem;
+        }
+
+        .stat-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent);
+            /* Use your accent color */
+        }
+
+        .stat-content {
+            flex: 1;
         }
 
         .stat-title {
@@ -369,7 +398,7 @@
             height: 100%;
             /* Ensure SVG fills the container */
         }
-        
+
         #altitude-graph polyline {
             stroke: var(--accent);
             /* Color of the graph line */
@@ -400,17 +429,48 @@
             text-align: center;
             margin-bottom: 0.5rem;
         }
+
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>10K Running Performance Analyzer</h1>
-            <p>
-                Upload TCX files from your 10km runs to analyze your performance metrics
-            </p>
-        </header>
+            <div class="header-icon">
+                <svg width="120px" height="120px" viewBox="0 0 2048 2048" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="matrix(1.57764,0,0,1.56073,-596.188,-624.059)">
+                        <g transform="matrix(1.11406,0,0,1.00069,22.9476,45.7309)">
+                            <g>
+                                <!-- Colored bars -->
+                                <rect x="367.328" y="927.483" width="107.433" height="390.418" transform="matrix(0.986683,0,0,1.36761,24.1383,-480.182)" fill="#FFC900" />
+                                <rect x="367.328" y="927.483" width="107.433" height="390.418" transform="matrix(0.986683,0,0,2.33433,206.493,-1754.22)" fill="#0400FF" />
+                                <rect x="367.328" y="927.483" width="107.433" height="390.418" transform="matrix(0.986683,0,0,1.7869,388.847,-1032.77)" fill="#FF001A" />
+                                <rect x="367.328" y="927.483" width="107.433" height="390.418" transform="matrix(0.986683,0,0,1.5494,571.201,-719.767)" fill="#21FF00" />
+                                <rect x="367.328" y="927.483" width="107.433" height="390.418" transform="matrix(0.986683,0,0,2.15352,753.555,-1515.93)" fill="#FF00E6" />
+                                <rect x="367.328" y="927.483" width="107.433" height="390.418" transform="matrix(0.986683,0,0,1.96795,935.91,-1136.55)" fill="#00FFFF" />
 
+                                <!-- Line graph -->
+                                <path d="M450.572,609.763L642.051,359.958L830.53,569.229L979.453,276.468L1058.42,398.149L1212.29,200.554L1359.08,421.292L1434.21,325.335L1626.17,207.743" fill="none" stroke="#E02326" stroke-width="28.98" />
+                            </g>
+                        </g>
+
+                        <!-- Running shoe illustration -->
+                        <g transform="matrix(0.959376,0.282131,-0.282131,0.959376,364.629,-162.138)">
+                            <path d="M968.035,854.735C900.604,877.499 886.286,914.13 928.609,972.474C995.252,917.019 1055.73,912.947 1110.05,960.091C1057.88,918.16 977.445,851.559 968.035,854.735Z" fill="#187AD1" stroke="#1D4EBB" stroke-width="5.57" />
+                            <path d="M470.647,1258.65C460.817,1182 466.263,1107.93 491.763,1024.91C546.589,884.891 599.631,862.854 650.485,985.499C684.59,1048.36 772.12,1030.09 897.159,983.054C1071.22,832.894 1145.36,1036.67 1448.36,1160.63C1598.51,1207.93 1753.86,1182.49 1740.62,1307.8C1653.19,1343.19 1577.74,1353.11 1490.03,1368.48C1314.53,1399.23 1159.84,1366.37 1049.1,1322.2C938.437,1290.75 695.491,1294.09 514.853,1270.32L470.647,1258.65Z" fill="#0030FF" stroke="#01BBFF" stroke-width="10.93" />
+                            <path d="M481.738,1236.21C650.345,1220.85 527.778,1033.68 518.057,971.958C635.475,1151.12 1005.6,1097.48 1079.47,1285.66C927.181,1121.27 576.979,1241.79 481.738,1236.21Z" fill="#007CFF" stroke="#0056FF" stroke-width="8.31" />
+                            <path d="M1027,990.517L1110.05,960.091L1069.94,974.787" fill="#01035A" stroke="#2C23E0" stroke-width="15.54" />
+                            <path d="M465.865,1254.85C326.968,1440.61 497.788,1475.55 841.202,1446.5C913.399,1368.16 1084.15,1450.27 1111.12,1457.35C1139.89,1464.9 1457.5,1462.13 1456.93,1460.96C1736.1,1398.83 1759.8,1345.21 1748.87,1301.9C1670.18,1324.03 1371.19,1414.02 1160.49,1355.91C1101.65,1339.68 1062.6,1312.14 879.189,1295.11C789.67,1286.8 581.455,1283 465.865,1254.85Z" fill="#DBDBDB" />
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="header-text">
+                <h1>10K Running Performance Analyzer</h1>
+                <p>
+                    Upload TCX files from your 10km runs to analyze your performance metrics
+                </p>
+            </div>
+        </header>
         <div id="upload-section" class="upload-section">
             <div class="file-input-container">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -448,50 +508,82 @@
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-title">
-                        Best Pace
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
                     </div>
-                    <div id="best-pace" class="stat-value">
-                        --:--
-                    </div>
-                    <div id="best-pace-details" class="stat-subtext">
-                        Date: --, Kilometer: --
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-title">
-                        Average Pace (excl. warm-up)
-                    </div>
-                    <div id="avg-pace" class="stat-value">
-                        --:--
-                    </div>
-                    <div class="stat-subtext">
-                        Excluding first kilometer
+                    <div class="stat-content">
+                        <div class="stat-title">
+                            Best Pace
+                        </div>
+                        <div id="best-pace" class="stat-value">
+                            --:--
+                        </div>
+                        <div id="best-pace-details" class="stat-subtext">
+                            Date: --, Kilometer: --
+                        </div>
                     </div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-title">
-                        Best Track Segment
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
                     </div>
-                    <div id="best-segment" class="stat-value">
-                        ---
-                    </div>
-                    <div id="best-segment-details" class="stat-subtext">
-                        Average pace: --:--
+                    <div class="stat-content">
+                        <div class="stat-title">
+                            Average Pace (excl. warm-up)
+                        </div>
+                        <div id="avg-pace" class="stat-value">
+                            --:--
+                        </div>
+                        <div class="stat-subtext">
+                            Excluding first kilometer
+                        </div>
                     </div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-title">
-                        Consistency Score
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                            <line x1="4" y1="22" x2="4" y2="15" />
+                        </svg>
                     </div>
-                    <div id="consistency-score" class="stat-value">
-                        --
+                    <div class="stat-content">
+                        <div class="stat-title">
+                            Best Track Segment
+                        </div>
+                        <div id="best-segment" class="stat-value">
+                            ---
+                        </div>
+                        <div id="best-segment-details" class="stat-subtext">
+                            Average pace: --:--
+                        </div>
                     </div>
-                    <div class="stat-subtext">
-                        Lower is better
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                            <polyline points="17 6 23 6 23 12" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-title">
+                            Consistency Score
+                        </div>
+                        <div id="consistency-score" class="stat-value">
+                            --
+                        </div>
+                        <div class="stat-subtext">
+                            Lower is better
+                        </div>
                     </div>
                 </div>
             </div>
@@ -530,583 +622,584 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div id="loading-overlay" class="loading-overlay">
-        <div class="spinner"></div>
-        <p>
-            Processing your runs...
-        </p>
-    </div>
+<div id="loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>
+        Processing your runs...
+    </p>
+</div>
 
-    <script>
-        // DOM Elements
-        const fileInput = document.getElementById('file-input');
-        const fileList = document.getElementById('file-list');
-        const analyzeButton = document.getElementById('analyze-button');
-        const uploadSection = document.getElementById('upload-section');
-        const resultsSection = document.getElementById('results-section');
-        const backButton = document.getElementById('back-button');
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const errorMessage = document.getElementById('error-message');
-        const fileFormatAlert = document.getElementById('file-format-alert');
+<script>
+    // DOM Elements
+    const fileInput = document.getElementById('file-input');
+    const fileList = document.getElementById('file-list');
+    const analyzeButton = document.getElementById('analyze-button');
+    const uploadSection = document.getElementById('upload-section');
+    const resultsSection = document.getElementById('results-section');
+    const backButton = document.getElementById('back-button');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const errorMessage = document.getElementById('error-message');
+    const fileFormatAlert = document.getElementById('file-format-alert');
 
-        // Stats elements
-        const bestPaceElement = document.getElementById('best-pace');
-        const bestPaceDetailsElement = document.getElementById('best-pace-details');
-        const avgPaceElement = document.getElementById('avg-pace');
-        const bestSegmentElement = document.getElementById('best-segment');
-        const bestSegmentDetailsElement = document.getElementById('best-segment-details');
-        const consistencyScoreElement = document.getElementById('consistency-score');
-        const sessionsTableBody = document.querySelector('#sessions-table tbody');
+    // Stats elements
+    const bestPaceElement = document.getElementById('best-pace');
+    const bestPaceDetailsElement = document.getElementById('best-pace-details');
+    const avgPaceElement = document.getElementById('avg-pace');
+    const bestSegmentElement = document.getElementById('best-segment');
+    const bestSegmentDetailsElement = document.getElementById('best-segment-details');
+    const consistencyScoreElement = document.getElementById('consistency-score');
+    const sessionsTableBody = document.querySelector('#sessions-table tbody');
 
-        // State
-        let files = [];
-        let sessions = [];
+    // State
+    let files = [];
+    let sessions = [];
 
-        // Event Listeners
-        fileInput.addEventListener('change', handleFileSelection);
-        analyzeButton.addEventListener('click', analyzeFiles);
-        backButton.addEventListener('click', resetView);
+    // Event Listeners
+    fileInput.addEventListener('change', handleFileSelection);
+    analyzeButton.addEventListener('click', analyzeFiles);
+    backButton.addEventListener('click', resetView);
 
-        // Show alert after a delay
+    // Show alert after a delay
+    setTimeout(() => {
+        fileFormatAlert.style.display = 'block';
+    }, 1000);
+
+    // Functions
+    function handleFileSelection(event) {
+        const selectedFiles = Array.from(event.target.files);
+
+        if (selectedFiles.length === 0) return;
+
+        // Filter for TCX files
+        const tcxFiles = selectedFiles.filter(file => file.name.toLowerCase().endsWith('.tcx'));
+
+        if (tcxFiles.length !== selectedFiles.length) {
+            showError('Only TCX files are supported');
+            return;
+        }
+
+        // Add files to our collection
+        files = [...files,
+            ...tcxFiles];
+        renderFileList();
+        analyzeButton.disabled = files.length === 0;
+    }
+
+    function renderFileList() {
+        fileList.innerHTML = '';
+
+        files.forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+
+            const fileName = document.createElement('div');
+            fileName.className = 'file-name';
+            fileName.textContent = file.name;
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-file';
+            removeButton.innerHTML = '&times;';
+            removeButton.addEventListener('click', () => removeFile(index));
+
+            fileItem.appendChild(fileName);
+            fileItem.appendChild(removeButton);
+            fileList.appendChild(fileItem);
+        });
+    }
+
+    function removeFile(index) {
+        files.splice(index, 1);
+        renderFileList();
+        analyzeButton.disabled = files.length === 0;
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+
         setTimeout(() => {
-            fileFormatAlert.style.display = 'block';
-        }, 1000);
+            errorMessage.style.display = 'none';
+        }, 5000);
+    }
 
-        // Functions
-        function handleFileSelection(event) {
-            const selectedFiles = Array.from(event.target.files);
+    function resetView() {
+        resultsSection.style.display = 'none';
+        uploadSection.style.display = 'block';
+    }
 
-            if (selectedFiles.length === 0) return;
+    async function analyzeFiles() {
+        if (files.length === 0) return;
 
-            // Filter for TCX files
-            const tcxFiles = selectedFiles.filter(file => file.name.toLowerCase().endsWith('.tcx'));
+        showLoading(true);
 
-            if (tcxFiles.length !== selectedFiles.length) {
-                showError('Only TCX files are supported');
+        try {
+            sessions = [];
+
+            // Process each file
+            for (const file of files) {
+                const session = await parseWorkout(file);
+                if (session) {
+                    sessions.push(session);
+                }
+            }
+
+            if (sessions.length === 0) {
+                showError('No valid running data found in the files');
+                showLoading(false);
                 return;
             }
 
-            // Add files to our collection
-            files = [...files,
-                ...tcxFiles];
-            renderFileList();
-            analyzeButton.disabled = files.length === 0;
+            // Sort sessions by date
+            sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            // Process and display results
+            processResults();
+            showResults();
+        } catch (error) {
+            console.error('Error analyzing files:', error);
+            showError('An error occurred while processing files');
+        } finally {
+            showLoading(false);
         }
+    }
 
-        function renderFileList() {
-            fileList.innerHTML = '';
+    function showLoading(show) {
+        loadingOverlay.style.display = show ? 'flex': 'none';
+    }
 
-            files.forEach((file, index) => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
+    function showResults() {
+        uploadSection.style.display = 'none';
+        resultsSection.style.display = 'block';
+        window.scrollTo(0, 0);
+    }
 
-                const fileName = document.createElement('div');
-                fileName.className = 'file-name';
-                fileName.textContent = file.name;
+    async function parseWorkout(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
 
-                const removeButton = document.createElement('button');
-                removeButton.className = 'remove-file';
-                removeButton.innerHTML = '&times;';
-                removeButton.addEventListener('click', () => removeFile(index));
+            reader.onload = async (event) => {
+                try {
+                    const tcxContent = event.target.result;
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(tcxContent, "text/xml");
 
-                fileItem.appendChild(fileName);
-                fileItem.appendChild(removeButton);
-                fileList.appendChild(fileItem);
-            });
-        }
+                    // Extract activity data
+                    const activity = xmlDoc.querySelector('Activity');
 
-        function removeFile(index) {
-            files.splice(index, 1);
-            renderFileList();
-            analyzeButton.disabled = files.length === 0;
-        }
-
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 5000);
-        }
-
-        function resetView() {
-            resultsSection.style.display = 'none';
-            uploadSection.style.display = 'block';
-        }
-
-        async function analyzeFiles() {
-            if (files.length === 0) return;
-
-            showLoading(true);
-
-            try {
-                sessions = [];
-
-                // Process each file
-                for (const file of files) {
-                    const session = await parseWorkout(file);
-                    if (session) {
-                        sessions.push(session);
+                    if (!activity || activity.getAttribute('Sport') !== 'Running') {
+                        resolve(null); // Not a running activity
+                        return;
                     }
-                }
 
-                if (sessions.length === 0) {
-                    showError('No valid running data found in the files');
-                    showLoading(false);
-                    return;
-                }
+                    // Extract timestamp from the first trackpoint
+                    const firstTrackpoint = xmlDoc.querySelector('Trackpoint');
+                    const timeElement = firstTrackpoint.querySelector('Time');
+                    const date = new Date(timeElement.textContent);
 
-                // Sort sessions by date
-                sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    // Initialize session data
+                    const session = {
+                        id: file.name,
+                        date: date,
+                        formattedDate: formatDate(date),
+                        laps: [],
+                        totalDistance: 0,
+                        totalTime: 0,
+                        avgPace: 0,
+                        elevationGain: 0,
+                        kilometers: []
+                    };
 
-                // Process and display results
-                processResults();
-                showResults();
-            } catch (error) {
-                console.error('Error analyzing files:', error);
-                showError('An error occurred while processing files');
-            } finally {
-                showLoading(false);
-            }
-        }
+                    // Process trackpoints
+                    const trackpoints = Array.from(xmlDoc.querySelectorAll('Trackpoint'));
+                    let lastElevation = null;
+                    let lastDistance = 0;
+                    let currentKm = 1;
+                    let kmStartTime = null;
+                    let kmStartDistance = 0;
+                    let kmStartElevation = null;
 
-        function showLoading(show) {
-            loadingOverlay.style.display = show ? 'flex': 'none';
-        }
+                    // Collect altitude data for each kilometer
+                    const altitudeData = [];
+                    for (let i = 0; i < trackpoints.length; i++) {
+                        const tp = trackpoints[i];
 
-        function showResults() {
-            uploadSection.style.display = 'none';
-            resultsSection.style.display = 'block';
-            window.scrollTo(0, 0);
-        }
+                        const distanceElement = tp.querySelector('DistanceMeters');
+                        if (!distanceElement) continue;
 
-        async function parseWorkout(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
+                        const distance = parseFloat(distanceElement.textContent);
 
-                reader.onload = async (event) => {
-                    try {
-                        const tcxContent = event.target.result;
-                        const parser = new DOMParser();
-                        const xmlDoc = parser.parseFromString(tcxContent, "text/xml");
+                        // Skip if distance isn't progressing
+                        if (distance <= lastDistance && i > 0) continue;
 
-                        // Extract activity data
-                        const activity = xmlDoc.querySelector('Activity');
+                        const timeElement = tp.querySelector('Time');
+                        const timestamp = new Date(timeElement.textContent);
 
-                        if (!activity || activity.getAttribute('Sport') !== 'Running') {
-                            resolve(null); // Not a running activity
-                            return;
-                        }
-
-                        // Extract timestamp from the first trackpoint
-                        const firstTrackpoint = xmlDoc.querySelector('Trackpoint');
-                        const timeElement = firstTrackpoint.querySelector('Time');
-                        const date = new Date(timeElement.textContent);
-
-                        // Initialize session data
-                        const session = {
-                            id: file.name,
-                            date: date,
-                            formattedDate: formatDate(date),
-                            laps: [],
-                            totalDistance: 0,
-                            totalTime: 0,
-                            avgPace: 0,
-                            elevationGain: 0,
-                            kilometers: []
-                        };
-
-                        // Process trackpoints
-                        const trackpoints = Array.from(xmlDoc.querySelectorAll('Trackpoint'));
-                        let lastElevation = null;
-                        let lastDistance = 0;
-                        let currentKm = 1;
-                        let kmStartTime = null;
-                        let kmStartDistance = 0;
-                        let kmStartElevation = null;
-
-                        // Collect altitude data for each kilometer
-                        const altitudeData = [];
-                        for (let i = 0; i < trackpoints.length; i++) {
-                            const tp = trackpoints[i];
-
-                            const distanceElement = tp.querySelector('DistanceMeters');
-                            if (!distanceElement) continue;
-
-                            const distance = parseFloat(distanceElement.textContent);
-
-                            // Skip if distance isn't progressing
-                            if (distance <= lastDistance && i > 0) continue;
-
-                            const timeElement = tp.querySelector('Time');
-                            const timestamp = new Date(timeElement.textContent);
-
-                            // Initialize km data
-                            if (kmStartTime === null) {
-                                kmStartTime = timestamp;
-                                kmStartDistance = distance;
-                                const elevationElement = tp.querySelector('AltitudeMeters');
-                                if (elevationElement) {
-                                    kmStartElevation = parseFloat(elevationElement.textContent);
-                                }
-                            }
-
-                            // Calculate elevation gain
+                        // Initialize km data
+                        if (kmStartTime === null) {
+                            kmStartTime = timestamp;
+                            kmStartDistance = distance;
                             const elevationElement = tp.querySelector('AltitudeMeters');
                             if (elevationElement) {
-                                const elevation = parseFloat(elevationElement.textContent);
-                                if (lastElevation !== null && elevation > lastElevation) {
-                                    session.elevationGain += (elevation - lastElevation);
-                                }
-                                lastElevation = elevation;
+                                kmStartElevation = parseFloat(elevationElement.textContent);
                             }
-
-                            // Process completed kilometers
-                            if (distance >= currentKm * 1000) {
-                                // Calculate time for this km
-                                const kmEndTime = timestamp;
-                                const kmTime = (kmEndTime - kmStartTime) / 1000; // in seconds
-                                const kmPace = kmTime / 60; // in minutes
-
-                                // Calculate altitude change for this km
-                                const kmEndElevation = lastElevation;
-                                const altitudeChange = kmEndElevation - kmStartElevation;
-
-                                session.kilometers.push({
-                                    km: currentKm,
-                                    time: kmTime,
-                                    pace: kmPace,
-                                    formattedPace: formatPace(kmPace),
-                                    altitudeChange: altitudeChange
-                                });
-
-                                // Prepare for next km
-                                currentKm++;
-                                kmStartTime = timestamp;
-                                kmStartDistance = distance;
-                                kmStartElevation = lastElevation;
-                            }
-
-                            // Collect altitude data for the graph
-                            if (elevationElement) {
-                                altitudeData.push({
-                                    distance: distance,
-                                    elevation: parseFloat(elevationElement.textContent)
-                                });
-                            }
-
-                            lastDistance = distance;
                         }
 
-                        // Calculate session totals if we have enough kilometer data
-                        if (session.kilometers.length >= 9) {
-                            // We need at least 9 complete km
-                            // Truncate to exactly 10km if we have more
-                            if (session.kilometers.length > 10) {
-                                session.kilometers = session.kilometers.slice(0, 10);
+                        // Calculate elevation gain
+                        const elevationElement = tp.querySelector('AltitudeMeters');
+                        if (elevationElement) {
+                            const elevation = parseFloat(elevationElement.textContent);
+                            if (lastElevation !== null && elevation > lastElevation) {
+                                session.elevationGain += (elevation - lastElevation);
                             }
-
-                            // Add missing kilometers if we have less than 10
-                            while (session.kilometers.length < 10) {
-                                const lastKm = session.kilometers[session.kilometers.length - 1];
-                                session.kilometers.push({
-                                    km: lastKm.km + 1,
-                                    time: lastKm.time, // Use same time as last km
-                                    pace: lastKm.pace,
-                                    formattedPace: lastKm.formattedPace,
-                                    altitudeChange: lastKm.altitudeChange
-                                });
-                            }
-
-                            // Calculate average pace (excluding first km)
-                            const totalTimeExcludingWarmup = session.kilometers
-                            .slice(1) // Skip first km
-                            .reduce((sum, km) => sum + km.time, 0);
-
-                            session.totalTime = session.kilometers.reduce((sum, km) => sum + km.time, 0);
-                            session.totalDistance = 10000; // 10km in meters
-                            session.avgPace = (totalTimeExcludingWarmup / 60) / 9; // minutes per km
-                            session.formattedAvgPace = formatPace(session.avgPace);
-                            session.elevationGain = Math.round(session.elevationGain);
-
-                            // Store altitude data for the graph
-                            session.altitudeData = altitudeData;
-
-                            resolve(session);
-                        } else {
-                            // Not enough data
-                            resolve(null);
+                            lastElevation = elevation;
                         }
-                    } catch (error) {
-                        console.error('Error parsing TCX:', error);
+
+                        // Process completed kilometers
+                        if (distance >= currentKm * 1000) {
+                            // Calculate time for this km
+                            const kmEndTime = timestamp;
+                            const kmTime = (kmEndTime - kmStartTime) / 1000; // in seconds
+                            const kmPace = kmTime / 60; // in minutes
+
+                            // Calculate altitude change for this km
+                            const kmEndElevation = lastElevation;
+                            const altitudeChange = kmEndElevation - kmStartElevation;
+
+                            session.kilometers.push({
+                                km: currentKm,
+                                time: kmTime,
+                                pace: kmPace,
+                                formattedPace: formatPace(kmPace),
+                                altitudeChange: altitudeChange
+                            });
+
+                            // Prepare for next km
+                            currentKm++;
+                            kmStartTime = timestamp;
+                            kmStartDistance = distance;
+                            kmStartElevation = lastElevation;
+                        }
+
+                        // Collect altitude data for the graph
+                        if (elevationElement) {
+                            altitudeData.push({
+                                distance: distance,
+                                elevation: parseFloat(elevationElement.textContent)
+                            });
+                        }
+
+                        lastDistance = distance;
+                    }
+
+                    // Calculate session totals if we have enough kilometer data
+                    if (session.kilometers.length >= 9) {
+                        // We need at least 9 complete km
+                        // Truncate to exactly 10km if we have more
+                        if (session.kilometers.length > 10) {
+                            session.kilometers = session.kilometers.slice(0, 10);
+                        }
+
+                        // Add missing kilometers if we have less than 10
+                        while (session.kilometers.length < 10) {
+                            const lastKm = session.kilometers[session.kilometers.length - 1];
+                            session.kilometers.push({
+                                km: lastKm.km + 1,
+                                time: lastKm.time, // Use same time as last km
+                                pace: lastKm.pace,
+                                formattedPace: lastKm.formattedPace,
+                                altitudeChange: lastKm.altitudeChange
+                            });
+                        }
+
+                        // Calculate average pace (excluding first km)
+                        const totalTimeExcludingWarmup = session.kilometers
+                        .slice(1) // Skip first km
+                        .reduce((sum, km) => sum + km.time, 0);
+
+                        session.totalTime = session.kilometers.reduce((sum, km) => sum + km.time, 0);
+                        session.totalDistance = 10000; // 10km in meters
+                        session.avgPace = (totalTimeExcludingWarmup / 60) / 9; // minutes per km
+                        session.formattedAvgPace = formatPace(session.avgPace);
+                        session.elevationGain = Math.round(session.elevationGain);
+
+                        // Store altitude data for the graph
+                        session.altitudeData = altitudeData;
+
+                        resolve(session);
+                    } else {
+                        // Not enough data
                         resolve(null);
                     }
-                };
+                } catch (error) {
+                    console.error('Error parsing TCX:', error);
+                    resolve(null);
+                }
+            };
 
-                reader.onerror = () => {
-                    reject(new Error('Error reading file'));
-                };
+            reader.onerror = () => {
+                reject(new Error('Error reading file'));
+            };
 
-                reader.readAsText(file);
+            reader.readAsText(file);
+        });
+    }
+
+    function processResults() {
+        if (sessions.length === 0) return;
+
+        // Find best pace
+        let bestPace = {
+            pace: Infinity,
+            km: null,
+            session: null
+        };
+        for (const session of sessions) {
+            for (const km of session.kilometers) {
+                if (km.pace < bestPace.pace) {
+                    bestPace = {
+                        pace: km.pace,
+                        formattedPace: km.formattedPace,
+                        km: km.km,
+                        session: session
+                    };
+                }
+            }
+        }
+
+        // Calculate average pace excluding warm-up
+        const totalPaceExcludingWarmup = sessions.reduce((sum, session) => {
+            const paceExcludingWarmup = session.kilometers
+            .slice(1) // Skip first km
+            .reduce((kmSum, km) => kmSum + km.pace, 0) / 9; // Average of 9 km
+            return sum + paceExcludingWarmup;
+        }, 0);
+        const overallAvgPace = totalPaceExcludingWarmup / sessions.length;
+
+        // Find best track segment (3 consecutive km)
+        let bestSegment = {
+            startKm: 0,
+            avgPace: Infinity,
+            session: null
+        };
+        for (const session of sessions) {
+            for (let i = 0; i <= session.kilometers.length - 3; i++) {
+                const segment = session.kilometers.slice(i, i + 3);
+                const segmentAvgPace = segment.reduce((sum, km) => sum + km.pace, 0) / 3;
+
+                if (segmentAvgPace < bestSegment.avgPace) {
+                    bestSegment = {
+                        startKm: i + 1,
+                        // 1-based km number
+                        endKm: i + 3,
+                        avgPace: segmentAvgPace,
+                        formattedPace: formatPace(segmentAvgPace),
+                        session: session
+                    };
+                }
+            }
+        }
+
+        // Calculate consistency score (standard deviation of pace)
+        const allKmPaces = sessions.flatMap(session =>
+            session.kilometers.map(km => km.pace)
+        );
+        const avgAllPaces = allKmPaces.reduce((sum, pace) => sum + pace, 0) / allKmPaces.length;
+        const variance = allKmPaces.reduce((sum, pace) => sum + Math.pow(pace - avgAllPaces, 2), 0) / allKmPaces.length;
+        const consistencyScore = Math.sqrt(variance);
+
+        // Get altitude data from the last session for the graph
+        const lastSession = sessions[sessions.length - 1];
+        const altitudeData = lastSession.altitudeData;
+
+        // Update the UI
+        updateStatsDisplay(bestPace, overallAvgPace, bestSegment, consistencyScore);
+        updateSessionsTable(altitudeData);
+    }
+
+    function updateStatsDisplay(bestPace, overallAvgPace, bestSegment, consistencyScore) {
+        bestPaceElement.textContent = bestPace.formattedPace;
+        bestPaceDetailsElement.textContent = `Date: ${bestPace.session.formattedDate}, Kilometer: ${bestPace.km}`;
+
+        avgPaceElement.textContent = formatPace(overallAvgPace);
+
+        bestSegmentElement.textContent = `km ${bestSegment.startKm}-${bestSegment.endKm}`;
+        bestSegmentDetailsElement.textContent = `Average pace: ${bestSegment.formattedPace}`;
+
+        consistencyScoreElement.textContent = consistencyScore.toFixed(2);
+    }
+
+    function updateSessionsTable(altitudeData) {
+        sessionsTableBody.innerHTML = '';
+
+        // Find best pace for each kilometer across all sessions
+        const bestPaces = [];
+        for (let i = 0; i < 10; i++) {
+            let bestPace = Infinity;
+            for (const session of sessions) {
+                if (session.kilometers[i] && session.kilometers[i].pace < bestPace) {
+                    bestPace = session.kilometers[i].pace;
+                }
+            }
+            bestPaces[i] = bestPace;
+        }
+
+        // Update altitude header with graph and numbers
+        const altitudeHeader = document.getElementById('altitude-header');
+        altitudeHeader.innerHTML = `
+        <th colspan="2">Altitude (m)</th>
+        <th colspan="10">
+        <div id="altitude-graph-container" style="width: 0px; height: 75px">
+        <svg id="altitude-graph" viewBox="0 0 1000 75"></svg>
+        </div>
+        <div id="altitude-values"></div>
+        </th>
+        `;
+
+        // Create SVG graph
+        const svgNS = "http://www.w3.org/2000/svg";
+        const graph = document.getElementById('altitude-graph');
+
+        // Normalize altitude data for the graph
+        const minAltitude = Math.min(...altitudeData.map(d => d.elevation));
+        const maxAltitude = Math.max(...altitudeData.map(d => d.elevation));
+        const altitudeRange = maxAltitude - minAltitude;
+        console.log('minAltitude', minAltitude);
+
+        // Generate at least 100 points per kilometer
+        const points = [];
+        for (let i = 0; i < altitudeData.length; i++) {
+            const x = (altitudeData[i].distance / 10000) * 1000; // Spread across 10 km
+            const y = 75 - ((altitudeData[i].elevation - minAltitude) / altitudeRange) * 75; // Scale to fit SVG height
+            points.push(`${x},${y}`);
+        }
+
+        // Create polyline for the graph
+        const polyline = document.createElementNS(svgNS, "polyline");
+        polyline.setAttribute("points", points.join(" "));
+        polyline.setAttribute("stroke", "var(--accent)");
+        polyline.setAttribute("stroke-width", "2");
+        polyline.setAttribute("fill", "none");
+        graph.appendChild(polyline);
+
+        // Add altitude numbers
+        const avgAltitudeChanges = sessions.reduce((acc, session) => {
+            session.kilometers.forEach((km, index) => {
+                if (!acc[index]) acc[index] = [];
+                acc[index].push(km.altitudeChange);
             });
-        }
+            return acc;
+        }, []).map(changes => {
+            const sum = changes.reduce((acc, val) => acc + val,
+                0);
+            return (sum / changes.length).toFixed(1);
+        });
 
-        function processResults() {
-            if (sessions.length === 0) return;
+        const altitudeValues = document.getElementById('altitude-values');
+        avgAltitudeChanges.forEach((change,
+            index) => {
+            const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
+            altitudeValues.innerHTML += `<span>${formattedChange}</span>`;
+        });
 
-            // Find best pace
-            let bestPace = {
-                pace: Infinity,
-                km: null,
-                session: null
-            };
-            for (const session of sessions) {
-                for (const km of session.kilometers) {
-                    if (km.pace < bestPace.pace) {
-                        bestPace = {
-                            pace: km.pace,
-                            formattedPace: km.formattedPace,
-                            km: km.km,
-                            session: session
-                        };
-                    }
+        // Align the graph with the table columns
+        const table = document.getElementById('sessions-table');
+
+        // Add a small delay to ensure the table is fully rendered
+        setTimeout(() => {
+            const firstKmCell = table.querySelector('th:nth-child(3)'); // km 1 column
+            const lastKmCell = table.querySelector('th:nth-child(12)'); // km 10 column
+
+            if (firstKmCell && lastKmCell) {
+                const firstKmRect = firstKmCell.getBoundingClientRect();
+                const lastKmRect = lastKmCell.getBoundingClientRect();
+                const graphContainer = document.getElementById('altitude-graph-container');
+
+                // Calculate the width of the graph container
+                const graphWidth = lastKmRect.right - firstKmRect.left;
+                graphContainer.style.width = `${graphWidth}px`;
+
+                // Debugging
+                console.log('First km column:', firstKmCell);
+                console.log('Last km column:', lastKmCell);
+                console.log('First km rect:', firstKmRect);
+                console.log('Last km rect:', lastKmRect);
+                console.log('Calculated width:', graphWidth);
+            }
+        },
+            100); // 100ms delay
+
+        // For coloring (comparison with previous session)
+        let previousSession = null;
+
+        for (const session of sessions) {
+            const row = document.createElement('tr');
+
+            // Date
+            const dateCell = document.createElement('td');
+            dateCell.textContent = session.formattedDate;
+            row.appendChild(dateCell);
+
+            // Average Pace
+            const avgPaceCell = document.createElement('td');
+            avgPaceCell.textContent = session.formattedAvgPace;
+
+            // Color code compared to previous session
+            if (previousSession) {
+                if (session.avgPace < previousSession.avgPace) {
+                    avgPaceCell.className = 'improved';
+                } else if (session.avgPace > previousSession.avgPace) {
+                    avgPaceCell.className = 'worse';
+                } else {
+                    avgPaceCell.className = 'unchanged';
                 }
             }
 
-            // Calculate average pace excluding warm-up
-            const totalPaceExcludingWarmup = sessions.reduce((sum, session) => {
-                const paceExcludingWarmup = session.kilometers
-                .slice(1) // Skip first km
-                .reduce((kmSum, km) => kmSum + km.pace, 0) / 9; // Average of 9 km
-                return sum + paceExcludingWarmup;
-            }, 0);
-            const overallAvgPace = totalPaceExcludingWarmup / sessions.length;
+            row.appendChild(avgPaceCell);
 
-            // Find best track segment (3 consecutive km)
-            let bestSegment = {
-                startKm: 0,
-                avgPace: Infinity,
-                session: null
-            };
-            for (const session of sessions) {
-                for (let i = 0; i <= session.kilometers.length - 3; i++) {
-                    const segment = session.kilometers.slice(i, i + 3);
-                    const segmentAvgPace = segment.reduce((sum, km) => sum + km.pace, 0) / 3;
-
-                    if (segmentAvgPace < bestSegment.avgPace) {
-                        bestSegment = {
-                            startKm: i + 1,
-                            // 1-based km number
-                            endKm: i + 3,
-                            avgPace: segmentAvgPace,
-                            formattedPace: formatPace(segmentAvgPace),
-                            session: session
-                        };
-                    }
-                }
-            }
-
-            // Calculate consistency score (standard deviation of pace)
-            const allKmPaces = sessions.flatMap(session =>
-                session.kilometers.map(km => km.pace)
-            );
-            const avgAllPaces = allKmPaces.reduce((sum, pace) => sum + pace, 0) / allKmPaces.length;
-            const variance = allKmPaces.reduce((sum, pace) => sum + Math.pow(pace - avgAllPaces, 2), 0) / allKmPaces.length;
-            const consistencyScore = Math.sqrt(variance);
-
-            // Get altitude data from the last session for the graph
-            const lastSession = sessions[sessions.length - 1];
-            const altitudeData = lastSession.altitudeData;
-
-            // Update the UI
-            updateStatsDisplay(bestPace, overallAvgPace, bestSegment, consistencyScore);
-            updateSessionsTable(altitudeData);
-        }
-
-        function updateStatsDisplay(bestPace, overallAvgPace, bestSegment, consistencyScore) {
-            bestPaceElement.textContent = bestPace.formattedPace;
-            bestPaceDetailsElement.textContent = `Date: ${bestPace.session.formattedDate}, Kilometer: ${bestPace.km}`;
-
-            avgPaceElement.textContent = formatPace(overallAvgPace);
-
-            bestSegmentElement.textContent = `km ${bestSegment.startKm}-${bestSegment.endKm}`;
-            bestSegmentDetailsElement.textContent = `Average pace: ${bestSegment.formattedPace}`;
-
-            consistencyScoreElement.textContent = consistencyScore.toFixed(2);
-        }
-
-        function updateSessionsTable(altitudeData) {
-            sessionsTableBody.innerHTML = '';
-
-            // Find best pace for each kilometer across all sessions
-            const bestPaces = [];
+            // Kilometer splits
             for (let i = 0; i < 10; i++) {
-                let bestPace = Infinity;
-                for (const session of sessions) {
-                    if (session.kilometers[i] && session.kilometers[i].pace < bestPace) {
-                        bestPace = session.kilometers[i].pace;
-                    }
+                const km = session.kilometers[i];
+                const kmCell = document.createElement('td');
+                kmCell.textContent = km.formattedPace;
+
+                // Check if this is the best pace for this kilometer across all sessions
+                if (km.pace === bestPaces[i]) {
+                    kmCell.className = 'best-pace';
                 }
-                bestPaces[i] = bestPace;
-            }
-
-            // Update altitude header with graph and numbers
-            const altitudeHeader = document.getElementById('altitude-header');
-            altitudeHeader.innerHTML = `
-            <th colspan="2">Altitude (m)</th>
-            <th colspan="10">
-            <div id="altitude-graph-container" style="width: 0px; height: 75px">
-            <svg id="altitude-graph" viewBox="0 0 1000 75"></svg>
-            </div>
-            <div id="altitude-values"></div>
-            </th>
-            `;
-
-            // Create SVG graph
-            const svgNS = "http://www.w3.org/2000/svg";
-            const graph = document.getElementById('altitude-graph');
-
-            // Normalize altitude data for the graph
-            const minAltitude = Math.min(...altitudeData.map(d => d.elevation));
-            const maxAltitude = Math.max(...altitudeData.map(d => d.elevation));
-            const altitudeRange = maxAltitude - minAltitude;
-            console.log('minAltitude', minAltitude);
-
-            // Generate at least 100 points per kilometer
-            const points = [];
-            for (let i = 0; i < altitudeData.length; i++) {
-                const x = (altitudeData[i].distance / 10000) * 1000; // Spread across 10 km
-                const y = 75 - ((altitudeData[i].elevation - minAltitude) / altitudeRange) * 75; // Scale to fit SVG height
-                points.push(`${x},${y}`);
-            }
-
-            // Create polyline for the graph
-            const polyline = document.createElementNS(svgNS, "polyline");
-            polyline.setAttribute("points", points.join(" "));
-            polyline.setAttribute("stroke", "var(--accent)");
-            polyline.setAttribute("stroke-width", "2");
-            polyline.setAttribute("fill", "none");
-            graph.appendChild(polyline);
-
-            // Add altitude numbers
-            const avgAltitudeChanges = sessions.reduce((acc, session) => {
-                session.kilometers.forEach((km, index) => {
-                    if (!acc[index]) acc[index] = [];
-                    acc[index].push(km.altitudeChange);
-                });
-                return acc;
-            }, []).map(changes => {
-                const sum = changes.reduce((acc, val) => acc + val,
-                    0);
-                return (sum / changes.length).toFixed(1);
-            });
-
-            const altitudeValues = document.getElementById('altitude-values');
-            avgAltitudeChanges.forEach((change,
-                index) => {
-                const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
-                altitudeValues.innerHTML += `<span>${formattedChange}</span>`;
-            });
-
-            // Align the graph with the table columns
-            const table = document.getElementById('sessions-table');
-
-            // Add a small delay to ensure the table is fully rendered
-            setTimeout(() => {
-                const firstKmCell = table.querySelector('th:nth-child(3)'); // km 1 column
-                const lastKmCell = table.querySelector('th:nth-child(12)'); // km 10 column
-
-                if (firstKmCell && lastKmCell) {
-                    const firstKmRect = firstKmCell.getBoundingClientRect();
-                    const lastKmRect = lastKmCell.getBoundingClientRect();
-                    const graphContainer = document.getElementById('altitude-graph-container');
-
-                    // Calculate the width of the graph container
-                    const graphWidth = lastKmRect.right - firstKmRect.left;
-                    graphContainer.style.width = `${graphWidth}px`;
-
-                    // Debugging
-                    console.log('First km column:', firstKmCell);
-                    console.log('Last km column:', lastKmCell);
-                    console.log('First km rect:', firstKmRect);
-                    console.log('Last km rect:', lastKmRect);
-                    console.log('Calculated width:', graphWidth);
-                }
-            },
-                100); // 100ms delay
-
-            // For coloring (comparison with previous session)
-            let previousSession = null;
-
-            for (const session of sessions) {
-                const row = document.createElement('tr');
-
-                // Date
-                const dateCell = document.createElement('td');
-                dateCell.textContent = session.formattedDate;
-                row.appendChild(dateCell);
-
-                // Average Pace
-                const avgPaceCell = document.createElement('td');
-                avgPaceCell.textContent = session.formattedAvgPace;
-
-                // Color code compared to previous session
-                if (previousSession) {
-                    if (session.avgPace < previousSession.avgPace) {
-                        avgPaceCell.className = 'improved';
-                    } else if (session.avgPace > previousSession.avgPace) {
-                        avgPaceCell.className = 'worse';
+                // If not the best overall pace, apply the usual comparison styling
+                else if (previousSession && previousSession.kilometers[i]) {
+                    if (km.pace < previousSession.kilometers[i].pace) {
+                        kmCell.className = 'improved';
+                    } else if (km.pace > previousSession.kilometers[i].pace) {
+                        kmCell.className = 'worse';
                     } else {
-                        avgPaceCell.className = 'unchanged';
+                        kmCell.className = 'unchanged';
                     }
                 }
 
-                row.appendChild(avgPaceCell);
-
-                // Kilometer splits
-                for (let i = 0; i < 10; i++) {
-                    const km = session.kilometers[i];
-                    const kmCell = document.createElement('td');
-                    kmCell.textContent = km.formattedPace;
-
-                    // Check if this is the best pace for this kilometer across all sessions
-                    if (km.pace === bestPaces[i]) {
-                        kmCell.className = 'best-pace';
-                    }
-                    // If not the best overall pace, apply the usual comparison styling
-                    else if (previousSession && previousSession.kilometers[i]) {
-                        if (km.pace < previousSession.kilometers[i].pace) {
-                            kmCell.className = 'improved';
-                        } else if (km.pace > previousSession.kilometers[i].pace) {
-                            kmCell.className = 'worse';
-                        } else {
-                            kmCell.className = 'unchanged';
-                        }
-                    }
-
-                    row.appendChild(kmCell);
-                }
-
-                sessionsTableBody.appendChild(row);
-                previousSession = session;
+                row.appendChild(kmCell);
             }
-        }
-        // Helper Functions
-        function formatDate(date) {
-            return date.toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
-        }
 
-        function formatPace(paceInMinutes) {
-            const minutes = Math.floor(paceInMinutes);
-            const seconds = Math.round((paceInMinutes - minutes) * 60);
-            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            sessionsTableBody.appendChild(row);
+            previousSession = session;
         }
-    </script>
+    }
+    // Helper Functions
+    function formatDate(date) {
+        return date.toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+
+    function formatPace(paceInMinutes) {
+        const minutes = Math.floor(paceInMinutes);
+        const seconds = Math.round((paceInMinutes - minutes) * 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+</script>
 </body>
 </html>
