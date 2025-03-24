@@ -1093,7 +1093,7 @@
         avgAltitudeChanges.forEach((change,
             index) => {
             const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
-            altitudeValues.innerHTML += `<span>${formattedChange}</span>`;
+            altitudeValues.innerHTML += `<th>${formattedChange}</th>`;
         });
 
         // Align the graph with the table columns
