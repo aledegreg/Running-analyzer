@@ -1089,7 +1089,7 @@
             index) => {
             const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
             altitudeValues.innerHTML += `<th>${formattedChange}</th>`;
-                console.log('AltitudeValue:',`<th>${formattedChange}</th>`)
+                console.log('AltitudeValue:',altitudeValues.innerHTML)
         });
         
         // Align the graph with the table columns
