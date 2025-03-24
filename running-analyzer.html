@@ -1028,20 +1028,6 @@
         }
 
         // Update altitude header with graph and numbers
-        /*const altitudeHeader = document.getElementById('altitude-header');
-        altitudeHeader.innerHTML = `
-        <tr id="altitude-header">
-        <th colspan="2" rowspan="2">Elevation gain (m)</th>
-        <th colspan="10">
-        <div id="altitude-graph-container" style="width: 0px; height: 75px">
-        <svg id="altitude-graph" viewBox="0 0 1000 20"></svg>
-        </div>
-        </th>
-        </tr>
-        <tr>
-        <div id="altitude-values"></div>
-        </tr>
-        `;*/
 
         // Create SVG graph
         const svgNS = "http://www.w3.org/2000/svg";
@@ -1087,9 +1073,11 @@
         avgAltitudeChanges.forEach((change,
             index) => {
             const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
-            altitudeValues.innerHTML += `<th>${formattedChange}</th>`;
-                console.log('AltitudeValue:',altitudeValues.innerHTML)
-        });
+            const ElevationHeader = document.createElement('th');
+            ElevationHeader.textContent = formattedChange;
+            altitudeValues.appendChild(ElevationHeader);
+            //altitudeValues.innerHTML += `<th>formattedChange</th>`;
+         });
         
         // Align the graph with the table columns
         const table = document.getElementById('sessions-table');
