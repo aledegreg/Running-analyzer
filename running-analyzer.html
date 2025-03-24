@@ -1088,7 +1088,8 @@
             const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
             altitudeValues.innerHTML += `<th>${formattedChange}</th>`;
         });
-        CONSOLE.LOG('AltitudeValues:',altitudeValues.innerHTML)
+        console.log('AltitudeValues:',altitudeValues.innerHTML)
+        
         // Align the graph with the table columns
         const table = document.getElementById('sessions-table');
 
