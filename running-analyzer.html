@@ -1084,6 +1084,7 @@
         });
 
         const altitudeValues = document.getElementById('altitude-values');
+        altitudeValues.innerHTML =``;
         avgAltitudeChanges.forEach((change,
             index) => {
             const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
