@@ -1031,13 +1031,18 @@
         // Update altitude header with graph and numbers
         const altitudeHeader = document.getElementById('altitude-header');
         altitudeHeader.innerHTML = `
-        <th colspan="2" rowspan="2">Elevation Gain (m)</th>
+        <tr id="altitude-header">
+        <th colspan="2" rowspan="2">Elevation gain (m)</th>
         <th colspan="10">
-        <div id="altitude-graph-container" style="width: 0px; height: 75px">
-        <svg id="altitude-graph" viewBox="0 0 1000 20"></svg>
+        <div id="altitude-graph-container">
+        <svg id="altitude-graph"></svg>
         </div>
         </th>
+        </tr>
+        <tr>
+        <th colspan="2"></th>
         <div id="altitude-values"></div>
+        </tr>
         `;
 
         // Create SVG graph
