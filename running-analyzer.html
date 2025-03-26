@@ -41,18 +41,16 @@
         --light-accent-hover: #1a7f37;
     }
 
-@media (prefers-color-scheme: light) {
-:root {
-            --bg-primary: var(--light-bg-primary);
-            --bg-secondary: var(--light-bg-secondary);
-            --bg-tertiary: var(--light-bg-tertiary);
-            --text-primary: var(--light-text-primary);
-            --text-secondary: var(--light-text-secondary);
-            --text-tertiary: var(--light-text-tertiary);
-            --accent: var(--light-accent);
-            --accent-hover: var(--light-accent-hover);
-        }
-    }
+.light-mode {
+    --bg-primary: var(--light-bg-primary);
+    --bg-secondary: var(--light-bg-secondary);
+    --bg-tertiary: var(--light-bg-tertiary);
+    --text-primary: var(--light-text-primary);
+    --text-secondary: var(--light-text-secondary);
+    --text-tertiary: var(--light-text-tertiary);
+    --accent: var(--light-accent);
+    --accent-hover: var(--light-accent-hover);
+}
 
         * {
             box-sizing: border-box;
@@ -78,10 +76,19 @@
 
         header {
             display: flex;
+            flex-direction: column;
             align-items: center;
+            text-align: center;
             gap: 1.5rem;
             margin-bottom: 1.5rem;
             padding: 0;
+        }
+
+        @media (min-width: 600px) {
+            header {
+                flex-direction: row;
+                text-align: left;
+            }
         }
 
         .header-icon svg {
@@ -416,6 +423,21 @@
             border-bottom: none;
         }
 
+        /* Make first two columns sticky */
+        th:first-child, td:first-child {
+            position: sticky;
+            left: 0;
+            background-color: var(--bg-secondary);
+            z-index: 1;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            position: sticky;
+            left: 120px; /* Adjust based on your column width */
+            background-color: var(--bg-secondary);
+            z-index: 1;
+        }
+
         .improved {
             color: var(--success);
             font-weight: 500;
@@ -675,12 +697,6 @@
         }
 
 @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-
             .header-icon svg {
                 width: 60px;
                 height: 60px;
@@ -700,6 +716,11 @@
 
             .export-buttons {
                 flex-direction: column;
+            }
+
+            /* Adjust sticky columns for mobile */
+            th:nth-child(2), td:nth-child(2) {
+                left: 100px;
             }
         }
 
@@ -1153,7 +1174,7 @@
         // State
         let files = [];
         let sessions = [];
-        let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let isDarkMode = true;
 
         // Event Listeners
         fileInput.addEventListener('change', handleFileSelection);
@@ -1191,8 +1212,7 @@
             }
 
             // Add files to our collection
-            files = [...files,
-                ...tcxFiles];
+            files = [...files, ...tcxFiles];
             renderFileList();
             analyzeButton.disabled = files.length === 0;
         }
@@ -1270,9 +1290,7 @@
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
-            const sizes = ['Bytes',
-                'KB',
-                'MB'];
+            const sizes = ['Bytes', 'KB', 'MB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
@@ -1348,7 +1366,7 @@
         }
 
         function showLoading(show) {
-            loadingOverlay.style.display = show ? 'flex': 'none';
+            loadingOverlay.style.display = show ? 'flex' : 'none';
         }
 
         function showResults() {
@@ -1513,8 +1531,8 @@
 
                             // Calculate average pace (excluding first km)
                             const totalTimeExcludingWarmup = session.kilometers
-                            .slice(1) // Skip first km
-                            .reduce((sum, km) => sum + km.time, 0);
+                                .slice(1) // Skip first km
+                                .reduce((sum, km) => sum + km.time, 0);
 
                             session.totalTime = session.kilometers.reduce((sum, km) => sum + km.time, 0);
                             session.totalDistance = 10000; // 10km in meters
@@ -1584,8 +1602,8 @@
             // Calculate average pace excluding warm-up
             const totalPaceExcludingWarmup = sessions.reduce((sum, session) => {
                 const paceExcludingWarmup = session.kilometers
-                .slice(1) // Skip first km
-                .reduce((kmSum, km) => kmSum + km.pace, 0) / 9; // Average of 9 km
+                    .slice(1) // Skip first km
+                    .reduce((kmSum, km) => kmSum + km.pace, 0) / 9; // Average of 9 km
                 return sum + paceExcludingWarmup;
             }, 0);
             const overallAvgPace = totalPaceExcludingWarmup / sessions.length;
@@ -1775,6 +1793,10 @@
                 previousSession = session;
             }
 
+            // Auto-scroll to bottom of table
+            const tableContainer = document.querySelector('.table-container');
+            tableContainer.scrollTop = tableContainer.scrollHeight;
+
             // Adjust graph width after table is rendered
             setTimeout(() => {
                 adjustGraphWidth();
@@ -1841,17 +1863,15 @@
                 });
                 return acc;
             }, []).map(changes => {
-                const sum = changes.reduce((acc, val) => acc + val,
-                    0);
+                const sum = changes.reduce((acc, val) => acc + val, 0);
                 return (sum / changes.length).toFixed(1);
             });
 
             const altitudeValues = document.getElementById('altitude-values');
             altitudeValues.innerHTML = '';
 
-            avgAltitudeChanges.forEach((change,
-                index) => {
-                const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
+            avgAltitudeChanges.forEach((change, index) => {
+                const formattedChange = parseFloat(change) >= 0 ? `+${change}` : `${change}`;
                 const th = document.createElement('th');
                 th.textContent = formattedChange;
                 altitudeValues.appendChild(th);
@@ -1879,14 +1899,24 @@
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) {
                 isDarkMode = savedTheme === 'dark';
-                document.documentElement.classList.toggle('light-theme', !isDarkMode);
+            } else {
+                isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            
+            // Apply the theme
+            if (!isDarkMode) {
+                document.documentElement.classList.add('light-mode');
             }
         }
 
         function toggleTheme() {
             isDarkMode = !isDarkMode;
-            document.documentElement.classList.toggle('light-theme', !isDarkMode);
-            localStorage.setItem('theme', isDarkMode ? 'dark': 'light');
+            if (isDarkMode) {
+                document.documentElement.classList.remove('light-mode');
+            } else {
+                document.documentElement.classList.add('light-mode');
+            }
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
         }
 
         function exportToCsv() {
