@@ -417,6 +417,7 @@
         td {
             color: var(--text-secondary);
             white-space: nowrap;
+            border-left: none;
         }
 
         tr:last-child td {
@@ -429,13 +430,15 @@
             left: 0;
             background-color: var(--bg-secondary);
             z-index: 1;
+            min-width: 100px;
         }
 
         th:nth-child(2), td:nth-child(2) {
             position: sticky;
-            left: 120px; /* Adjust based on your column width */
+            left: 100px;
             background-color: var(--bg-secondary);
             z-index: 1;
+            min-width: 70px;
         }
 
         /* Colored left borders for pace cells */
@@ -455,7 +458,7 @@
             color: var(--best);
             font-weight: bold;
             position: relative;
-            border-left: 4px solid var(--best);
+            border-left: 4px solid var(--best) !important;
         }
 
         .best-pace::after {
@@ -474,21 +477,36 @@
             padding-right: 10px;
         }
 
-        /* Pace zone left borders */
-        .pace-zone1 {
-            border-left: 4px solid var(--pace-zone1);
+        /* Pace zone left borders - updated with !important */
+        .pace-zone1, 
+        .pace-zone1.improved, 
+        .pace-zone1.worse, 
+        .pace-zone1.unchanged {
+            border-left: 4px solid var(--pace-zone1) !important;
         }
-        .pace-zone2 {
-            border-left: 4px solid var(--pace-zone2);
+        .pace-zone2, 
+        .pace-zone2.improved, 
+        .pace-zone2.worse, 
+        .pace-zone2.unchanged {
+            border-left: 4px solid var(--pace-zone2) !important;
         }
-        .pace-zone3 {
-            border-left: 4px solid var(--pace-zone3);
+        .pace-zone3, 
+        .pace-zone3.improved, 
+        .pace-zone3.worse, 
+        .pace-zone3.unchanged {
+            border-left: 4px solid var(--pace-zone3) !important;
         }
-        .pace-zone4 {
-            border-left: 4px solid var(--pace-zone4);
+        .pace-zone4, 
+        .pace-zone4.improved, 
+        .pace-zone4.worse, 
+        .pace-zone4.unchanged {
+            border-left: 4px solid var(--pace-zone4) !important;
         }
-        .pace-zone5 {
-            border-left: 4px solid var(--pace-zone5);
+        .pace-zone5, 
+        .pace-zone5.improved, 
+        .pace-zone5.worse, 
+        .pace-zone5.unchanged {
+            border-left: 4px solid var(--pace-zone5) !important;
         }
 
         .loading-overlay {
@@ -718,7 +736,7 @@
 
             /* Adjust sticky columns for mobile */
             th:nth-child(2), td:nth-child(2) {
-                left: 100px;
+                left: 80px;
             }
         }
 
@@ -1756,33 +1774,38 @@
                     const kmCell = document.createElement('td');
                     kmCell.textContent = km.formattedPace;
 
+                    let cellClasses = [];
+
                     // Check if this is the best pace for this kilometer across all sessions
                     if (km.pace === bestPaces[i]) {
-                        kmCell.className = 'best-pace';
+                        cellClasses.push('best-pace');
                     }
                     // If not the best overall pace, apply the usual comparison styling
                     else if (previousSession && previousSession.kilometers[i]) {
                         if (km.pace < previousSession.kilometers[i].pace) {
-                            kmCell.className = 'improved';
+                            cellClasses.push('improved');
                         } else if (km.pace > previousSession.kilometers[i].pace) {
-                            kmCell.className = 'worse';
+                            cellClasses.push('worse');
                         } else {
-                            kmCell.className = 'unchanged';
+                            cellClasses.push('unchanged');
                         }
                     }
 
                     // Apply pace zone coloring
                     if (km.pace < 5.0) {
-                        kmCell.classList.add('pace-zone1');
+                        cellClasses.push('pace-zone1');
                     } else if (km.pace < 5.5) {
-                        kmCell.classList.add('pace-zone2');
+                        cellClasses.push('pace-zone2');
                     } else if (km.pace < 6.0) {
-                        kmCell.classList.add('pace-zone3');
+                        cellClasses.push('pace-zone3');
                     } else if (km.pace < 6.5) {
-                        kmCell.classList.add('pace-zone4');
+                        cellClasses.push('pace-zone4');
                     } else {
-                        kmCell.classList.add('pace-zone5');
+                        cellClasses.push('pace-zone5');
                     }
+
+                    // Apply all classes
+                    kmCell.className = cellClasses.join(' ');
 
                     row.appendChild(kmCell);
                 }
