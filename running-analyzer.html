@@ -41,16 +41,18 @@
         --light-accent-hover: #1a7f37;
     }
 
-.light-mode {
-    --bg-primary: var(--light-bg-primary);
-    --bg-secondary: var(--light-bg-secondary);
-    --bg-tertiary: var(--light-bg-tertiary);
-    --text-primary: var(--light-text-primary);
-    --text-secondary: var(--light-text-secondary);
-    --text-tertiary: var(--light-text-tertiary);
-    --accent: var(--light-accent);
-    --accent-hover: var(--light-accent-hover);
-}
+@media (prefers-color-scheme: light) {
+:root {
+            --bg-primary: var(--light-bg-primary);
+            --bg-secondary: var(--light-bg-secondary);
+            --bg-tertiary: var(--light-bg-tertiary);
+            --text-primary: var(--light-text-primary);
+            --text-secondary: var(--light-text-secondary);
+            --text-tertiary: var(--light-text-tertiary);
+            --accent: var(--light-accent);
+            --accent-hover: var(--light-accent-hover);
+        }
+    }
 
         * {
             box-sizing: border-box;
@@ -76,19 +78,10 @@
 
         header {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            text-align: center;
             gap: 1.5rem;
             margin-bottom: 1.5rem;
             padding: 0;
-        }
-
-        @media (min-width: 600px) {
-            header {
-                flex-direction: row;
-                text-align: left;
-            }
         }
 
         .header-icon svg {
@@ -417,96 +410,65 @@
         td {
             color: var(--text-secondary);
             white-space: nowrap;
-            border-left: none;
         }
 
         tr:last-child td {
             border-bottom: none;
         }
 
-        /* Make first two columns sticky */
-        th:first-child, td:first-child {
-            position: sticky;
-            left: 0;
-            background-color: var(--bg-secondary);
-            z-index: 1;
-            min-width: 100px;
-        }
-
-        th:nth-child(2), td:nth-child(2) {
-            position: sticky;
-            left: 100px;
-            background-color: var(--bg-secondary);
-            z-index: 1;
-            min-width: 70px;
-        }
-
-        /* Colored left borders for pace cells */
         .improved {
-            border-left: 4px solid var(--success);
+            color: var(--success);
+            font-weight: 500;
         }
 
         .worse {
-            border-left: 4px solid var(--danger);
+            color: var(--danger);
+            font-weight: 500;
         }
 
         .unchanged {
-            border-left: 4px solid var(--neutral);
+            color: var(--neutral);
         }
 
         .best-pace {
             color: var(--best);
             font-weight: bold;
             position: relative;
-            border-left: 4px solid var(--best) !important;
         }
 
         .best-pace::after {
             content: "★";
             position: absolute;
             top: 25%;
+            /* Changed from -8px to 50% */
             right: 0px;
             font-size: 0.5rem;
             color: var(--best);
             transform: translateY(-85%);
+            /* Center vertically */
         }
 
         /* Add this to ensure proper positioning context */
         .best-pace {
             position: relative;
             padding-right: 10px;
+            /* Make space for the star */
         }
 
-        /* Pace zone left borders - updated with !important */
-        .pace-zone1, 
-        .pace-zone1.improved, 
-        .pace-zone1.worse, 
-        .pace-zone1.unchanged {
-            border-left: 4px solid var(--pace-zone1) !important;
+        .pace-zone1 {
+            background-color: rgba(0, 102, 204, 0.2);
         }
-        .pace-zone2, 
-        .pace-zone2.improved, 
-        .pace-zone2.worse, 
-        .pace-zone2.unchanged {
-            border-left: 4px solid var(--pace-zone2) !important;
+        .pace-zone2 {
+            background-color: rgba(0, 170, 85, 0.2);
         }
-        .pace-zone3, 
-        .pace-zone3.improved, 
-        .pace-zone3.worse, 
-        .pace-zone3.unchanged {
-            border-left: 4px solid var(--pace-zone3) !important;
+        .pace-zone3 {
+            background-color: rgba(255, 204, 0, 0.2);
         }
-        .pace-zone4, 
-        .pace-zone4.improved, 
-        .pace-zone4.worse, 
-        .pace-zone4.unchanged {
-            border-left: 4px solid var(--pace-zone4) !important;
+        .pace-zone4 {
+            background-color: rgba(255, 153, 0, 0.2);
         }
-        .pace-zone5, 
-        .pace-zone5.improved, 
-        .pace-zone5.worse, 
-        .pace-zone5.unchanged {
-            border-left: 4px solid var(--pace-zone5) !important;
+        .pace-zone5 {
+            background-color: rgba(255, 51, 0, 0.2);
         }
 
         .loading-overlay {
@@ -713,6 +675,12 @@
         }
 
 @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
             .header-icon svg {
                 width: 60px;
                 height: 60px;
@@ -732,11 +700,6 @@
 
             .export-buttons {
                 flex-direction: column;
-            }
-
-            /* Adjust sticky columns for mobile */
-            th:nth-child(2), td:nth-child(2) {
-                left: 80px;
             }
         }
 
@@ -795,23 +758,23 @@
         }
 
         .legend-zone1 {
-            background-color: var(--pace-zone1);
+            background-color: rgba(0, 102, 204, 0.3);
         }
 
         .legend-zone2 {
-            background-color: var(--pace-zone2);
+            background-color: rgba(0, 170, 85, 0.3);
         }
 
         .legend-zone3 {
-            background-color: var(--pace-zone3);
+            background-color: rgba(255, 204, 0, 0.3);
         }
 
         .legend-zone4 {
-            background-color: var(--pace-zone4);
+            background-color: rgba(255, 153, 0, 0.3);
         }
 
         .legend-zone5 {
-            background-color: var(--pace-zone5);
+            background-color: rgba(255, 51, 0, 0.3);
         }
 
     </style>
@@ -1190,7 +1153,7 @@
         // State
         let files = [];
         let sessions = [];
-        let isDarkMode = true;
+        let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         // Event Listeners
         fileInput.addEventListener('change', handleFileSelection);
@@ -1228,7 +1191,8 @@
             }
 
             // Add files to our collection
-            files = [...files, ...tcxFiles];
+            files = [...files,
+                ...tcxFiles];
             renderFileList();
             analyzeButton.disabled = files.length === 0;
         }
@@ -1306,7 +1270,9 @@
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB'];
+            const sizes = ['Bytes',
+                'KB',
+                'MB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
@@ -1382,7 +1348,7 @@
         }
 
         function showLoading(show) {
-            loadingOverlay.style.display = show ? 'flex' : 'none';
+            loadingOverlay.style.display = show ? 'flex': 'none';
         }
 
         function showResults() {
@@ -1547,8 +1513,8 @@
 
                             // Calculate average pace (excluding first km)
                             const totalTimeExcludingWarmup = session.kilometers
-                                .slice(1) // Skip first km
-                                .reduce((sum, km) => sum + km.time, 0);
+                            .slice(1) // Skip first km
+                            .reduce((sum, km) => sum + km.time, 0);
 
                             session.totalTime = session.kilometers.reduce((sum, km) => sum + km.time, 0);
                             session.totalDistance = 10000; // 10km in meters
@@ -1618,8 +1584,8 @@
             // Calculate average pace excluding warm-up
             const totalPaceExcludingWarmup = sessions.reduce((sum, session) => {
                 const paceExcludingWarmup = session.kilometers
-                    .slice(1) // Skip first km
-                    .reduce((kmSum, km) => kmSum + km.pace, 0) / 9; // Average of 9 km
+                .slice(1) // Skip first km
+                .reduce((kmSum, km) => kmSum + km.pace, 0) / 9; // Average of 9 km
                 return sum + paceExcludingWarmup;
             }, 0);
             const overallAvgPace = totalPaceExcludingWarmup / sessions.length;
@@ -1774,38 +1740,33 @@
                     const kmCell = document.createElement('td');
                     kmCell.textContent = km.formattedPace;
 
-                    let cellClasses = [];
-
                     // Check if this is the best pace for this kilometer across all sessions
                     if (km.pace === bestPaces[i]) {
-                        cellClasses.push('best-pace');
+                        kmCell.className = 'best-pace';
                     }
                     // If not the best overall pace, apply the usual comparison styling
                     else if (previousSession && previousSession.kilometers[i]) {
                         if (km.pace < previousSession.kilometers[i].pace) {
-                            cellClasses.push('improved');
+                            kmCell.className = 'improved';
                         } else if (km.pace > previousSession.kilometers[i].pace) {
-                            cellClasses.push('worse');
+                            kmCell.className = 'worse';
                         } else {
-                            cellClasses.push('unchanged');
+                            kmCell.className = 'unchanged';
                         }
                     }
 
                     // Apply pace zone coloring
                     if (km.pace < 5.0) {
-                        cellClasses.push('pace-zone1');
+                        kmCell.classList.add('pace-zone1');
                     } else if (km.pace < 5.5) {
-                        cellClasses.push('pace-zone2');
+                        kmCell.classList.add('pace-zone2');
                     } else if (km.pace < 6.0) {
-                        cellClasses.push('pace-zone3');
+                        kmCell.classList.add('pace-zone3');
                     } else if (km.pace < 6.5) {
-                        cellClasses.push('pace-zone4');
+                        kmCell.classList.add('pace-zone4');
                     } else {
-                        cellClasses.push('pace-zone5');
+                        kmCell.classList.add('pace-zone5');
                     }
-
-                    // Apply all classes
-                    kmCell.className = cellClasses.join(' ');
 
                     row.appendChild(kmCell);
                 }
@@ -1813,10 +1774,6 @@
                 sessionsTableBody.appendChild(row);
                 previousSession = session;
             }
-
-            // Auto-scroll to bottom of table
-            const tableContainer = document.querySelector('.table-container');
-            tableContainer.scrollTop = tableContainer.scrollHeight;
 
             // Adjust graph width after table is rendered
             setTimeout(() => {
@@ -1884,15 +1841,17 @@
                 });
                 return acc;
             }, []).map(changes => {
-                const sum = changes.reduce((acc, val) => acc + val, 0);
+                const sum = changes.reduce((acc, val) => acc + val,
+                    0);
                 return (sum / changes.length).toFixed(1);
             });
 
             const altitudeValues = document.getElementById('altitude-values');
             altitudeValues.innerHTML = '';
 
-            avgAltitudeChanges.forEach((change, index) => {
-                const formattedChange = parseFloat(change) >= 0 ? `+${change}` : `${change}`;
+            avgAltitudeChanges.forEach((change,
+                index) => {
+                const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
                 const th = document.createElement('th');
                 th.textContent = formattedChange;
                 altitudeValues.appendChild(th);
@@ -1920,26 +1879,14 @@
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) {
                 isDarkMode = savedTheme === 'dark';
-            } else {
-                isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.classList.toggle('light-theme', !isDarkMode);
             }
-            
-            // Apply the theme
-            applyTheme();
         }
 
         function toggleTheme() {
             isDarkMode = !isDarkMode;
-            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-            applyTheme();
-        }
-
-        function applyTheme() {
-            if (isDarkMode) {
-                document.documentElement.classList.remove('light-mode');
-            } else {
-                document.documentElement.classList.add('light-mode');
-            }
+            document.documentElement.classList.toggle('light-theme', !isDarkMode);
+            localStorage.setItem('theme', isDarkMode ? 'dark': 'light');
         }
 
         function exportToCsv() {
