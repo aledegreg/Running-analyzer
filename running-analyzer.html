@@ -438,59 +438,57 @@
             z-index: 1;
         }
 
+        /* Colored left borders for pace cells */
         .improved {
-            color: var(--success);
-            font-weight: 500;
+            border-left: 4px solid var(--success);
         }
 
         .worse {
-            color: var(--danger);
-            font-weight: 500;
+            border-left: 4px solid var(--danger);
         }
 
         .unchanged {
-            color: var(--neutral);
+            border-left: 4px solid var(--neutral);
         }
 
         .best-pace {
             color: var(--best);
             font-weight: bold;
             position: relative;
+            border-left: 4px solid var(--best);
         }
 
         .best-pace::after {
             content: "★";
             position: absolute;
             top: 25%;
-            /* Changed from -8px to 50% */
             right: 0px;
             font-size: 0.5rem;
             color: var(--best);
             transform: translateY(-85%);
-            /* Center vertically */
         }
 
         /* Add this to ensure proper positioning context */
         .best-pace {
             position: relative;
             padding-right: 10px;
-            /* Make space for the star */
         }
 
+        /* Pace zone left borders */
         .pace-zone1 {
-            background-color: rgba(0, 102, 204, 0.2);
+            border-left: 4px solid var(--pace-zone1);
         }
         .pace-zone2 {
-            background-color: rgba(0, 170, 85, 0.2);
+            border-left: 4px solid var(--pace-zone2);
         }
         .pace-zone3 {
-            background-color: rgba(255, 204, 0, 0.2);
+            border-left: 4px solid var(--pace-zone3);
         }
         .pace-zone4 {
-            background-color: rgba(255, 153, 0, 0.2);
+            border-left: 4px solid var(--pace-zone4);
         }
         .pace-zone5 {
-            background-color: rgba(255, 51, 0, 0.2);
+            border-left: 4px solid var(--pace-zone5);
         }
 
         .loading-overlay {
@@ -779,23 +777,23 @@
         }
 
         .legend-zone1 {
-            background-color: rgba(0, 102, 204, 0.3);
+            background-color: var(--pace-zone1);
         }
 
         .legend-zone2 {
-            background-color: rgba(0, 170, 85, 0.3);
+            background-color: var(--pace-zone2);
         }
 
         .legend-zone3 {
-            background-color: rgba(255, 204, 0, 0.3);
+            background-color: var(--pace-zone3);
         }
 
         .legend-zone4 {
-            background-color: rgba(255, 153, 0, 0.3);
+            background-color: var(--pace-zone4);
         }
 
         .legend-zone5 {
-            background-color: rgba(255, 51, 0, 0.3);
+            background-color: var(--pace-zone5);
         }
 
     </style>
@@ -1904,19 +1902,21 @@
             }
             
             // Apply the theme
-            if (!isDarkMode) {
-                document.documentElement.classList.add('light-mode');
-            }
+            applyTheme();
         }
 
         function toggleTheme() {
             isDarkMode = !isDarkMode;
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            applyTheme();
+        }
+
+        function applyTheme() {
             if (isDarkMode) {
                 document.documentElement.classList.remove('light-mode');
             } else {
                 document.documentElement.classList.add('light-mode');
             }
-            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
         }
 
         function exportToCsv() {
