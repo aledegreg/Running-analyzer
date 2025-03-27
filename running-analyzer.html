@@ -1035,26 +1035,6 @@
                     </svg>
                     Export CSV
                 </button>
-                <button id="export-pdf" class="export-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                    Export PDF
-                </button>
-                <button id="share-button" class="export-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="18" cy="5" r="3"></circle>
-                        <circle cx="6" cy="12" r="3"></circle>
-                        <circle cx="18" cy="19" r="3"></circle>
-                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                    </svg>
-                    Share
-                </button>
             </div>
 
             <div class="table-container">
@@ -1133,8 +1113,6 @@
         const dropZone = document.getElementById('drop-zone');
         const themeToggle = document.getElementById('theme-toggle');
         const exportCsvButton = document.getElementById('export-csv');
-        const exportPdfButton = document.getElementById('export-pdf');
-        const shareButton = document.getElementById('share-button');
         const prSection = document.getElementById('pr-section');
 
         // Stats elements
@@ -1161,8 +1139,6 @@
         backButton.addEventListener('click', resetView);
         themeToggle.addEventListener('click', toggleTheme);
         exportCsvButton.addEventListener('click', exportToCsv);
-        exportPdfButton.addEventListener('click', exportToPdf);
-        shareButton.addEventListener('click', shareResults);
 
         // Drag and drop events
         dropZone.addEventListener('dragover', handleDragOver);
@@ -1355,6 +1331,11 @@
             uploadSection.style.display = 'none';
             resultsSection.style.display = 'block';
             window.scrollTo(0, 0);
+            // Auto-scroll table to bottom
+            setTimeout(() => {
+                const tableContainer = document.querySelector('.table-container');
+                tableContainer.scrollTop = tableContainer.scrollHeight;
+            }, 100);
         }
 
         async function parseWorkout(file) {
@@ -1881,6 +1862,8 @@
                 isDarkMode = savedTheme === 'dark';
                 document.documentElement.classList.toggle('light-theme', !isDarkMode);
             }
+            // Apply the theme class immediately
+            document.documentElement.classList.toggle('light-theme', !isDarkMode);
         }
 
         function toggleTheme() {
@@ -1925,25 +1908,6 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        }
-
-        function exportToPdf() {
-            showError('PDF export would be implemented with a library like jsPDF in a real application');
-        }
-
-        function shareResults() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'My 10K Running Analysis',
-                    text: 'Check out my running performance analysis!',
-                    url: window.location.href
-                }).catch(err => {
-                    console.log('Error sharing:', err);
-                    showError('Sharing failed: ' + err.message);
-                });
-            } else {
-                showError('Web Share API not supported in your browser');
-            }
         }
 
         // Helper Functions
