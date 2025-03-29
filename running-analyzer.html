@@ -41,18 +41,16 @@
         --light-accent-hover: #1a7f37;
     }
 
-@media (prefers-color-scheme: light) {
-:root {
-            --bg-primary: var(--light-bg-primary);
-            --bg-secondary: var(--light-bg-secondary);
-            --bg-tertiary: var(--light-bg-tertiary);
-            --text-primary: var(--light-text-primary);
-            --text-secondary: var(--light-text-secondary);
-            --text-tertiary: var(--light-text-tertiary);
-            --accent: var(--light-accent);
-            --accent-hover: var(--light-accent-hover);
-        }
-    }
+.light-theme {
+    --bg-primary: var(--light-bg-primary);
+    --bg-secondary: var(--light-bg-secondary);
+    --bg-tertiary: var(--light-bg-tertiary);
+    --text-primary: var(--light-text-primary);
+    --text-secondary: var(--light-text-secondary);
+    --text-tertiary: var(--light-text-tertiary);
+    --accent: var(--light-accent);
+    --accent-hover: var(--light-accent-hover);
+}
 
         * {
             box-sizing: border-box;
@@ -832,7 +830,7 @@
 
             <button id="analyze-button" class="button" disabled>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
                 Analyze Runs
             </button>
@@ -1100,6 +1098,37 @@
     </button>
 
     <script>
+        // Initialize theme before anything else
+        function initTheme() {
+            // Check for saved theme preference or use system preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                isDarkMode = savedTheme === 'dark';
+            } else {
+                // If no saved preference, use system preference
+                isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            // Apply the theme
+            applyTheme();
+        }
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            applyTheme();
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+        }
+
+        function applyTheme() {
+            if (isDarkMode) {
+                document.documentElement.classList.remove('light-theme');
+            } else {
+                document.documentElement.classList.add('light-theme');
+            }
+        }
+
+        // Initialize theme
+        initTheme();
+
         // DOM Elements
         const fileInput = document.getElementById('file-input');
         const fileList = document.getElementById('file-list');
@@ -1131,7 +1160,7 @@
         // State
         let files = [];
         let sessions = [];
-        let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let isDarkMode = true;
 
         // Event Listeners
         fileInput.addEventListener('change', handleFileSelection);
@@ -1149,9 +1178,6 @@
         setTimeout(() => {
             fileFormatAlert.style.display = 'block';
         }, 1000);
-
-        // Initialize theme
-        initTheme();
 
         // Functions
         function handleFileSelection(event) {
@@ -1853,23 +1879,6 @@
                 const graphWidth = lastKmRect.right - firstKmRect.left;
                 graphContainer.style.width = `${graphWidth}px`;
             }
-        }
-
-        function initTheme() {
-            // Check for saved theme preference or use system preference
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                isDarkMode = savedTheme === 'dark';
-                document.documentElement.classList.toggle('light-theme', !isDarkMode);
-            }
-            // Apply the theme class immediately
-            document.documentElement.classList.toggle('light-theme', !isDarkMode);
-        }
-
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            document.documentElement.classList.toggle('light-theme', !isDarkMode);
-            localStorage.setItem('theme', isDarkMode ? 'dark': 'light');
         }
 
         function exportToCsv() {
