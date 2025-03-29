@@ -438,19 +438,15 @@
             content: "★";
             position: absolute;
             top: 25%;
-            /* Changed from -8px to 50% */
             right: 1px;
             font-size: 0.5rem;
             color: var(--best);
             transform: translateY(-85%);
-            /* Center vertically */
         }
 
-        /* Add this to ensure proper positioning context */
         .best-pace {
             position: relative;
             padding-right: 10px;
-            /* Make space for the star */
         }
 
         .pace-zone1 {
@@ -701,7 +697,6 @@
             }
         }
 
-        /* Animation for file items when added */
 @keyframes slideIn {
             from {
                 opacity: 0;
@@ -1098,36 +1093,10 @@
     </button>
 
     <script>
-        // Initialize theme before anything else
-        function initTheme() {
-            // Check for saved theme preference or use system preference
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                isDarkMode = savedTheme === 'dark';
-            } else {
-                // If no saved preference, use system preference
-                isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            }
-            // Apply the theme
-            applyTheme();
-        }
-
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            applyTheme();
-            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-        }
-
-        function applyTheme() {
-            if (isDarkMode) {
-                document.documentElement.classList.remove('light-theme');
-            } else {
-                document.documentElement.classList.add('light-theme');
-            }
-        }
-
-        // Initialize theme
-        initTheme();
+        // State variables
+        let files = [];
+        let sessions = [];
+        let isDarkMode = true;
 
         // DOM Elements
         const fileInput = document.getElementById('file-input');
@@ -1157,29 +1126,58 @@
         const best10kDateElement = document.getElementById('best-10k-date');
         const sessionsTableBody = document.querySelector('#sessions-table tbody');
 
-        // State
-        let files = [];
-        let sessions = [];
-        let isDarkMode = true;
+        // Initialize the application
+        function initApp() {
+            // Set up event listeners
+            fileInput.addEventListener('change', handleFileSelection);
+            analyzeButton.addEventListener('click', analyzeFiles);
+            backButton.addEventListener('click', resetView);
+            themeToggle.addEventListener('click', toggleTheme);
+            exportCsvButton.addEventListener('click', exportToCsv);
+            
+            // Drag and drop events
+            dropZone.addEventListener('dragover', handleDragOver);
+            dropZone.addEventListener('dragleave', handleDragLeave);
+            dropZone.addEventListener('drop', handleDrop);
+            
+            // Show alert after a delay
+            setTimeout(() => {
+                fileFormatAlert.style.display = 'block';
+            }, 1000);
+            
+            // Initialize theme
+            initTheme();
+        }
 
-        // Event Listeners
-        fileInput.addEventListener('change', handleFileSelection);
-        analyzeButton.addEventListener('click', analyzeFiles);
-        backButton.addEventListener('click', resetView);
-        themeToggle.addEventListener('click', toggleTheme);
-        exportCsvButton.addEventListener('click', exportToCsv);
+        // Theme management functions
+        function initTheme() {
+            // Check for saved theme preference or use system preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                isDarkMode = savedTheme === 'dark';
+            } else {
+                // If no saved preference, use system preference
+                isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            // Apply the theme
+            applyTheme();
+        }
 
-        // Drag and drop events
-        dropZone.addEventListener('dragover', handleDragOver);
-        dropZone.addEventListener('dragleave', handleDragLeave);
-        dropZone.addEventListener('drop', handleDrop);
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            applyTheme();
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+        }
 
-        // Show alert after a delay
-        setTimeout(() => {
-            fileFormatAlert.style.display = 'block';
-        }, 1000);
+        function applyTheme() {
+            if (isDarkMode) {
+                document.documentElement.classList.remove('light-theme');
+            } else {
+                document.documentElement.classList.add('light-theme');
+            }
+        }
 
-        // Functions
+        // File handling functions
         function handleFileSelection(event) {
             const selectedFiles = Array.from(event.target.files);
             if (selectedFiles.length === 0) return;
@@ -1193,8 +1191,7 @@
             }
 
             // Add files to our collection
-            files = [...files,
-                ...tcxFiles];
+            files = [...files, ...tcxFiles];
             renderFileList();
             analyzeButton.disabled = files.length === 0;
         }
@@ -1272,9 +1269,7 @@
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
-            const sizes = ['Bytes',
-                'KB',
-                'MB'];
+            const sizes = ['Bytes', 'KB', 'MB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
@@ -1350,7 +1345,7 @@
         }
 
         function showLoading(show) {
-            loadingOverlay.style.display = show ? 'flex': 'none';
+            loadingOverlay.style.display = show ? 'flex' : 'none';
         }
 
         function showResults() {
@@ -1848,17 +1843,15 @@
                 });
                 return acc;
             }, []).map(changes => {
-                const sum = changes.reduce((acc, val) => acc + val,
-                    0);
+                const sum = changes.reduce((acc, val) => acc + val, 0);
                 return (sum / changes.length).toFixed(1);
             });
 
             const altitudeValues = document.getElementById('altitude-values');
             altitudeValues.innerHTML = '';
 
-            avgAltitudeChanges.forEach((change,
-                index) => {
-                const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
+            avgAltitudeChanges.forEach((change, index) => {
+                const formattedChange = parseFloat(change) >= 0 ? `+${change}` : `${change}`;
                 const th = document.createElement('th');
                 th.textContent = formattedChange;
                 altitudeValues.appendChild(th);
@@ -1939,6 +1932,9 @@
             const secs = Math.round(seconds % 60);
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
+
+        // Initialize the application when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
