@@ -769,6 +769,25 @@
             background-color: rgba(255, 51, 0, 0.3);
         }
 
+        /* Evaluation styles */
+        .evaluation-bad {
+            color: var(--danger);
+            font-weight: 500;
+        }
+        .evaluation-good {
+            color: var(--success);
+            font-weight: 500;
+        }
+        .evaluation-better {
+            color: var(--accent);
+            font-weight: 500;
+        }
+        .evaluation-text {
+            font-size: 0.7rem;
+            display: block;
+            margin-top: 2px;
+        }
+
     </style>
 </head>
 <body>
@@ -1783,6 +1802,49 @@
                         kmCell.classList.add('pace-zone5');
                     }
 
+                    // Add evaluation for the last session only
+                    if (s === sessions.length - 1) {
+                        // Get the last 5 sessions (or as many as available)
+                        const lastFiveSessions = sessions.slice(Math.max(0, sessions.length - 5));
+                        
+                        // Collect all paces for this kilometer from the last 5 sessions
+                        const lastFivePaces = lastFiveSessions
+                            .filter(s => s.kilometers[i])
+                            .map(s => s.kilometers[i].pace);
+                        
+                        if (lastFivePaces.length >= 2) { // Need at least 2 sessions to compare
+                            const currentPace = km.pace;
+                            const worstPace = Math.max(...lastFivePaces);
+                            const avgPace = lastFivePaces.reduce((sum, p) => sum + p, 0) / lastFivePaces.length;
+                            
+                            // Create evaluation element
+                            const evaluation = document.createElement('span');
+                            evaluation.className = 'evaluation-text';
+                            
+                            // Determine evaluation
+                            if (currentPace === worstPace) {
+                                evaluation.textContent = 'Bad';
+                                evaluation.classList.add('evaluation-bad');
+                            } else if (currentPace <= avgPace) {
+                                evaluation.textContent = 'Better';
+                                evaluation.classList.add('evaluation-better');
+                            } else {
+                                // Check if pace is "close" to average (within 5% of average)
+                                const paceDifference = Math.abs(currentPace - avgPace);
+                                if (paceDifference / avgPace <= 0.05) {
+                                    evaluation.textContent = 'Good';
+                                    evaluation.classList.add('evaluation-good');
+                                } else {
+                                    evaluation.textContent = 'Bad';
+                                    evaluation.classList.add('evaluation-bad');
+                                }
+                            }
+                            
+                            kmCell.appendChild(document.createElement('br'));
+                            kmCell.appendChild(evaluation);
+                        }
+                    }
+
                     row.appendChild(kmCell);
                 }
 
@@ -1794,6 +1856,7 @@
                 adjustGraphWidth();
             }, 100);
         }
+
         function updateAltitudeGraph(altitudeData) {
             if (!altitudeData || altitudeData.length === 0) return;
 
