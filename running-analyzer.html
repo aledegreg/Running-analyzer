@@ -1823,7 +1823,7 @@
                             
                             // Determine evaluation
                             if (currentPace === worstPace) {
-                                evaluation.textContent = 'Bad';
+                                evaluation.textContent = 'Worse';
                                 evaluation.classList.add('evaluation-bad');
                             } else if (currentPace <= avgPace) {
                                 evaluation.textContent = 'Better';
@@ -1835,7 +1835,7 @@
                                     evaluation.textContent = 'Good';
                                     evaluation.classList.add('evaluation-good');
                                 } else {
-                                    evaluation.textContent = 'Bad';
+                                    evaluation.textContent = 'Worse';
                                     evaluation.classList.add('evaluation-bad');
                                 }
                             }
