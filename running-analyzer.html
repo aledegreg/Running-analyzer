@@ -978,7 +978,7 @@
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-color legend-best"></div>
-                    <span>Fastest kilometer across all runs</span>
+                    <span>Best kilometer pace at that time</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color legend-improved"></div>
@@ -1693,17 +1693,9 @@
         function updateSessionsTable(altitudeData) {
             sessionsTableBody.innerHTML = '';
 
-            // Find best pace for each kilometer across all sessions
-            const bestPaces = [];
-            for (let i = 0; i < 10; i++) {
-                let bestPace = Infinity;
-                for (const session of sessions) {
-                    if (session.kilometers[i] && session.kilometers[i].pace < bestPace) {
-                        bestPace = session.kilometers[i].pace;
-                    }
-                }
-                bestPaces[i] = bestPace;
-            }
+            // Track best paces for each kilometer up to that point in time
+            const bestPacesByKm = Array(10).fill(Infinity);
+            const bestPacesByKmSessions = Array(10).fill(null);
 
             // Update altitude graph
             updateAltitudeGraph(altitudeData);
@@ -1742,11 +1734,13 @@
                     const kmCell = document.createElement('td');
                     kmCell.textContent = km.formattedPace;
 
-                    // Check if this is the best pace for this kilometer across all sessions
-                    if (km.pace === bestPaces[i]) {
+                    // Check if this is the best pace for this kilometer up to this point in time
+                    if (km.pace < bestPacesByKm[i]) {
+                        bestPacesByKm[i] = km.pace;
+                        bestPacesByKmSessions[i] = session;
                         kmCell.className = 'best-pace';
                     }
-                    // If not the best overall pace, apply the usual comparison styling
+                    // If not the best pace, apply the usual comparison styling
                     else if (previousSession && previousSession.kilometers[i]) {
                         if (km.pace < previousSession.kilometers[i].pace) {
                             kmCell.className = 'improved';
