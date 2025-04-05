@@ -449,6 +449,15 @@
             padding-right: 10px;
         }
 
+        .best-current::after {
+    content: "*";
+    position: absolute;
+    top: 25%;
+    right: 1px;
+    font-size: 0.7rem;
+    color: inherit; /* Inherits the color from parent (red/green/gray) */
+    transform: translateY(-85%);
+}
         .pace-zone1 {
             background-color: rgba(0, 102, 204, 0.2);
         }
@@ -992,7 +1001,14 @@
                     <div class="legend-color legend-unchanged"></div>
                     <span>Same pace as previous run</span>
                 </div>
-            </div>
+<div class="legend-item">
+    <div class="legend-color legend-best"></div>
+    <span>Fastest kilometer pace ever (yellow)</span>
+</div>
+<div class="legend-item">
+    <div class="legend-color legend-best-current"></div>
+    <span>Personal best at that time (*)</span>
+</div>            </div>
 
             <div class="legend">
                 <div class="legend-item">
@@ -1690,93 +1706,105 @@
             }
         }
 
-        function updateSessionsTable(altitudeData) {
-            sessionsTableBody.innerHTML = '';
+function updateSessionsTable(altitudeData) {
+    sessionsTableBody.innerHTML = '';
 
-            // Track best paces for each kilometer up to that point in time
-            const bestPacesByKm = Array(10).fill(Infinity);
-            const bestPacesByKmSessions = Array(10).fill(null);
-
-            // Update altitude graph
-            updateAltitudeGraph(altitudeData);
-
-            // For coloring (comparison with previous session)
-            let previousSession = null;
-
-            for (const session of sessions) {
-                const row = document.createElement('tr');
-
-                // Date
-                const dateCell = document.createElement('td');
-                dateCell.textContent = session.formattedDate;
-                row.appendChild(dateCell);
-
-                // Average Pace
-                const avgPaceCell = document.createElement('td');
-                avgPaceCell.textContent = session.formattedAvgPace;
-
-                // Color code compared to previous session
-                if (previousSession) {
-                    if (session.avgPace < previousSession.avgPace) {
-                        avgPaceCell.className = 'improved';
-                    } else if (session.avgPace > previousSession.avgPace) {
-                        avgPaceCell.className = 'worse';
-                    } else {
-                        avgPaceCell.className = 'unchanged';
-                    }
-                }
-
-                row.appendChild(avgPaceCell);
-
-                // Kilometer splits
-                for (let i = 0; i < 10; i++) {
-                    const km = session.kilometers[i];
-                    const kmCell = document.createElement('td');
-                    kmCell.textContent = km.formattedPace;
-
-                    // Check if this is the best pace for this kilometer up to this point in time
-                    if (km.pace < bestPacesByKm[i]) {
-                        bestPacesByKm[i] = km.pace;
-                        bestPacesByKmSessions[i] = session;
-                        kmCell.className = 'best-pace';
-                    }
-                    // If not the best pace, apply the usual comparison styling
-                    else if (previousSession && previousSession.kilometers[i]) {
-                        if (km.pace < previousSession.kilometers[i].pace) {
-                            kmCell.className = 'improved';
-                        } else if (km.pace > previousSession.kilometers[i].pace) {
-                            kmCell.className = 'worse';
-                        } else {
-                            kmCell.className = 'unchanged';
-                        }
-                    }
-
-                    // Apply pace zone coloring
-                    if (km.pace < 5.0) {
-                        kmCell.classList.add('pace-zone1');
-                    } else if (km.pace < 5.5) {
-                        kmCell.classList.add('pace-zone2');
-                    } else if (km.pace < 6.0) {
-                        kmCell.classList.add('pace-zone3');
-                    } else if (km.pace < 6.5) {
-                        kmCell.classList.add('pace-zone4');
-                    } else {
-                        kmCell.classList.add('pace-zone5');
-                    }
-
-                    row.appendChild(kmCell);
-                }
-
-                sessionsTableBody.appendChild(row);
-                previousSession = session;
+    // Find absolute best paces for each kilometer across all sessions
+    const absoluteBestPaces = Array(10).fill(Infinity);
+    for (const session of sessions) {
+        for (let i = 0; i < 10; i++) {
+            if (session.kilometers[i].pace < absoluteBestPaces[i]) {
+                absoluteBestPaces[i] = session.kilometers[i].pace;
             }
+        }
+    }
 
-            // Adjust graph width after table is rendered
-            setTimeout(() => {
-                adjustGraphWidth();
-            }, 100);
+    // Track best paces for each kilometer historically
+    const historicalBestPaces = Array(10).fill(Infinity);
+
+    // Update altitude graph
+    updateAltitudeGraph(altitudeData);
+
+    // For coloring (comparison with previous session)
+    let previousSession = null;
+
+    for (const session of sessions) {
+        const row = document.createElement('tr');
+
+        // Date
+        const dateCell = document.createElement('td');
+        dateCell.textContent = session.formattedDate;
+        row.appendChild(dateCell);
+
+        // Average Pace
+        const avgPaceCell = document.createElement('td');
+        avgPaceCell.textContent = session.formattedAvgPace;
+
+        // Color code compared to previous session
+        if (previousSession) {
+            if (session.avgPace < previousSession.avgPace) {
+                avgPaceCell.className = 'improved';
+            } else if (session.avgPace > previousSession.avgPace) {
+                avgPaceCell.className = 'worse';
+            } else {
+                avgPaceCell.className = 'unchanged';
+            }
         }
 
+        row.appendChild(avgPaceCell);
+
+        // Kilometer splits
+        for (let i = 0; i < 10; i++) {
+            const km = session.kilometers[i];
+            const kmCell = document.createElement('td');
+            kmCell.textContent = km.formattedPace;
+
+            // Check if this is the absolute best pace ever for this kilometer
+            if (km.pace === absoluteBestPaces[i]) {
+                kmCell.className = 'best-pace'; // Yellow highlight
+            }
+            // Check if this is a personal best at this time
+            else if (km.pace < historicalBestPaces[i]) {
+                kmCell.classList.add('best-current'); // Add asterisk
+                historicalBestPaces[i] = km.pace;
+            }
+
+            // Apply comparison styling if not absolute best
+            if (km.pace !== absoluteBestPaces[i] && previousSession && previousSession.kilometers[i]) {
+                if (km.pace < previousSession.kilometers[i].pace) {
+                    kmCell.className = 'improved';
+                } else if (km.pace > previousSession.kilometers[i].pace) {
+                    kmCell.className = 'worse';
+                } else {
+                    kmCell.className = 'unchanged';
+                }
+            }
+
+            // Apply pace zone coloring
+            if (km.pace < 5.0) {
+                kmCell.classList.add('pace-zone1');
+            } else if (km.pace < 5.5) {
+                kmCell.classList.add('pace-zone2');
+            } else if (km.pace < 6.0) {
+                kmCell.classList.add('pace-zone3');
+            } else if (km.pace < 6.5) {
+                kmCell.classList.add('pace-zone4');
+            } else {
+                kmCell.classList.add('pace-zone5');
+            }
+
+            row.appendChild(kmCell);
+        }
+
+        sessionsTableBody.appendChild(row);
+        previousSession = session;
+    }
+
+    // Adjust graph width after table is rendered
+    setTimeout(() => {
+        adjustGraphWidth();
+    }, 100);
+}
         function updateAltitudeGraph(altitudeData) {
             if (!altitudeData || altitudeData.length === 0) return;
 
