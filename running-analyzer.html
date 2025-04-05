@@ -41,16 +41,16 @@
         --light-accent-hover: #1a7f37;
     }
 
-.light-theme {
-    --bg-primary: var(--light-bg-primary);
-    --bg-secondary: var(--light-bg-secondary);
-    --bg-tertiary: var(--light-bg-tertiary);
-    --text-primary: var(--light-text-primary);
-    --text-secondary: var(--light-text-secondary);
-    --text-tertiary: var(--light-text-tertiary);
-    --accent: var(--light-accent);
-    --accent-hover: var(--light-accent-hover);
-}
+        .light-theme {
+            --bg-primary: var(--light-bg-primary);
+            --bg-secondary: var(--light-bg-secondary);
+            --bg-tertiary: var(--light-bg-tertiary);
+            --text-primary: var(--light-text-primary);
+            --text-secondary: var(--light-text-secondary);
+            --text-tertiary: var(--light-text-tertiary);
+            --accent: var(--light-accent);
+            --accent-hover: var(--light-accent-hover);
+        }
 
         * {
             box-sizing: border-box;
@@ -436,15 +436,16 @@
         }
 
         /* Personal best at that time (asterisk) */
-.best-current::after {
-    content: "*";
-    position: absolute;
-    top: 0;
-    right: 2px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: inherit; /* Inherits text color from parent */
-}
+        .best-current::after {
+            content: "*";
+            position: absolute;
+            top: 0;
+            right: 2px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: inherit;
+            /* Inherits text color from parent */
+        }
         .pace-zone1 {
             background-color: rgba(0, 102, 204, 0.2);
         }
@@ -988,14 +989,15 @@
                     <div class="legend-color legend-unchanged"></div>
                     <span>Same pace as previous run</span>
                 </div>
-<div class="legend-item">
-    <div class="legend-color legend-best"></div>
-    <span>Fastest kilometer pace ever (yellow)</span>
-</div>
-<div class="legend-item">
-    <div class="legend-color legend-best-current"></div>
-    <span>Personal best at that time (*)</span>
-</div>            </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-best"></div>
+                    <span>Fastest kilometer pace ever (yellow)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-best-current"></div>
+                    <span>Personal best at that time (*)</span>
+                </div>
+            </div>
 
             <div class="legend">
                 <div class="legend-item">
@@ -1137,17 +1139,17 @@
             backButton.addEventListener('click', resetView);
             themeToggle.addEventListener('click', toggleTheme);
             exportCsvButton.addEventListener('click', exportToCsv);
-            
+
             // Drag and drop events
             dropZone.addEventListener('dragover', handleDragOver);
             dropZone.addEventListener('dragleave', handleDragLeave);
             dropZone.addEventListener('drop', handleDrop);
-            
+
             // Show alert after a delay
             setTimeout(() => {
                 fileFormatAlert.style.display = 'block';
             }, 1000);
-            
+
             // Initialize theme
             initTheme();
         }
@@ -1169,7 +1171,7 @@
         function toggleTheme() {
             isDarkMode = !isDarkMode;
             applyTheme();
-            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            localStorage.setItem('theme', isDarkMode ? 'dark': 'light');
         }
 
         function applyTheme() {
@@ -1194,7 +1196,8 @@
             }
 
             // Add files to our collection
-            files = [...files, ...tcxFiles];
+            files = [...files,
+                ...tcxFiles];
             renderFileList();
             analyzeButton.disabled = files.length === 0;
         }
@@ -1272,7 +1275,9 @@
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB'];
+            const sizes = ['Bytes',
+                'KB',
+                'MB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
@@ -1348,7 +1353,7 @@
         }
 
         function showLoading(show) {
-            loadingOverlay.style.display = show ? 'flex' : 'none';
+            loadingOverlay.style.display = show ? 'flex': 'none';
         }
 
         function showResults() {
@@ -1693,107 +1698,107 @@
             }
         }
 
-function updateSessionsTable(altitudeData) {
-    sessionsTableBody.innerHTML = '';
+        function updateSessionsTable(altitudeData) {
+            sessionsTableBody.innerHTML = '';
 
-    // Find absolute best paces for each kilometer across all sessions
-    const absoluteBestPaces = Array(10).fill(Infinity);
-    for (const session of sessions) {
-        for (let i = 0; i < 10 && i < session.kilometers.length; i++) {
-            if (session.kilometers[i].pace < absoluteBestPaces[i]) {
-                absoluteBestPaces[i] = session.kilometers[i].pace;
-            }
-        }
-    }
-
-    // Track best paces for each kilometer historically
-    const historicalBestPaces = Array(10).fill(Infinity);
-    const historicalBestSessions = Array(10).fill(null);
-
-    // Update altitude graph
-    updateAltitudeGraph(altitudeData);
-
-    for (let s = 0; s < sessions.length; s++) {
-        const session = sessions[s];
-        const row = document.createElement('tr');
-
-        // Date
-        const dateCell = document.createElement('td');
-        dateCell.textContent = session.formattedDate;
-        row.appendChild(dateCell);
-
-        // Average Pace
-        const avgPaceCell = document.createElement('td');
-        avgPaceCell.textContent = session.formattedAvgPace;
-
-        // Color code compared to previous session
-        if (s > 0) {
-            const prevSession = sessions[s-1];
-            if (session.avgPace < prevSession.avgPace) {
-                avgPaceCell.className = 'improved';
-            } else if (session.avgPace > prevSession.avgPace) {
-                avgPaceCell.className = 'worse';
-            } else {
-                avgPaceCell.className = 'unchanged';
-            }
-        }
-
-        row.appendChild(avgPaceCell);
-
-        // Kilometer splits
-        for (let i = 0; i < 10 && i < session.kilometers.length; i++) {
-            const km = session.kilometers[i];
-            const kmCell = document.createElement('td');
-            kmCell.textContent = km.formattedPace;
-
-            // Check if this is the absolute best pace ever for this kilometer
-            if (km.pace === absoluteBestPaces[i]) {
-                kmCell.classList.add('best-pace');
-            }
-
-            // Check if this is a personal best at this time
-            if (km.pace < historicalBestPaces[i]) {
-                kmCell.classList.add('best-current');
-                historicalBestPaces[i] = km.pace;
-                historicalBestSessions[i] = session;
-            }
-
-            // Apply comparison styling with previous session (if not absolute best)
-            if (s > 0 && km.pace !== absoluteBestPaces[i]) {
-                const prevKm = sessions[s-1].kilometers[i];
-                if (km.pace < prevKm.pace) {
-                    kmCell.classList.add('improved');
-                } else if (km.pace > prevKm.pace) {
-                    kmCell.classList.add('worse');
-                } else {
-                    kmCell.classList.add('unchanged');
+            // Find absolute best paces for each kilometer across all sessions
+            const absoluteBestPaces = Array(10).fill(Infinity);
+            for (const session of sessions) {
+                for (let i = 0; i < 10 && i < session.kilometers.length; i++) {
+                    if (session.kilometers[i].pace < absoluteBestPaces[i]) {
+                        absoluteBestPaces[i] = session.kilometers[i].pace;
+                    }
                 }
             }
 
-            // Apply pace zone coloring
-            if (km.pace < 5.0) {
-                kmCell.classList.add('pace-zone1');
-            } else if (km.pace < 5.5) {
-                kmCell.classList.add('pace-zone2');
-            } else if (km.pace < 6.0) {
-                kmCell.classList.add('pace-zone3');
-            } else if (km.pace < 6.5) {
-                kmCell.classList.add('pace-zone4');
-            } else {
-                kmCell.classList.add('pace-zone5');
+            // Track best paces for each kilometer historically
+            const historicalBestPaces = Array(10).fill(Infinity);
+            const historicalBestSessions = Array(10).fill(null);
+
+            // Update altitude graph
+            updateAltitudeGraph(altitudeData);
+
+            for (let s = 0; s < sessions.length; s++) {
+                const session = sessions[s];
+                const row = document.createElement('tr');
+
+                // Date
+                const dateCell = document.createElement('td');
+                dateCell.textContent = session.formattedDate;
+                row.appendChild(dateCell);
+
+                // Average Pace
+                const avgPaceCell = document.createElement('td');
+                avgPaceCell.textContent = session.formattedAvgPace;
+
+                // Color code compared to previous session
+                if (s > 0) {
+                    const prevSession = sessions[s-1];
+                    if (session.avgPace < prevSession.avgPace) {
+                        avgPaceCell.className = 'improved';
+                    } else if (session.avgPace > prevSession.avgPace) {
+                        avgPaceCell.className = 'worse';
+                    } else {
+                        avgPaceCell.className = 'unchanged';
+                    }
+                }
+
+                row.appendChild(avgPaceCell);
+
+                // Kilometer splits
+                for (let i = 0; i < 10 && i < session.kilometers.length; i++) {
+                    const km = session.kilometers[i];
+                    const kmCell = document.createElement('td');
+                    kmCell.textContent = km.formattedPace;
+
+                    // Check if this is the absolute best pace ever for this kilometer
+                    if (km.pace === absoluteBestPaces[i]) {
+                        kmCell.classList.add('best-pace');
+                    }
+
+                    // Check if this is a personal best at this time
+                    if (km.pace < historicalBestPaces[i]) {
+                        kmCell.classList.add('best-current');
+                        historicalBestPaces[i] = km.pace;
+                        historicalBestSessions[i] = session;
+                    }
+
+                    // Apply comparison styling with previous session (if not absolute best)
+                    if (s > 0 && km.pace !== absoluteBestPaces[i]) {
+                        const prevKm = sessions[s-1].kilometers[i];
+                        if (km.pace < prevKm.pace) {
+                            kmCell.classList.add('improved');
+                        } else if (km.pace > prevKm.pace) {
+                            kmCell.classList.add('worse');
+                        } else {
+                            kmCell.classList.add('unchanged');
+                        }
+                    }
+
+                    // Apply pace zone coloring
+                    if (km.pace < 5.0) {
+                        kmCell.classList.add('pace-zone1');
+                    } else if (km.pace < 5.5) {
+                        kmCell.classList.add('pace-zone2');
+                    } else if (km.pace < 6.0) {
+                        kmCell.classList.add('pace-zone3');
+                    } else if (km.pace < 6.5) {
+                        kmCell.classList.add('pace-zone4');
+                    } else {
+                        kmCell.classList.add('pace-zone5');
+                    }
+
+                    row.appendChild(kmCell);
+                }
+
+                sessionsTableBody.appendChild(row);
             }
 
-            row.appendChild(kmCell);
+            // Adjust graph width after table is rendered
+            setTimeout(() => {
+                adjustGraphWidth();
+            }, 100);
         }
-
-        sessionsTableBody.appendChild(row);
-    }
-
-    // Adjust graph width after table is rendered
-    setTimeout(() => {
-        adjustGraphWidth();
-    }, 100);
-}
         function updateAltitudeGraph(altitudeData) {
             if (!altitudeData || altitudeData.length === 0) return;
 
@@ -1854,15 +1859,17 @@ function updateSessionsTable(altitudeData) {
                 });
                 return acc;
             }, []).map(changes => {
-                const sum = changes.reduce((acc, val) => acc + val, 0);
+                const sum = changes.reduce((acc, val) => acc + val,
+                    0);
                 return (sum / changes.length).toFixed(1);
             });
 
             const altitudeValues = document.getElementById('altitude-values');
             altitudeValues.innerHTML = '';
 
-            avgAltitudeChanges.forEach((change, index) => {
-                const formattedChange = parseFloat(change) >= 0 ? `+${change}` : `${change}`;
+            avgAltitudeChanges.forEach((change,
+                index) => {
+                const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
                 const th = document.createElement('th');
                 th.textContent = formattedChange;
                 altitudeValues.appendChild(th);
