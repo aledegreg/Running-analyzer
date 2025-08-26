@@ -692,7 +692,7 @@
     <div class="container">
         <header>
             <div class="header-icon">
-                <svg width="auto" height="80px" viewBox="0 0 2048 2048"> xmlns="http://www.w3.org/2000/svg">
+                <svg width="auto" height="80px" viewBox="0 0 2048 2048" xmlns="http://www.w3.org/2000/svg">
                     <g transform="matrix(1.57764,0,0,1.56073,-596.188,-624.059)">
                         <g transform="matrix(1.11406,0,0,1.00069,22.9476,45.7309)">
                             <g>
@@ -905,7 +905,7 @@
             <div class="export-buttons">
                 <button id="export-csv" class="export-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 02 2h12a2 2 0 0 02-2V8z"></path>
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
                         <path d="M16 13H8"></path>
                         <path d="M16 17H8"></path>
@@ -1038,7 +1038,7 @@
         function toggleTheme() {
             isDarkMode = !isDarkMode;
             applyTheme();
-            localStorage.setItem('theme', isDarkMode ? 'dark': 'light');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
         }
         function applyTheme() {
             if (isDarkMode) {
@@ -1058,8 +1058,7 @@
                 return;
             }
             // Add files to our collection
-            files = [...files,
-                ...tcxFiles];
+            files = [...files, ...tcxFiles];
             renderFileList();
             analyzeButton.disabled = files.length === 0;
         }
@@ -1082,10 +1081,15 @@
             const dt = e.dataTransfer;
             const droppedFiles = dt.files;
             if (droppedFiles.length > 0) {
-                fileInput.files = droppedFiles;
+                // Create a new FileList since we can't directly set fileInput.files
+                const dataTransfer = new DataTransfer();
+                for (let i = 0; i < droppedFiles.length; i++) {
+                    dataTransfer.items.add(droppedFiles[i]);
+                }
+                fileInput.files = dataTransfer.files;
                 handleFileSelection({
                     target: {
-                        files: droppedFiles
+                        files: fileInput.files
                     }
                 });
             }
@@ -1124,9 +1128,7 @@
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
-            const sizes = ['Bytes',
-                'KB',
-                'MB'];
+            const sizes = ['Bytes', 'KB', 'MB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
@@ -1188,7 +1190,7 @@
             }
         }
         function showLoading(show) {
-            loadingOverlay.style.display = show ? 'flex': 'none';
+            loadingOverlay.style.display = show ? 'flex' : 'none';
         }
         function showResults() {
             uploadSection.style.display = 'none';
@@ -1313,8 +1315,8 @@
                             lastDistance = distance;
                         }
                         // Calculate session totals if we have enough kilometer data
-                        if (session.kilometers.length >= 9) {
-                            // We need at least 9 complete km
+                        if (session.kilometers.length >= 10) {
+                            // We need at least 10 complete km
                             // Truncate to exactly 10km if we have more
                             if (session.kilometers.length > 10) {
                                 session.kilometers = session.kilometers.slice(0, 10);
@@ -1332,7 +1334,7 @@
                             }
                             // Calculate average pace (including first km)
                             const totalTimeIncludingAll = session.kilometers
-                            .reduce((sum, km) => sum + km.time, 0);
+                                .reduce((sum, km) => sum + km.time, 0);
                             session.totalTime = totalTimeIncludingAll;
                             session.totalDistance = 10000; // 10km in meters
                             session.avgPace = (totalTimeIncludingAll / 60) / 10; // minutes per km
@@ -1391,7 +1393,7 @@
             // Calculate average pace including all kilometers
             const totalPaceForAll = sessions.reduce((sum, session) => {
                 const paceForAll = session.kilometers
-                .reduce((kmSum, km) => kmSum + km.pace, 0) / 10; // Average of 10 km
+                    .reduce((kmSum, km) => kmSum + km.pace, 0) / 10; // Average of 10 km
                 return sum + paceForAll;
             }, 0);
             const overallAvgPace = totalPaceForAll / sessions.length;
@@ -1640,15 +1642,13 @@
                 });
                 return acc;
             }, []).map(changes => {
-                const sum = changes.reduce((acc, val) => acc + val,
-                    0);
+                const sum = changes.reduce((acc, val) => acc + val, 0);
                 return (sum / changes.length).toFixed(1);
             });
             const altitudeValues = document.getElementById('altitude-values');
             altitudeValues.innerHTML = '';
-            avgAltitudeChanges.forEach((change,
-                index) => {
-                const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
+            avgAltitudeChanges.forEach((change, index) => {
+                const formattedChange = parseFloat(change) >= 0 ? `+${change}` : `${change}`;
                 const th = document.createElement('th');
                 th.textContent = formattedChange;
                 altitudeValues.appendChild(th);
@@ -1674,8 +1674,7 @@
             for (let i = 1; i <= 10; i++) {
                 csv += `,Km ${i} Pace`;
             }
-            csv += ',Elevation Gain (m)
-';
+            csv += ',Elevation Gain (m)\n';
             // Add session data
             for (const session of sessions) {
                 csv += `"${session.formattedDate}",${session.formattedAvgPace}`;
@@ -1683,8 +1682,7 @@
                 for (const km of session.kilometers) {
                     csv += `,${km.formattedPace}`;
                 }
-                csv += `,${session.elevationGain}
-`;
+                csv += `,${session.elevationGain}\n`;
             }
             // Create download link
             const blob = new Blob([csv], {
