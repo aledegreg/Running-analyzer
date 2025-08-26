@@ -29,7 +29,6 @@
         /* Orange */
         --pace-zone5: #ff3300;
         /* Red */
-
         /* Light mode variables */
         --light-bg-primary: #ffffff;
         --light-bg-secondary: #f6f8fa;
@@ -40,7 +39,6 @@
         --light-accent: #0969da;
         --light-accent-hover: #1a7f37;
     }
-
         .light-theme {
             --bg-primary: var(--light-bg-primary);
             --bg-secondary: var(--light-bg-secondary);
@@ -51,14 +49,12 @@
             --accent: var(--light-accent);
             --accent-hover: var(--light-accent-hover);
         }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
         }
-
         body {
             background-color: var(--bg-primary);
             color: var(--text-primary);
@@ -67,13 +63,11 @@
             overflow-x: hidden;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         .container {
             max-width: 900px;
             margin: 0 auto;
             padding-bottom: 2rem;
         }
-
         header {
             display: flex;
             align-items: center;
@@ -81,42 +75,35 @@
             margin-bottom: 1.5rem;
             padding: 0;
         }
-
         .header-icon svg {
             width: 80px;
             height: 80px;
             color: var(--accent);
             transition: transform 0.3s ease;
         }
-
         .header-icon:hover svg {
             transform: rotate(5deg) scale(1.05);
         }
-
         .header-text {
             flex: 1;
         }
-
         h1 {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
             font-weight: 600;
         }
-
         h2 {
             font-size: 1.4rem;
             margin: 1.5rem 0 0.5rem;
             color: var(--text-primary);
             font-weight: 500;
         }
-
         p {
             color: var(--text-secondary);
             margin-bottom: 1rem;
             line-height: 1.6;
         }
-
         .upload-section {
             background-color: var(--bg-secondary);
             border-radius: 12px;
@@ -125,7 +112,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
-
         .file-input-container {
             position: relative;
             display: flex;
@@ -138,12 +124,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .file-input-container:hover {
             border-color: var(--accent);
             background-color: rgba(31, 111, 235, 0.05);
         }
-
         .file-input-container svg {
             width: 48px;
             height: 48px;
@@ -151,16 +135,13 @@
             color: var(--accent);
             transition: all 0.3s ease;
         }
-
         .file-input-container:hover svg {
             transform: translateY(-3px);
         }
-
         .file-input-container p {
             text-align: center;
             margin-bottom: 0.5rem;
         }
-
         #file-input {
             position: absolute;
             top: 0;
@@ -170,7 +151,6 @@
             opacity: 0;
             cursor: pointer;
         }
-
         #file-list {
             margin-top: 1.5rem;
             width: 100%;
@@ -179,21 +159,17 @@
             scrollbar-width: thin;
             scrollbar-color: var(--accent) var(--bg-tertiary);
         }
-
         #file-list::-webkit-scrollbar {
             width: 6px;
         }
-
         #file-list::-webkit-scrollbar-track {
             background: var(--bg-tertiary);
             border-radius: 3px;
         }
-
         #file-list::-webkit-scrollbar-thumb {
             background-color: var(--accent);
             border-radius: 3px;
         }
-
         .file-item {
             display: flex;
             justify-content: space-between;
@@ -204,11 +180,9 @@
             margin-bottom: 0.75rem;
             transition: all 0.2s ease;
         }
-
         .file-item:hover {
             transform: translateX(2px);
         }
-
         .file-name {
             flex: 1;
             white-space: nowrap;
@@ -217,13 +191,11 @@
             margin-right: 1rem;
             font-size: 0.9rem;
         }
-
         .file-size {
             color: var(--text-secondary);
             font-size: 0.8rem;
             margin-right: 1rem;
         }
-
         .remove-file {
             background-color: transparent;
             border: none;
@@ -233,11 +205,9 @@
             border-radius: 4px;
             transition: all 0.2s ease;
         }
-
         .remove-file:hover {
             background-color: rgba(218, 54, 51, 0.2);
         }
-
         .button {
             display: inline-flex;
             align-items: center;
@@ -256,17 +226,14 @@
             margin: 1rem 0;
             width: 100%;
         }
-
         .button:hover {
             background-color: var(--accent-hover);
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(31, 111, 235, 0.2);
         }
-
         .button:active {
             transform: translateY(0);
         }
-
         .button:disabled {
             background-color: var(--bg-tertiary);
             color: var(--text-secondary);
@@ -274,12 +241,10 @@
             transform: none;
             box-shadow: none;
         }
-
         .button svg {
             width: 18px;
             height: 18px;
         }
-
         .results-section {
             display: none;
             background-color: var(--bg-secondary);
@@ -288,7 +253,6 @@
             margin-bottom: 1.5rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-
         .stat-card {
             display: flex;
             align-items: center;
@@ -299,49 +263,41 @@
             margin-bottom: 1rem;
             transition: all 0.3s ease;
         }
-
         .stat-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         .stat-icon svg {
             width: 28px;
             height: 28px;
             color: var(--accent);
         }
-
         .stat-content {
             flex: 1;
         }
-
         .stat-title {
             font-size: 0.95rem;
             color: var(--text-secondary);
             margin-bottom: 0.5rem;
             font-weight: 500;
         }
-
         .stat-value {
             font-size: 1.5rem;
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 0.25rem;
         }
-
         .stat-subtext {
             font-size: 0.85rem;
             color: var(--text-secondary);
             margin-top: 0.25rem;
         }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-
         .pr-badge {
             display: inline-block;
             background-color: var(--success);
@@ -352,7 +308,6 @@
             margin-left: 0.5rem;
             vertical-align: middle;
         }
-
         .table-container {
             overflow-x: auto;
             margin-top: 1rem;
@@ -363,71 +318,58 @@
             border-radius: 8px;
             background-color: var(--bg-tertiary);
         }
-
         .table-container::-webkit-scrollbar {
             height: 8px;
             width: 8px;
         }
-
         .table-container::-webkit-scrollbar-track {
             background: var(--bg-tertiary);
             border-radius: 4px;
         }
-
         .table-container::-webkit-scrollbar-thumb {
             background-color: var(--accent);
             border-radius: 4px;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.85rem;
         }
-
         thead {
             position: sticky;
             top: 0;
             background-color: var(--bg-secondary);
             z-index: 2;
         }
-
         th, td {
             padding: 0.6rem 0.5rem;
             border-bottom: 1px solid var(--bg-tertiary);
             text-align: center;
         }
-
         th {
             color: var(--text-primary);
             font-weight: 600;
             white-space: nowrap;
             position: relative;
         }
-
         td {
             color: var(--text-secondary);
             white-space: nowrap;
         }
-
         tr:last-child td {
             border-bottom: none;
         }
-
         .improved {
             color: var(--success);
             font-weight: 500;
         }
-
         .worse {
             color: var(--danger);
             font-weight: 500;
         }
-
         .unchanged {
             color: var(--neutral);
         }
-
         /* Absolute best pace (yellow highlight) */
         .best-ever {
             color: var(--best);
@@ -435,7 +377,6 @@
             position: relative;
             /* Yellow highlight */
         }
-
         /* Personal best at that time (red/green/gray with asterisk) */
         .best-current {
             position: relative;
@@ -463,7 +404,6 @@
         .pace-zone5 {
             background-color: rgba(255, 51, 0, 0.2);
         }
-
         .loading-overlay {
             display: none;
             position: fixed;
@@ -478,7 +418,6 @@
             flex-direction: column;
             backdrop-filter: blur(4px);
         }
-
         .spinner {
             width: 50px;
             height: 50px;
@@ -488,7 +427,6 @@
             animation: spin 1s linear infinite;
             margin-bottom: 1.5rem;
         }
-
 @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -497,7 +435,6 @@
                 transform: rotate(360deg);
             }
         }
-
         .error-message {
             display: none;
             background-color: rgba(218, 54, 51, 0.2);
@@ -508,7 +445,6 @@
             text-align: center;
             animation: fadeIn 0.3s ease;
         }
-
         .alert {
             display: none;
             background-color: rgba(210, 153, 34, 0.2);
@@ -519,7 +455,6 @@
             text-align: center;
             animation: fadeIn 0.3s ease;
         }
-
         .success-message {
             display: none;
             background-color: rgba(35, 134, 54, 0.2);
@@ -530,7 +465,6 @@
             text-align: center;
             animation: fadeIn 0.3s ease;
         }
-
         .back-button {
             background-color: transparent;
             border: none;
@@ -544,22 +478,18 @@
             font-weight: 500;
             transition: all 0.2s ease;
         }
-
         .back-button:hover {
             color: var(--accent-hover);
             transform: translateX(-2px);
         }
-
         .back-button svg {
             width: 16px;
             height: 16px;
             transition: transform 0.2s ease;
         }
-
         .back-button:hover svg {
             transform: translateX(-3px);
         }
-
         .theme-toggle {
             position: fixed;
             bottom: 1.5rem;
@@ -578,17 +508,14 @@
             z-index: 100;
             transition: all 0.3s ease;
         }
-
         .theme-toggle:hover {
             background-color: var(--accent-hover);
             transform: scale(1.1);
         }
-
         .theme-toggle svg {
             width: 20px;
             height: 20px;
         }
-
         #altitude-graph-container {
             background-color: var(--bg-tertiary);
             border: 1px solid var(--bg-secondary);
@@ -600,18 +527,15 @@
             padding: 0;
             overflow: hidden;
         }
-
         #altitude-graph {
             width: 100%;
             height: 100%;
         }
-
         #altitude-graph polyline {
             stroke: var(--accent);
             stroke-width: 2;
             fill: url(#altitude-gradient);
         }
-
         #altitude-values th {
             background-color: var(--bg-tertiary);
             height: 1rem;
@@ -623,13 +547,11 @@
             font-weight: lighter;
             color: var(--text-tertiary);
         }
-
         .export-buttons {
             display: flex;
             gap: 0.75rem;
             margin: 1rem 0;
         }
-
         .export-button {
             flex: 1;
             background-color: var(--bg-tertiary);
@@ -645,17 +567,14 @@
             justify-content: center;
             gap: 0.5rem;
         }
-
         .export-button:hover {
             background-color: var(--accent);
             color: white;
         }
-
         .export-button svg {
             width: 16px;
             height: 16px;
         }
-
 @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -666,36 +585,29 @@
                 transform: translateY(0);
             }
         }
-
 @media (max-width: 600px) {
             header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
             }
-
             .header-icon svg {
                 width: 60px;
                 height: 60px;
             }
-
             h1 {
                 font-size: 1.5rem;
             }
-
             .file-input-container {
                 padding: 1.5rem 1rem;
             }
-
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-
             .export-buttons {
                 flex-direction: column;
             }
         }
-
 @keyframes slideIn {
             from {
                 opacity: 0;
@@ -706,7 +618,6 @@
                 transform: translateY(0);
             }
         }
-
         .file-item {
             animation: slideIn 0.3s ease forwards;
         }
@@ -720,55 +631,43 @@
             border-radius: 8px;
             font-size: 0.85rem;
         }
-
         .legend-item {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-
         .legend-color {
             width: 16px;
             height: 16px;
             border-radius: 3px;
         }
-
         .legend-best {
             background-color: var(--best);
         }
-
         .legend-improved {
             background-color: var(--success);
         }
-
         .legend-worse {
             background-color: var(--danger);
         }
-
         .legend-unchanged {
             background-color: var(--neutral);
         }
-
         .legend-zone1 {
             background-color: rgba(0, 102, 204, 0.3);
         }
-
         .legend-zone2 {
             background-color: rgba(0, 170, 85, 0.3);
         }
-
         .legend-zone3 {
             background-color: rgba(255, 204, 0, 0.3);
         }
-
         .legend-zone4 {
             background-color: rgba(255, 153, 0, 0.3);
         }
-
         .legend-zone5 {
             background-color: rgba(255, 51, 0, 0.3);
         }
-
         /* Evaluation styles */
         .evaluation-bad {
             color: var(--danger);
@@ -787,7 +686,6 @@
             display: block;
             margin-top: 2px;
         }
-
     </style>
 </head>
 <body>
@@ -807,7 +705,6 @@
                                 <rect x="367.328" y="927.483" width="107.433" height="390.418" transform="matrix(0.986683,0,0,1.96795,935.91,-1136.55)" fill="#00FFFF" />
                             </g>
                         </g>
-
                         <!-- Running shoe illustration -->
                         <g transform="matrix(0.959376,0.282131,-0.282131,0.959376,364.629,-162.138)">
                             <path d="M968.035,854.735C900.604,877.499 886.286,914.13 928.609,972.474C995.252,917.019 1055.73,912.947 1110.05,960.091C1057.88,918.16 977.445,851.559 968.035,854.735Z" fill="#187AD1" stroke="#1D4EBB" stroke-width="5.57" />
@@ -826,7 +723,6 @@
                 </p>
             </div>
         </header>
-
         <div id="upload-section" class="upload-section">
             <div class="file-input-container" id="drop-zone">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -840,22 +736,18 @@
                 </p>
                 <input type="file" id="file-input" accept=".tcx" multiple>
             </div>
-
             <button id="analyze-button" class="button" disabled>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
                 Analyze Runs
             </button>
-
             <div id="file-list"></div>
-
             <div id="error-message" class="error-message"></div>
             <div id="file-format-alert" class="alert">
                 For best results, upload runs from the same 10km course. Different courses may affect comparison accuracy.
             </div>
         </div>
-
         <div id="results-section" class="results-section">
             <button id="back-button" class="back-button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -864,9 +756,7 @@
                 </svg>
                 Back to Upload
             </button>
-
             <h2>Performance Summary</h2>
-
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">
@@ -887,7 +777,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="stat-card">
                     <div class="stat-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -903,11 +792,10 @@
                             --:--
                         </div>
                         <div class="stat-subtext">
-                            Excluding first kilometer
+                            Including all kilometers
                         </div>
                     </div>
                 </div>
-
                 <div class="stat-card">
                     <div class="stat-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -927,28 +815,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                            <polyline points="17 6 23 6 23 12" />
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <div class="stat-title">
-                            Consistency Score
-                        </div>
-                        <div id="consistency-score" class="stat-value">
-                            --
-                        </div>
-                        <div class="stat-subtext">
-                            Lower is better
-                        </div>
-                    </div>
-                </div>
             </div>
-
             <div id="pr-section" style="display: none;">
                 <h2>Personal Records</h2>
                 <div class="stats-grid">
@@ -990,9 +857,7 @@
                     </div>
                 </div>
             </div>
-
             <h2>Session Details</h2>
-
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-color legend-improved"></div>
@@ -1015,11 +880,10 @@
                     <span>Personal best at that time (*)</span>
                 </div>
             </div>
-
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-color legend-zone1"></div>
-                    <span>Pace &lt; 5:00/km</span>
+                    <span>Pace < 5:00/km</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color legend-zone2"></div>
@@ -1038,7 +902,6 @@
                     <span>6:30+/km</span>
                 </div>
             </div>
-
             <div class="export-buttons">
                 <button id="export-csv" class="export-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1051,7 +914,6 @@
                     Export CSV
                 </button>
             </div>
-
             <div class="table-container">
                 <table id="sessions-table">
                     <thead>
@@ -1092,14 +954,12 @@
             </div>
         </div>
     </div>
-
     <div id="loading-overlay" class="loading-overlay">
         <div class="spinner"></div>
         <p>
             Processing your runs...
         </p>
     </div>
-
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="5"></circle>
@@ -1113,13 +973,11 @@
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
     </button>
-
     <script>
         // State variables
         let files = [];
         let sessions = [];
         let isDarkMode = true;
-
         // DOM Elements
         const fileInput = document.getElementById('file-input');
         const fileList = document.getElementById('file-list');
@@ -1134,7 +992,6 @@
         const themeToggle = document.getElementById('theme-toggle');
         const exportCsvButton = document.getElementById('export-csv');
         const prSection = document.getElementById('pr-section');
-
         // Stats elements
         const bestPaceElement = document.getElementById('best-pace');
         const bestPaceDetailsElement = document.getElementById('best-pace-details');
@@ -1147,7 +1004,6 @@
         const best10kElement = document.getElementById('best-10k');
         const best10kDateElement = document.getElementById('best-10k-date');
         const sessionsTableBody = document.querySelector('#sessions-table tbody');
-
         // Initialize the application
         function initApp() {
             // Set up event listeners
@@ -1156,21 +1012,13 @@
             backButton.addEventListener('click', resetView);
             themeToggle.addEventListener('click', toggleTheme);
             exportCsvButton.addEventListener('click', exportToCsv);
-
-            // Drag and drop events
-            dropZone.addEventListener('dragover', handleDragOver);
-            dropZone.addEventListener('dragleave', handleDragLeave);
-            dropZone.addEventListener('drop', handleDrop);
-
             // Show alert after a delay
             setTimeout(() => {
                 fileFormatAlert.style.display = 'block';
             }, 1000);
-
             // Initialize theme
             initTheme();
         }
-
         // Theme management functions
         function initTheme() {
             // Check for saved theme preference or use system preference
@@ -1184,13 +1032,11 @@
             // Apply the theme
             applyTheme();
         }
-
         function toggleTheme() {
             isDarkMode = !isDarkMode;
             applyTheme();
             localStorage.setItem('theme', isDarkMode ? 'dark': 'light');
         }
-
         function applyTheme() {
             if (isDarkMode) {
                 document.documentElement.classList.remove('light-theme');
@@ -1198,49 +1044,40 @@
                 document.documentElement.classList.add('light-theme');
             }
         }
-
         // File handling functions
         function handleFileSelection(event) {
             const selectedFiles = Array.from(event.target.files);
             if (selectedFiles.length === 0) return;
-
             // Filter for TCX files only
             const tcxFiles = selectedFiles.filter(file => file.name.toLowerCase().endsWith('.tcx'));
-
             if (tcxFiles.length !== selectedFiles.length) {
                 showError('Only TCX files are supported');
                 return;
             }
-
             // Add files to our collection
             files = [...files,
                 ...tcxFiles];
             renderFileList();
             analyzeButton.disabled = files.length === 0;
         }
-
         function handleDragOver(e) {
             e.preventDefault();
             e.stopPropagation();
             dropZone.style.borderColor = 'var(--accent)';
             dropZone.style.backgroundColor = 'rgba(31, 111, 235, 0.1)';
         }
-
         function handleDragLeave(e) {
             e.preventDefault();
             e.stopPropagation();
             dropZone.style.borderColor = 'var(--text-secondary)';
             dropZone.style.backgroundColor = 'transparent';
         }
-
         function handleDrop(e) {
             e.preventDefault();
             e.stopPropagation();
             handleDragLeave(e);
-
             const dt = e.dataTransfer;
             const droppedFiles = dt.files;
-
             if (droppedFiles.length > 0) {
                 fileInput.files = droppedFiles;
                 handleFileSelection({
@@ -1250,10 +1087,8 @@
                 });
             }
         }
-
         function renderFileList() {
             fileList.innerHTML = '';
-
             if (files.length === 0) {
                 const emptyMessage = document.createElement('div');
                 emptyMessage.className = 'file-item';
@@ -1261,19 +1096,15 @@
                 fileList.appendChild(emptyMessage);
                 return;
             }
-
             files.forEach((file, index) => {
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
-
                 const fileName = document.createElement('div');
                 fileName.className = 'file-name';
                 fileName.textContent = file.name;
-
                 const fileSize = document.createElement('div');
                 fileSize.className = 'file-size';
                 fileSize.textContent = formatFileSize(file.size);
-
                 const removeButton = document.createElement('button');
                 removeButton.className = 'remove-file';
                 removeButton.innerHTML = '&times;';
@@ -1281,14 +1112,12 @@
                     e.stopPropagation();
                     removeFile(index);
                 });
-
                 fileItem.appendChild(fileName);
                 fileItem.appendChild(fileSize);
                 fileItem.appendChild(removeButton);
                 fileList.appendChild(fileItem);
             });
         }
-
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -1298,48 +1127,38 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
-
         function removeFile(index) {
             files.splice(index, 1);
             renderFileList();
             analyzeButton.disabled = files.length === 0;
         }
-
         function showError(message) {
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
-
             setTimeout(() => {
                 errorMessage.style.display = 'none';
             }, 5000);
         }
-
         function showSuccess(message) {
             const successMessage = document.createElement('div');
             successMessage.className = 'success-message';
             successMessage.textContent = message;
             uploadSection.insertBefore(successMessage, fileFormatAlert);
-
             setTimeout(() => {
                 successMessage.style.display = 'none';
                 successMessage.remove();
             }, 3000);
         }
-
         function resetView() {
             resultsSection.style.display = 'none';
             uploadSection.style.display = 'block';
             window.scrollTo(0, 0);
         }
-
         async function analyzeFiles() {
             if (files.length === 0) return;
-
             showLoading(true);
-
             try {
                 sessions = [];
-
                 // Process each file
                 for (const file of files) {
                     const session = await parseWorkout(file);
@@ -1347,16 +1166,13 @@
                         sessions.push(session);
                     }
                 }
-
                 if (sessions.length === 0) {
                     showError('No valid running data found in the files');
                     showLoading(false);
                     return;
                 }
-
                 // Sort sessions by date
                 sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
-
                 // Process and display results
                 processResults();
                 showResults();
@@ -1368,11 +1184,9 @@
                 showLoading(false);
             }
         }
-
         function showLoading(show) {
             loadingOverlay.style.display = show ? 'flex': 'none';
         }
-
         function showResults() {
             uploadSection.style.display = 'none';
             resultsSection.style.display = 'block';
@@ -1383,30 +1197,24 @@
                 tableContainer.scrollTop = tableContainer.scrollHeight;
             }, 100);
         }
-
         async function parseWorkout(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-
                 reader.onload = async (event) => {
                     try {
                         const tcxContent = event.target.result;
                         const parser = new DOMParser();
                         const xmlDoc = parser.parseFromString(tcxContent, "text/xml");
-
                         // Extract activity data
                         const activity = xmlDoc.querySelector('Activity');
-
                         if (!activity || activity.getAttribute('Sport') !== 'Running') {
                             resolve(null); // Not a running activity
                             return;
                         }
-
                         // Extract timestamp from the first trackpoint
                         const firstTrackpoint = xmlDoc.querySelector('Trackpoint');
                         const timeElement = firstTrackpoint.querySelector('Time');
                         const date = new Date(timeElement.textContent);
-
                         // Initialize session data
                         const session = {
                             id: file.name,
@@ -1421,7 +1229,6 @@
                             heartRates: [],
                             cadences: []
                         };
-
                         // Process trackpoints
                         const trackpoints = Array.from(xmlDoc.querySelectorAll('Trackpoint'));
                         let lastElevation = null;
@@ -1430,23 +1237,17 @@
                         let kmStartTime = null;
                         let kmStartDistance = 0;
                         let kmStartElevation = null;
-
                         // Collect altitude data for each kilometer
                         const altitudeData = [];
                         for (let i = 0; i < trackpoints.length; i++) {
                             const tp = trackpoints[i];
-
                             const distanceElement = tp.querySelector('DistanceMeters');
                             if (!distanceElement) continue;
-
                             const distance = parseFloat(distanceElement.textContent);
-
                             // Skip if distance isn't progressing
                             if (distance <= lastDistance && i > 0) continue;
-
                             const timeElement = tp.querySelector('Time');
                             const timestamp = new Date(timeElement.textContent);
-
                             // Initialize km data
                             if (kmStartTime === null) {
                                 kmStartTime = timestamp;
@@ -1456,7 +1257,6 @@
                                     kmStartElevation = parseFloat(elevationElement.textContent);
                                 }
                             }
-
                             // Calculate elevation gain
                             const elevationElement = tp.querySelector('AltitudeMeters');
                             if (elevationElement) {
@@ -1466,32 +1266,27 @@
                                 }
                                 lastElevation = elevation;
                             }
-
                             // Get heart rate data if available
                             const heartRateElement = tp.querySelector('HeartRateBpm Value');
                             if (heartRateElement) {
                                 const heartRate = parseInt(heartRateElement.textContent);
                                 session.heartRates.push(heartRate);
                             }
-
                             // Get cadence data if available
                             const cadenceElement = tp.querySelector('Cadence');
                             if (cadenceElement) {
                                 const cadence = parseInt(cadenceElement.textContent);
                                 session.cadences.push(cadence);
                             }
-
                             // Process completed kilometers
                             if (distance >= currentKm * 1000) {
                                 // Calculate time for this km
                                 const kmEndTime = timestamp;
                                 const kmTime = (kmEndTime - kmStartTime) / 1000; // in seconds
                                 const kmPace = kmTime / 60; // in minutes
-
                                 // Calculate altitude change for this km
                                 const kmEndElevation = lastElevation;
                                 const altitudeChange = kmEndElevation - kmStartElevation;
-
                                 session.kilometers.push({
                                     km: currentKm,
                                     time: kmTime,
@@ -1499,14 +1294,12 @@
                                     formattedPace: formatPace(kmPace),
                                     altitudeChange: altitudeChange
                                 });
-
                                 // Prepare for next km
                                 currentKm++;
                                 kmStartTime = timestamp;
                                 kmStartDistance = distance;
                                 kmStartElevation = lastElevation;
                             }
-
                             // Collect altitude data for the graph
                             if (elevationElement) {
                                 altitudeData.push({
@@ -1514,10 +1307,8 @@
                                     elevation: parseFloat(elevationElement.textContent)
                                 });
                             }
-
                             lastDistance = distance;
                         }
-
                         // Calculate session totals if we have enough kilometer data
                         if (session.kilometers.length >= 9) {
                             // We need at least 9 complete km
@@ -1525,7 +1316,6 @@
                             if (session.kilometers.length > 10) {
                                 session.kilometers = session.kilometers.slice(0, 10);
                             }
-
                             // Add missing kilometers if we have less than 10
                             while (session.kilometers.length < 10) {
                                 const lastKm = session.kilometers[session.kilometers.length - 1];
@@ -1537,35 +1327,28 @@
                                     altitudeChange: lastKm.altitudeChange
                                 });
                             }
-
-                            // Calculate average pace (excluding first km)
-                            const totalTimeExcludingWarmup = session.kilometers
-                            .slice(1) // Skip first km
+                            // Calculate average pace (including first km)
+                            const totalTimeIncludingAll = session.kilometers
                             .reduce((sum, km) => sum + km.time, 0);
-
-                            session.totalTime = session.kilometers.reduce((sum, km) => sum + km.time, 0);
+                            session.totalTime = totalTimeIncludingAll;
                             session.totalDistance = 10000; // 10km in meters
-                            session.avgPace = (totalTimeExcludingWarmup / 60) / 9; // minutes per km
+                            session.avgPace = (totalTimeIncludingAll / 60) / 10; // minutes per km
                             session.formattedAvgPace = formatPace(session.avgPace);
                             session.elevationGain = Math.round(session.elevationGain);
-
                             // Calculate average heart rate if available
                             if (session.heartRates.length > 0) {
                                 session.avgHeartRate = Math.round(
                                     session.heartRates.reduce((sum, hr) => sum + hr, 0) / session.heartRates.length
                                 );
                             }
-
                             // Calculate average cadence if available
                             if (session.cadences.length > 0) {
                                 session.avgCadence = Math.round(
                                     session.cadences.reduce((sum, cad) => sum + cad, 0) / session.cadences.length
                                 );
                             }
-
                             // Store altitude data for the graph
                             session.altitudeData = altitudeData;
-
                             resolve(session);
                         } else {
                             // Not enough data
@@ -1576,25 +1359,20 @@
                         resolve(null);
                     }
                 };
-
                 reader.onerror = () => {
                     reject(new Error('Error reading file'));
                 };
-
                 reader.readAsText(file);
             });
         }
-
         function processResults() {
             if (sessions.length === 0) return;
-
             // Find best pace
             let bestPace = {
                 pace: Infinity,
                 km: null,
                 session: null
             };
-
             for (const session of sessions) {
                 for (const km of session.kilometers) {
                     if (km.pace < bestPace.pace) {
@@ -1607,28 +1385,23 @@
                     }
                 }
             }
-
-            // Calculate average pace excluding warm-up
-            const totalPaceExcludingWarmup = sessions.reduce((sum, session) => {
-                const paceExcludingWarmup = session.kilometers
-                .slice(1) // Skip first km
-                .reduce((kmSum, km) => kmSum + km.pace, 0) / 9; // Average of 9 km
-                return sum + paceExcludingWarmup;
+            // Calculate average pace including all kilometers
+            const totalPaceForAll = sessions.reduce((sum, session) => {
+                const paceForAll = session.kilometers
+                .reduce((kmSum, km) => kmSum + km.pace, 0) / 10; // Average of 10 km
+                return sum + paceForAll;
             }, 0);
-            const overallAvgPace = totalPaceExcludingWarmup / sessions.length;
-
+            const overallAvgPace = totalPaceForAll / sessions.length;
             // Find best track segment (3 consecutive km)
             let bestSegment = {
                 startKm: 0,
                 avgPace: Infinity,
                 session: null
             };
-
             for (const session of sessions) {
                 for (let i = 0; i <= session.kilometers.length - 3; i++) {
                     const segment = session.kilometers.slice(i, i + 3);
                     const segmentAvgPace = segment.reduce((sum, km) => sum + km.pace, 0) / 3;
-
                     if (segmentAvgPace < bestSegment.avgPace) {
                         bestSegment = {
                             startKm: i + 1,
@@ -1640,15 +1413,6 @@
                     }
                 }
             }
-
-            // Calculate consistency score (standard deviation of pace)
-            const allKmPaces = sessions.flatMap(session =>
-                session.kilometers.map(km => km.pace)
-            );
-            const avgAllPaces = allKmPaces.reduce((sum, pace) => sum + pace, 0) / allKmPaces.length;
-            const variance = allKmPaces.reduce((sum, pace) => sum + Math.pow(pace - avgAllPaces, 2), 0) / allKmPaces.length;
-            const consistencyScore = Math.sqrt(variance);
-
             // Find personal records (5K and 10K)
             let best5k = {
                 time: Infinity,
@@ -1658,7 +1422,6 @@
                 time: Infinity,
                 session: null
             };
-
             for (const session of sessions) {
                 // Calculate 5K time (km 1-5)
                 if (session.kilometers.length >= 5) {
@@ -1670,7 +1433,6 @@
                         };
                     }
                 }
-
                 // Calculate 10K time (all km)
                 const time10k = session.kilometers.reduce((sum, km) => sum + km.time, 0);
                 if (time10k < best10k.time) {
@@ -1680,44 +1442,32 @@
                     };
                 }
             }
-
             // Get altitude data from the last session for the graph
             const lastSession = sessions[sessions.length - 1];
             const altitudeData = lastSession.altitudeData;
-
             // Update the UI
-            updateStatsDisplay(bestPace, overallAvgPace, bestSegment, consistencyScore);
+            updateStatsDisplay(bestPace, overallAvgPace, bestSegment);
             updatePrDisplay(best5k, best10k);
             updateSessionsTable(altitudeData);
         }
-
-        function updateStatsDisplay(bestPace, overallAvgPace, bestSegment, consistencyScore) {
+        function updateStatsDisplay(bestPace, overallAvgPace, bestSegment) {
             bestPaceElement.textContent = bestPace.formattedPace;
             bestPaceDetailsElement.textContent = `Date: ${bestPace.session.formattedDate}, Kilometer: ${bestPace.km}`;
-
             avgPaceElement.textContent = formatPace(overallAvgPace);
-
             bestSegmentElement.textContent = `km ${bestSegment.startKm}-${bestSegment.endKm}`;
             bestSegmentDetailsElement.textContent = `Average pace: ${bestSegment.formattedPace}`;
-
-            consistencyScoreElement.textContent = consistencyScore.toFixed(2);
         }
-
         function updatePrDisplay(best5k, best10k) {
             if (best5k.session && best10k.session) {
                 prSection.style.display = 'block';
-
                 best5kElement.textContent = formatTime(best5k.time);
                 best5kDateElement.textContent = `Date: ${best5k.session.formattedDate}`;
-
                 best10kElement.textContent = formatTime(best10k.time);
                 best10kDateElement.textContent = `Date: ${best10k.session.formattedDate}`;
             }
         }
-
         function updateSessionsTable(altitudeData) {
             sessionsTableBody.innerHTML = '';
-
             // Find absolute best paces for each kilometer across all sessions
             const absoluteBestPaces = Array(10).fill(Infinity);
             for (const session of sessions) {
@@ -1727,26 +1477,20 @@
                     }
                 }
             }
-
             // Track personal best paces for each kilometer as we go through sessions chronologically
             const personalBestPaces = Array(10).fill(Infinity);
-
             // Update altitude graph
             updateAltitudeGraph(altitudeData);
-
             for (let s = 0; s < sessions.length; s++) {
                 const session = sessions[s];
                 const row = document.createElement('tr');
-
                 // Date cell
                 const dateCell = document.createElement('td');
                 dateCell.textContent = session.formattedDate;
                 row.appendChild(dateCell);
-
                 // Average Pace cell
                 const avgPaceCell = document.createElement('td');
                 avgPaceCell.textContent = session.formattedAvgPace;
-
                 // Compare with previous session's average pace
                 if (s > 0) {
                     const prevAvg = sessions[s-1].avgPace;
@@ -1759,24 +1503,20 @@
                     }
                 }
                 row.appendChild(avgPaceCell);
-
                 // Kilometer splits
                 for (let i = 0; i < 10 && i < session.kilometers.length; i++) {
                     const km = session.kilometers[i];
                     const kmCell = document.createElement('td');
                     kmCell.textContent = km.formattedPace;
-
                     // Check if this is the absolute best pace ever
                     if (km.pace === absoluteBestPaces[i]) {
                         kmCell.classList.add('best-ever');
                     }
-
                     // Check if this is a personal best at this time
                     if (km.pace < personalBestPaces[i]) {
                         kmCell.classList.add('best-current');
                         personalBestPaces[i] = km.pace;
                     }
-
                     // Compare with previous session's pace for this kilometer
                     if (s > 0 && sessions[s-1].kilometers[i]) {
                         const prevKmPace = sessions[s-1].kilometers[i].pace;
@@ -1788,7 +1528,6 @@
                             kmCell.classList.add('unchanged');
                         }
                     }
-
                     // Apply pace zone coloring
                     if (km.pace < 5.0) {
                         kmCell.classList.add('pace-zone1');
@@ -1801,26 +1540,21 @@
                     } else {
                         kmCell.classList.add('pace-zone5');
                     }
-
                     // Add evaluation for the last session only
                     if (s === sessions.length - 1) {
                         // Get the last 5 sessions (or as many as available)
                         const lastFiveSessions = sessions.slice(Math.max(0, sessions.length - 5));
-                        
                         // Collect all paces for this kilometer from the last 5 sessions
                         const lastFivePaces = lastFiveSessions
                             .filter(s => s.kilometers[i])
                             .map(s => s.kilometers[i].pace);
-                        
                         if (lastFivePaces.length >= 2) { // Need at least 2 sessions to compare
                             const currentPace = km.pace;
                             const worstPace = Math.max(...lastFivePaces);
                             const avgPace = lastFivePaces.reduce((sum, p) => sum + p, 0) / lastFivePaces.length;
-                            
                             // Create evaluation element
                             const evaluation = document.createElement('span');
                             evaluation.className = 'evaluation-text';
-                            
                             // Determine evaluation
                             if (currentPace === worstPace) {
                                 evaluation.textContent = 'Worse';
@@ -1839,30 +1573,23 @@
                                     evaluation.classList.add('evaluation-bad');
                                 }
                             }
-                            
                             kmCell.appendChild(document.createElement('br'));
                             kmCell.appendChild(evaluation);
                         }
                     }
-
                     row.appendChild(kmCell);
                 }
-
                 sessionsTableBody.appendChild(row);
             }
-
             // Adjust graph width after table is rendered
             setTimeout(() => {
                 adjustGraphWidth();
             }, 100);
         }
-
         function updateAltitudeGraph(altitudeData) {
             if (!altitudeData || altitudeData.length === 0) return;
-
             const graph = document.getElementById('altitude-graph');
             graph.innerHTML = '';
-
             // Add gradient definition if not already present
             if (!graph.querySelector('defs')) {
                 const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
@@ -1872,35 +1599,29 @@
                 gradient.setAttribute('y1', '0%');
                 gradient.setAttribute('x2', '0%');
                 gradient.setAttribute('y2', '100%');
-
                 const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
                 stop1.setAttribute('offset', '0%');
                 stop1.setAttribute('stop-color', 'var(--accent)');
                 stop1.setAttribute('stop-opacity', '0.3');
-
                 const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
                 stop2.setAttribute('offset', '100%');
                 stop2.setAttribute('stop-color', 'var(--accent)');
                 stop2.setAttribute('stop-opacity', '0.1');
-
                 gradient.appendChild(stop1);
                 gradient.appendChild(stop2);
                 defs.appendChild(gradient);
                 graph.appendChild(defs);
             }
-
             // Normalize altitude data for the graph
             const minAltitude = Math.min(...altitudeData.map(d => d.elevation));
             const maxAltitude = Math.max(...altitudeData.map(d => d.elevation));
             const altitudeRange = maxAltitude - minAltitude || 1; // Avoid division by zero
-
             // Generate points for the polyline
             const points = altitudeData.map(data => {
                 const x = (data.distance / 10000) * 1000; // Spread across 10 km
                 const y = 80 - ((data.elevation - minAltitude) / altitudeRange) * 75; // Scale to fit SVG height
                 return `${x},${y}`;
             }).join(' ');
-
             // Create polyline for the graph
             const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
             polyline.setAttribute('points', points);
@@ -1908,7 +1629,6 @@
             polyline.setAttribute('stroke-width', '2');
             polyline.setAttribute('fill', 'url(#altitude-gradient)');
             graph.appendChild(polyline);
-
             // Add altitude numbers
             const avgAltitudeChanges = sessions.reduce((acc, session) => {
                 session.kilometers.forEach((km, index) => {
@@ -1921,10 +1641,8 @@
                     0);
                 return (sum / changes.length).toFixed(1);
             });
-
             const altitudeValues = document.getElementById('altitude-values');
             altitudeValues.innerHTML = '';
-
             avgAltitudeChanges.forEach((change,
                 index) => {
                 const formattedChange = parseFloat(change) >= 0 ? `+${change}`: `${change}`;
@@ -1933,47 +1651,38 @@
                 altitudeValues.appendChild(th);
             });
         }
-
         function adjustGraphWidth() {
             const table = document.getElementById('sessions-table');
             const firstKmCell = table.querySelector('th:nth-child(3)'); // km 1 column
             const lastKmCell = table.querySelector('th:nth-child(12)'); // km 10 column
-
             if (firstKmCell && lastKmCell) {
                 const firstKmRect = firstKmCell.getBoundingClientRect();
                 const lastKmRect = lastKmCell.getBoundingClientRect();
                 const graphContainer = document.getElementById('altitude-graph-container');
-
                 // Calculate the width of the graph container
                 const graphWidth = lastKmRect.right - firstKmRect.left;
                 graphContainer.style.width = `${graphWidth}px`;
             }
         }
-
         function exportToCsv() {
             if (sessions.length === 0) return;
-
             let csv = 'Date,Avg Pace (min/km)';
-
             // Add kilometer headers
             for (let i = 1; i <= 10; i++) {
                 csv += `,Km ${i} Pace`;
             }
-
-            csv += ',Elevation Gain (m)\n';
-
+            csv += ',Elevation Gain (m)
+';
             // Add session data
             for (const session of sessions) {
                 csv += `"${session.formattedDate}",${session.formattedAvgPace}`;
-
                 // Add kilometer paces
                 for (const km of session.kilometers) {
                     csv += `,${km.formattedPace}`;
                 }
-
-                csv += `,${session.elevationGain}\n`;
+                csv += `,${session.elevationGain}
+`;
             }
-
             // Create download link
             const blob = new Blob([csv], {
                 type: 'text/csv;charset=utf-8;'
@@ -1987,7 +1696,6 @@
             link.click();
             document.body.removeChild(link);
         }
-
         // Helper Functions
         function formatDate(date) {
             return date.toLocaleDateString(undefined, {
@@ -1996,19 +1704,16 @@
                 day: 'numeric'
             });
         }
-
         function formatPace(paceInMinutes) {
             const minutes = Math.floor(paceInMinutes);
             const seconds = Math.round((paceInMinutes - minutes) * 60);
             return `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
-
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = Math.round(seconds % 60);
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
-
         // Initialize the application when the DOM is loaded
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
