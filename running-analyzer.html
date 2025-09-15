@@ -1630,8 +1630,10 @@
         }
         function updateAltitudeGraph(altitudeData) {
             if (!altitudeData || altitudeData.length === 0) return;
+            
             const graph = document.getElementById('altitude-graph');
             graph.innerHTML = '';
+            
             // Add gradient definition if not already present
             if (!graph.querySelector('defs')) {
                 const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
@@ -1641,29 +1643,35 @@
                 gradient.setAttribute('y1', '0%');
                 gradient.setAttribute('x2', '0%');
                 gradient.setAttribute('y2', '100%');
+                
                 const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
                 stop1.setAttribute('offset', '0%');
                 stop1.setAttribute('stop-color', 'var(--accent)');
                 stop1.setAttribute('stop-opacity', '0.3');
+                
                 const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
                 stop2.setAttribute('offset', '100%');
                 stop2.setAttribute('stop-color', 'var(--accent)');
                 stop2.setAttribute('stop-opacity', '0.1');
+                
                 gradient.appendChild(stop1);
                 gradient.appendChild(stop2);
                 defs.appendChild(gradient);
                 graph.appendChild(defs);
             }
+            
             // Normalize altitude data for the graph
             const minAltitude = Math.min(...altitudeData.map(d => d.elevation));
             const maxAltitude = Math.max(...altitudeData.map(d => d.elevation));
             const altitudeRange = maxAltitude - minAltitude || 1; // Avoid division by zero
+            
             // Generate points for the polyline
             const points = altitudeData.map(data => {
                 const x = (data.distance / 10000) * 1000; // Spread across 10 km
                 const y = 80 - ((data.elevation - minAltitude) / altitudeRange) * 75; // Scale to fit SVG height
                 return `${x},${y}`;
             }).join(' ');
+            
             // Create polyline for the graph
             const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
             polyline.setAttribute('points', points);
@@ -1671,27 +1679,34 @@
             polyline.setAttribute('stroke-width', '2');
             polyline.setAttribute('fill', 'url(#altitude-gradient)');
             graph.appendChild(polyline);
-            // Add altitude numbers
-            const avgAltitudeChanges = sessions.reduce((acc, session) => {
-                session.kilometers.forEach((km, index) => {
-                    if (!acc[index]) acc[index] = [];
-                    acc[index].push(km.altitudeChange);
-                });
-                return acc;
-            }, []).map(changes => {
-                const sum = changes.reduce((acc, val) => acc + val, 0);
-                return (sum / changes.length).toFixed(1);
-            });
-            const altitudeValues = document.getElementById('altitude-values');
-            altitudeValues.innerHTML = '';
-            avgAltitudeChanges.forEach((change, index) => {
-                const formattedChange = parseFloat(change) >= 0 ? `+${change}` : `${change}`;
-                const th = document.createElement('th');
-                th.textContent = formattedChange;
-                altitudeValues.appendChild(th);
-            });
-        }
-        function adjustGraphWidth() {
+            
+            // --- ADDED CODE: Vertical kilometer dividing lines ---
+            for (let km = 1; km <= 10; km++) {
+                const lineX = (km * 1000 / 10000) * 1000; // Calculate x position for each km
+                
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', lineX);
+                line.setAttribute('y1', '0');
+                line.setAttribute('x2', lineX);
+                line.setAttribute('y2', '80');
+                line.setAttribute('stroke', 'rgba(255, 255, 255, 0.3)');
+                line.setAttribute('stroke-width', '1');
+                line.setAttribute('stroke-dasharray', '2,2');
+                
+                graph.appendChild(line);
+                
+                // Add kilometer labels
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', lineX - 10);
+                text.setAttribute('y', '75');
+                text.setAttribute('fill', 'var(--text-secondary)');
+                text.setAttribute('font-size', '10');
+                text.setAttribute('font-weight', 'bold');
+                text.textContent = km;
+                
+                graph.appendChild(text);
+            }
+      function adjustGraphWidth() {
             const table = document.getElementById('sessions-table');
             const firstKmCell = table.querySelector('th:nth-child(3)'); // km 1 column
             const lastKmCell = table.querySelector('th:nth-child(12)'); // km 10 column
