@@ -1680,32 +1680,95 @@
             polyline.setAttribute('fill', 'url(#altitude-gradient)');
             graph.appendChild(polyline);
             
-            // --- ADDED CODE: Vertical kilometer dividing lines ---
-            for (let km = 1; km <= 10; km++) {
-                const lineX = (km * 1000 / 10000) * 1000; // Calculate x position for each km
+            // Wait for the table to be rendered to get accurate column positions
+            setTimeout(() => {
+                // Get the table and column positions
+                const table = document.getElementById('sessions-table');
+                const kmColumns = [];
                 
-                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', lineX);
-                line.setAttribute('y1', '0');
-                line.setAttribute('x2', lineX);
-                line.setAttribute('y2', '80');
-                line.setAttribute('stroke', 'rgba(255, 255, 255, 0.3)');
-                line.setAttribute('stroke-width', '1');
-                line.setAttribute('stroke-dasharray', '2,2');
+                // Get the positions of km columns (columns 3 to 12)
+                for (let i = 3; i <= 12; i++) {
+                    const column = table.querySelector(`th:nth-child(${i})`);
+                    if (column) {
+                        const rect = column.getBoundingClientRect();
+                        const tableRect = table.getBoundingClientRect();
+                        kmColumns.push({
+                            left: rect.left - tableRect.left,
+                            right: rect.right - tableRect.left,
+                            width: rect.width
+                        });
+                    }
+                }
                 
-                graph.appendChild(line);
+                // Calculate the total width of all km columns
+                const totalKmWidth = kmColumns.reduce((sum, col) => sum + col.width, 0);
                 
-                // Add kilometer labels
-                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                text.setAttribute('x', lineX - 10);
-                text.setAttribute('y', '75');
-                text.setAttribute('fill', 'var(--text-secondary)');
-                text.setAttribute('font-size', '10');
-                text.setAttribute('font-weight', 'bold');
-                text.textContent = km;
+                // Calculate the starting position (left edge of first km column)
+                const startX = kmColumns[0].left;
                 
-                graph.appendChild(text);
-            }
+                // Add vertical kilometer dividing lines aligned with table columns
+                for (let km = 0; km <= 10; km++) {
+                    let lineX;
+                    
+                    if (km === 0) {
+                        // First line at the start of first km column
+                        lineX = 0;
+                    } else if (km === 10) {
+                        // Last line at the end of last km column
+                        lineX = 1000; // Full width of SVG
+                    } else {
+                        // Lines at the boundaries between km columns
+                        const column = kmColumns[km];
+                        lineX = (column.right - startX) / totalKmWidth * 1000;
+                    }
+                    
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', lineX);
+                    line.setAttribute('y1', '0');
+                    line.setAttribute('x2', lineX);
+                    line.setAttribute('y2', '80');
+                    line.setAttribute('stroke', 'rgba(255, 255, 255, 0.3)');
+                    line.setAttribute('stroke-width', '1');
+                    line.setAttribute('stroke-dasharray', '2,2');
+                    
+                    graph.appendChild(line);
+                    
+                    // Add kilometer labels (only for km 1-10, not for boundaries)
+                    if (km > 0 && km < 10) {
+                        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                        text.setAttribute('x', lineX - 10);
+                        text.setAttribute('y', '75');
+                        text.setAttribute('fill', 'var(--text-secondary)');
+                        text.setAttribute('font-size', '10');
+                        text.setAttribute('font-weight', 'bold');
+                        text.textContent = km;
+                        
+                        graph.appendChild(text);
+                    }
+                }
+            }, 100);
+            
+            // Add altitude numbers
+            const avgAltitudeChanges = sessions.reduce((acc, session) => {
+                session.kilometers.forEach((km, index) => {
+                    if (!acc[index]) acc[index] = [];
+                    acc[index].push(km.altitudeChange);
+                });
+                return acc;
+            }, []).map(changes => {
+                const sum = changes.reduce((acc, val) => acc + val, 0);
+                return (sum / changes.length).toFixed(1);
+            });
+            
+            const altitudeValues = document.getElementById('altitude-values');
+            altitudeValues.innerHTML = '';
+            
+            avgAltitudeChanges.forEach((change, index) => {
+                const formattedChange = parseFloat(change) >= 0 ? `+${change}` : `${change}`;
+                const th = document.createElement('th');
+                th.textContent = formattedChange;
+                altitudeValues.appendChild(th);
+            });
         }
       function adjustGraphWidth() {
             const table = document.getElementById('sessions-table');
