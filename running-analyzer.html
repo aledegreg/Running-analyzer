@@ -1315,8 +1315,8 @@
                             lastDistance = distance;
                         }
                         // Calculate session totals if we have enough kilometer data
-                        if (session.kilometers.length >= 10) {
-                            // We need at least 10 complete km
+                        if (session.kilometers.length > 9) {
+                            // We need at least 9+ complete km
                             // Truncate to exactly 10km if we have more
                             if (session.kilometers.length > 10) {
                                 session.kilometers = session.kilometers.slice(0, 10);
