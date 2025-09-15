@@ -1202,174 +1202,169 @@
                 tableContainer.scrollTop = tableContainer.scrollHeight;
             }, 100);
         }
-        async function parseWorkout(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = async (event) => {
-                    try {
-                        const tcxContent = event.target.result;
-                        const parser = new DOMParser();
-                        const xmlDoc = parser.parseFromString(tcxContent, "text/xml");
-                        // Extract activity data
-                        const activity = xmlDoc.querySelector('Activity');
-                        if (!activity || activity.getAttribute('Sport') !== 'Running') {
-                            resolve(null); // Not a running activity
-                            return;
-                        }
-                        // Extract timestamp from the first trackpoint
-                        const firstTrackpoint = xmlDoc.querySelector('Trackpoint');
-                        const timeElement = firstTrackpoint.querySelector('Time');
-                        const date = new Date(timeElement.textContent);
-                        // Initialize session data
-                        const session = {
-                            id: file.name,
-                            date: date,
-                            formattedDate: formatDate(date),
-                            laps: [],
-                            totalDistance: 0,
-                            totalTime: 0,
-                            avgPace: 0,
-                            elevationGain: 0,
-                            kilometers: [],
-                            heartRates: [],
-                            cadences: []
-                        };
-                        // Process trackpoints
-                        const trackpoints = Array.from(xmlDoc.querySelectorAll('Trackpoint'));
-                        let lastElevation = null;
-                        let lastDistance = 0;
-                        let currentKm = 1;
-                        let kmStartTime = null;
-                        let kmStartDistance = 0;
-                        let kmStartElevation = null;
-                        // Collect altitude data for each kilometer
-                        const altitudeData = [];
-                        for (let i = 0; i < trackpoints.length; i++) {
-                            const tp = trackpoints[i];
-                            const distanceElement = tp.querySelector('DistanceMeters');
-                            if (!distanceElement) continue;
-                            const distance = parseFloat(distanceElement.textContent);
-                            // Skip if distance isn't progressing
-                            if (distance <= lastDistance && i > 0) continue;
-                            const timeElement = tp.querySelector('Time');
-                            const timestamp = new Date(timeElement.textContent);
-                            // Initialize km data
-                            if (kmStartTime === null) {
-                                kmStartTime = timestamp;
-                                kmStartDistance = distance;
-                                const elevationElement = tp.querySelector('AltitudeMeters');
-                                if (elevationElement) {
-                                    kmStartElevation = parseFloat(elevationElement.textContent);
-                                }
-                            }
-                            // Calculate elevation gain
-                            const elevationElement = tp.querySelector('AltitudeMeters');
-                            if (elevationElement) {
-                                const elevation = parseFloat(elevationElement.textContent);
-                                if (lastElevation !== null && elevation > lastElevation) {
-                                    session.elevationGain += (elevation - lastElevation);
-                                }
-                                lastElevation = elevation;
-                            }
-                            // Get heart rate data if available
-                            const heartRateElement = tp.querySelector('HeartRateBpm Value');
-                            if (heartRateElement) {
-                                const heartRate = parseInt(heartRateElement.textContent);
-                                session.heartRates.push(heartRate);
-                            }
-                            // Get cadence data if available
-                            const cadenceElement = tp.querySelector('Cadence');
-                            if (cadenceElement) {
-                                const cadence = parseInt(cadenceElement.textContent);
-                                session.cadences.push(cadence);
-                            }
-                            // Process completed kilometers
-                            if (distance >= currentKm * 1000) {
-                                // Calculate time for this km
-                                const kmEndTime = timestamp;
-                                const kmTime = (kmEndTime - kmStartTime) / 1000; // in seconds
-                                const kmPace = kmTime / 60; // in minutes
-                                // Calculate altitude change for this km
-                                const kmEndElevation = lastElevation;
-                                const altitudeChange = kmEndElevation - kmStartElevation;
-                                session.kilometers.push({
-                                    km: currentKm,
-                                    time: kmTime,
-                                    pace: kmPace,
-                                    formattedPace: formatPace(kmPace),
-                                    altitudeChange: altitudeChange
-                                });
-                                // Prepare for next km
-                                currentKm++;
-                                kmStartTime = timestamp;
-                                kmStartDistance = distance;
-                                kmStartElevation = lastElevation;
-                            }
-                            // Collect altitude data for the graph
-                            if (elevationElement) {
-                                altitudeData.push({
-                                    distance: distance,
-                                    elevation: parseFloat(elevationElement.textContent)
-                                });
-                            }
-                            lastDistance = distance;
-                        }
-                        // Calculate session totals if we have enough kilometer data
-                        if (session.kilometers.length > 9) {
-                            // We need at least 9+ complete km
-                            // Truncate to exactly 10km if we have more
-                            if (session.kilometers.length > 10) {
-                                session.kilometers = session.kilometers.slice(0, 10);
-                            }
-                            // Add missing kilometers if we have less than 10
-                            while (session.kilometers.length < 10) {
-                                const lastKm = session.kilometers[session.kilometers.length - 1];
-                                session.kilometers.push({
-                                    km: lastKm.km + 1,
-                                    time: lastKm.time, // Use same time as last km
-                                    pace: lastKm.pace,
-                                    formattedPace: lastKm.formattedPace,
-                                    altitudeChange: lastKm.altitudeChange
-                                });
-                            }
-                            // Calculate average pace (including first km)
-                            const totalTimeIncludingAll = session.kilometers
-                                .reduce((sum, km) => sum + km.time, 0);
-                            session.totalTime = totalTimeIncludingAll;
-                            session.totalDistance = 10000; // 10km in meters
-                            session.avgPace = (totalTimeIncludingAll / 60) / 10; // minutes per km
-                            session.formattedAvgPace = formatPace(session.avgPace);
-                            session.elevationGain = Math.round(session.elevationGain);
-                            // Calculate average heart rate if available
-                            if (session.heartRates.length > 0) {
-                                session.avgHeartRate = Math.round(
-                                    session.heartRates.reduce((sum, hr) => sum + hr, 0) / session.heartRates.length
-                                );
-                            }
-                            // Calculate average cadence if available
-                            if (session.cadences.length > 0) {
-                                session.avgCadence = Math.round(
-                                    session.cadences.reduce((sum, cad) => sum + cad, 0) / session.cadences.length
-                                );
-                            }
-                            // Store altitude data for the graph
-                            session.altitudeData = altitudeData;
-                            resolve(session);
-                        } else {
-                            // Not enough data
-                            resolve(null);
-                        }
-                    } catch (error) {
-                        console.error('Error parsing TCX:', error);
-                        resolve(null);
-                    }
-                };
-                reader.onerror = () => {
-                    reject(new Error('Error reading file'));
-                };
-                reader.readAsText(file);
-            });
-        }
+		async function parseWorkout(file) {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.onload = async (event) => {
+					try {
+						const tcxContent = event.target.result;
+						const parser = new DOMParser();
+						const xmlDoc = parser.parseFromString(tcxContent, "text/xml");
+						// Extract activity data
+						const activity = xmlDoc.querySelector('Activity');
+						if (!activity || activity.getAttribute('Sport') !== 'Running') {
+							resolve(null); // Not a running activity
+							return;
+						}
+						// Extract timestamp from the first trackpoint
+						const firstTrackpoint = xmlDoc.querySelector('Trackpoint');
+						const timeElement = firstTrackpoint.querySelector('Time');
+						const date = new Date(timeElement.textContent);
+						// Initialize session data
+						const session = {
+							id: file.name,
+							date: date,
+							formattedDate: formatDate(date),
+							laps: [],
+							totalDistance: 0,
+							totalTime: 0,
+							avgPace: 0,
+							elevationGain: 0,
+							kilometers: [],
+							heartRates: [],
+							cadences: []
+						};
+						// Process trackpoints
+						const trackpoints = Array.from(xmlDoc.querySelectorAll('Trackpoint'));
+						let lastElevation = null;
+						let lastDistance = 0;
+						let currentKm = 1;
+						let kmStartTime = null;
+						let kmStartDistance = 0;
+						let kmStartElevation = null;
+						// Collect altitude data for each kilometer
+						const altitudeData = [];
+						for (let i = 0; i < trackpoints.length; i++) {
+							const tp = trackpoints[i];
+							const distanceElement = tp.querySelector('DistanceMeters');
+							if (!distanceElement) continue;
+							const distance = parseFloat(distanceElement.textContent);
+							// Skip if distance isn't progressing
+							if (distance <= lastDistance && i > 0) continue;
+							const timeElement = tp.querySelector('Time');
+							const timestamp = new Date(timeElement.textContent);
+							// Initialize km data
+							if (kmStartTime === null) {
+								kmStartTime = timestamp;
+								kmStartDistance = distance;
+								const elevationElement = tp.querySelector('AltitudeMeters');
+								if (elevationElement) {
+									kmStartElevation = parseFloat(elevationElement.textContent);
+								}
+							}
+							// Calculate elevation gain
+							const elevationElement = tp.querySelector('AltitudeMeters');
+							if (elevationElement) {
+								const elevation = parseFloat(elevationElement.textContent);
+								if (lastElevation !== null && elevation > lastElevation) {
+									session.elevationGain += (elevation - lastElevation);
+								}
+								lastElevation = elevation;
+							}
+							// Get heart rate data if available
+							const heartRateElement = tp.querySelector('HeartRateBpm Value');
+							if (heartRateElement) {
+								const heartRate = parseInt(heartRateElement.textContent);
+								session.heartRates.push(heartRate);
+							}
+							// Get cadence data if available
+							const cadenceElement = tp.querySelector('Cadence');
+							if (cadenceElement) {
+								const cadence = parseInt(cadenceElement.textContent);
+								session.cadences.push(cadence);
+							}
+							// Process completed kilometers
+							if (distance >= currentKm * 1000) {
+								// Calculate time for this km
+								const kmEndTime = timestamp;
+								const kmTime = (kmEndTime - kmStartTime) / 1000; // in seconds
+								const kmPace = kmTime / 60; // in minutes
+								// Calculate altitude change for this km
+								const kmEndElevation = lastElevation;
+								const altitudeChange = kmEndElevation - kmStartElevation;
+								session.kilometers.push({
+									km: currentKm,
+									time: kmTime,
+									pace: kmPace,
+									formattedPace: formatPace(kmPace),
+									altitudeChange: altitudeChange
+								});
+								// Prepare for next km
+								currentKm++;
+								kmStartTime = timestamp;
+								kmStartDistance = distance;
+								kmStartElevation = lastElevation;
+							}
+							// Collect altitude data for the graph
+							if (elevationElement) {
+								altitudeData.push({
+									distance: distance,
+									elevation: parseFloat(elevationElement.textContent)
+								});
+							}
+							lastDistance = distance;
+						}
+						
+						// ---
+						
+						// Check if the total distance is at least 9 km (9000 meters)
+						if (lastDistance >= 9000) {
+							// Calculate the total time and distance based on the last recorded trackpoint
+							const finalTrackpoint = trackpoints[trackpoints.length - 1];
+							const finalTime = new Date(finalTrackpoint.querySelector('Time').textContent);
+							const initialTime = new Date(xmlDoc.querySelector('Trackpoint Time').textContent);
+							session.totalTime = (finalTime - initialTime) / 1000; // Total time in seconds
+							session.totalDistance = lastDistance; // Total distance in meters
+							
+							// Calculate the average pace for the entire workout
+							if (session.totalDistance > 0) {
+								session.avgPace = (session.totalTime / 60) / (session.totalDistance / 1000);
+								session.formattedAvgPace = formatPace(session.avgPace);
+							}
+							
+							// Round elevation gain
+							session.elevationGain = Math.round(session.elevationGain);
+
+							// Calculate average heart rate and cadence if available
+							if (session.heartRates.length > 0) {
+								session.avgHeartRate = Math.round(
+									session.heartRates.reduce((sum, hr) => sum + hr, 0) / session.heartRates.length
+								);
+							}
+							if (session.cadences.length > 0) {
+								session.avgCadence = Math.round(
+									session.cadences.reduce((sum, cad) => sum + cad, 0) / session.cadences.length
+								);
+							}
+
+							// Store altitude data for the graph
+							session.altitudeData = altitudeData;
+
+							resolve(session);
+						} else {
+							// Not enough data for a 9km+ workout
+							resolve(null);
+						}
+					} catch (error) {
+						console.error('Error parsing TCX:', error);
+						resolve(null);
+					}
+				};
+				reader.onerror = () => {
+					reject(new Error('Error reading file'));
+				};
+				reader.readAsText(file);
+			});
         function processResults() {
             if (sessions.length === 0) return;
             // Find best pace
