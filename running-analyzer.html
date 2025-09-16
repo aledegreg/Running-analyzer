@@ -1508,6 +1508,16 @@
                 best10kDateElement.textContent = `Date: ${best10k.session.formattedDate}`;
             }
         }
+        // Create a ResizeObserver to watch for table size changes
+        const table = document.getElementById('sessions-table');
+        const observer = new ResizeObserver(entries => {
+            // This callback runs when the observed element's size changes
+            adjustGraphWidth();
+        });
+        
+        // Start observing the table
+        observer.observe(table);
+
         function updateSessionsTable(altitudeData) {
             sessionsTableBody.innerHTML = '';
             // Find absolute best paces for each kilometer across all sessions
@@ -1634,6 +1644,7 @@
             
             const graph = document.getElementById('altitude-graph');
             graph.innerHTML = '';
+            graph.setAttribute('viewBox', '0 0 1000 80');
             
             // Add gradient definition if not already present
             if (!graph.querySelector('defs')) {
@@ -1759,8 +1770,6 @@
                 console.log(graph.getAttribute('viewBox'));
             }
         }
-        
-        window.addEventListener('resize', adjustGraphWidth);
         
         function repositionKilometerLines(totalWidth) {
             const graph = document.getElementById('altitude-graph');
