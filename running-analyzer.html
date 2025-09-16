@@ -1697,7 +1697,7 @@
                 graph.appendChild(line);
                 
                 // Add kilometer labels (for km 1-9)
-                if (km > 0 && km < 10) {
+                if (km > 0 && km < 11) {
                     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                     text.setAttribute('x', lineX - 5);
                     text.setAttribute('y', '75');
@@ -1749,14 +1749,14 @@
                 // Also adjust the SVG viewBox to match the actual width
                 const graph = document.getElementById('altitude-graph');
                 graph.setAttribute('viewBox', `0 0 ${kmColumnsWidth} 80`);
+                
+                // Recalculate and reposition the kilometer lines
+                repositionKilometerLines(kmColumnsWidth);
 
                 console.log('kmColumnsWidth = ' + kmColumnsWidth);
                 console.log('firstKmCell.width = ' + firstKmCell.getBoundingClientRect().width);
                 console.log('graphContainer.style.width = ' + graphContainer.style.width);
                 console.log(graph.getAttribute('viewBox'));
-                
-                // Recalculate and reposition the kilometer lines
-                repositionKilometerLines(kmColumnsWidth);
             }
         }
         
