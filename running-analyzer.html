@@ -1736,9 +1736,9 @@
         }
 
         function adjustGraphWidth() {
-            const table = document.getElementById('sessions-table');
-            const firstKmCell = table.querySelector('th:nth-child(3)'); // km 1 column
-            const lastKmCell = table.querySelector('th:nth-child(12)'); // km 10 column
+            const table = document.getElementById('altitude-header');
+            const firstKmCell = table.querySelector('th:nth-child(2)'); // km 1 column
+            const lastKmCell = table.querySelector('th:nth-child(2)'); // km 10 column
             
             if (firstKmCell && lastKmCell) {
                 const firstKmRect = firstKmCell.getBoundingClientRect();
