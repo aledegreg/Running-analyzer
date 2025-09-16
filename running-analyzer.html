@@ -1758,7 +1758,7 @@
                 graphContainer.style.width = `${kmColumnsWidth}px`;
                 
                 // Recalculate and reposition the kilometer lines
-                repositionKilometerLines(kmColumnsWidth);
+                repositionKilometerLines();
 
                 console.log('kmColumnsWidth = ' + kmColumnsWidth);
                 console.log('firstKmCell.width = ' + firstKmCell.getBoundingClientRect().width);
@@ -1766,10 +1766,11 @@
             }
         }
         
-        function repositionKilometerLines(totalWidth) {
+        function repositionKilometerLines() {
             const graph = document.getElementById('altitude-graph');
             const lines = graph.querySelectorAll('line');
             const labels = graph.querySelectorAll('text');
+            const totalWidth = graph.style.width
             
             // Remove existing lines and labels
             lines.forEach(line => line.remove());
