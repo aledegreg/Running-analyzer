@@ -1707,8 +1707,8 @@
                 
                 graph.appendChild(line);
                 
-                // Add kilometer labels (for km 1-9)
-                if (km > 0 && km < 11) {
+                // Add kilometer labels (for km 1-10)
+                if (km > 0 && km <= 10) {
                     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                     text.setAttribute('x', lineX - 5);
                     text.setAttribute('y', '75');
@@ -1756,52 +1756,10 @@
                 // Calculate the width of the km columns (from km1 to km10)
                 const kmColumnsWidth = firstKmCell.getBoundingClientRect().width;
                 graphContainer.style.width = `${kmColumnsWidth}px`;
-                
-                // Recalculate and reposition the kilometer lines
-                repositionKilometerLines(kmColumnsWidth);
 
                 console.log('kmColumnsWidth = ' + kmColumnsWidth);
                 console.log('firstKmCell.width = ' + firstKmCell.getBoundingClientRect().width);
                 console.log('graphContainer.style.width = ' + graphContainer.style.width);
-            }
-        }
-        
-        function repositionKilometerLines(totalWidth) {
-            const graph = document.getElementById('altitude-graph');
-            const lines = graph.querySelectorAll('line');
-            const labels = graph.querySelectorAll('text');
-            
-            // Remove existing lines and labels
-            lines.forEach(line => line.remove());
-            labels.forEach(label => label.remove());
-            
-            // Add new kilometer lines based on the actual width
-            for (let km = 0; km <= 10; km++) {
-                const lineX = (km / 10) * totalWidth;
-                
-                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', lineX);
-                line.setAttribute('y1', '0');
-                line.setAttribute('x2', lineX);
-                line.setAttribute('y2', '80');
-                line.setAttribute('stroke', 'rgba(255, 255, 255, 0.3)');
-                line.setAttribute('stroke-width', '1');
-                line.setAttribute('stroke-dasharray', '2,2');
-                
-                graph.appendChild(line);
-                
-                // Add kilometer labels (for km 1-9)
-                if (km > 0 && km < 10) {
-                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    text.setAttribute('x', lineX - 5);
-                    text.setAttribute('y', '75');
-                    text.setAttribute('fill', 'var(--text-secondary)');
-                    text.setAttribute('font-size', '10');
-                    text.setAttribute('font-weight', 'bold');
-                    text.textContent = km;
-                    
-                    graph.appendChild(text);
-                }
             }
         }
         
