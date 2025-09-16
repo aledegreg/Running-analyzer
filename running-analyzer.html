@@ -1796,19 +1796,6 @@
                 }
             }
         }
-      function adjustGraphWidth() {
-            const table = document.getElementById('sessions-table');
-            const firstKmCell = table.querySelector('th:nth-child(3)'); // km 1 column
-            const lastKmCell = table.querySelector('th:nth-child(12)'); // km 10 column
-            if (firstKmCell && lastKmCell) {
-                const firstKmRect = firstKmCell.getBoundingClientRect();
-                const lastKmRect = lastKmCell.getBoundingClientRect();
-                const graphContainer = document.getElementById('altitude-graph-container');
-                // Calculate the width of the graph container
-                const graphWidth = lastKmRect.right - firstKmRect.left;
-                graphContainer.style.width = `${graphWidth}px`;
-            }
-        }
         function exportToCsv() {
             if (sessions.length === 0) return;
             let csv = 'Date,Avg Pace (min/km)';
