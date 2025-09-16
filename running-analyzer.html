@@ -1750,10 +1750,11 @@
                 const graph = document.getElementById('altitude-graph');
                 graph.setAttribute('viewBox', `0 0 ${kmColumnsWidth} 80`);
 
-               console.log('kmColumnsWidth = ' + kmColumnsWidth);
-               console.log('firstKmCell.width = ' + firstKmCell.getBoundingClientRect().width);
-               console.log('graphContainer.style.width = ' + graphContainer.style.width);
-
+                console.log('kmColumnsWidth = ' + kmColumnsWidth);
+                console.log('firstKmCell.width = ' + firstKmCell.getBoundingClientRect().width);
+                console.log('graphContainer.style.width = ' + graphContainer.style.width);
+                console.log(graph.getAttribute('viewBox'));
+                
                 // Recalculate and reposition the kilometer lines
                 repositionKilometerLines(kmColumnsWidth);
             }
@@ -1799,6 +1800,7 @@
                 }
             }
         }
+        
         function exportToCsv() {
             if (sessions.length === 0) return;
             let csv = 'Date,Avg Pace (min/km)';
