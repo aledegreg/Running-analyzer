@@ -717,7 +717,7 @@
                 </svg>
             </div>
             <div class="header-text">
-                <h1>10K Running Performance Analyzer v202509161016</h1>
+                <h1>10K Running Performance Analyzer v202509161058</h1>
                 <p>
                     Upload TCX files from your 10km runs to analyze your performance metrics
                 </p>
@@ -1738,11 +1738,11 @@
         function adjustGraphWidth() {
             const table = document.getElementById('altitude-header');
             const firstKmCell = table.querySelector('th:nth-child(2)'); // km 1 column
-            if (firstKmCell ) {
+            if (firstKmCell) {
                 const graphContainer = document.getElementById('altitude-graph-container');
                 
                 // Calculate the width of the km columns (from km1 to km10)
-                const kmColumnsWidth = firstKmCell.width - 2;
+                const kmColumnsWidth = firstKmCell.getBoundingClientRect().width;
                 graphContainer.style.width = `${kmColumnsWidth}px`;
                 
                 // Also adjust the SVG viewBox to match the actual width
@@ -1750,7 +1750,7 @@
                 graph.setAttribute('viewBox', `0 0 ${kmColumnsWidth} 80`);
 
                console.log('kmColumnsWidth = ' + kmColumnsWidth);
-               console.log('firstKmCell.width = ' + firstKmCell.width);
+               console.log('firstKmCell.width = ' + firstKmCell.getBoundingClientRect().width);
                console.log('graphContainer.style.width = ' + graphContainer.style.width);
 
                 // Recalculate and reposition the kilometer lines
