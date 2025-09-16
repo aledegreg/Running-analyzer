@@ -1628,6 +1628,7 @@
                 adjustGraphWidth();
             }, 100);
         }
+        
         function updateAltitudeGraph(altitudeData) {
             if (!altitudeData || altitudeData.length === 0) return;
             
@@ -1757,7 +1758,9 @@
                 repositionKilometerLines(kmColumnsWidth);
             }
         }
-
+        
+        window.addEventListener('resize', adjustGraphWidth);
+        
         function repositionKilometerLines(totalWidth) {
             const graph = document.getElementById('altitude-graph');
             const lines = graph.querySelectorAll('line');
