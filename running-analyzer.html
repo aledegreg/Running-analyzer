@@ -1738,15 +1738,11 @@
         function adjustGraphWidth() {
             const table = document.getElementById('altitude-header');
             const firstKmCell = table.querySelector('th:nth-child(2)'); // km 1 column
-            const lastKmCell = table.querySelector('th:nth-child(2)'); // km 10 column
-            
-            if (firstKmCell && lastKmCell) {
-                const firstKmRect = firstKmCell.getBoundingClientRect();
-                const lastKmRect = lastKmCell.getBoundingClientRect();
+            if (firstKmCell ) {
                 const graphContainer = document.getElementById('altitude-graph-container');
                 
                 // Calculate the width of the km columns (from km1 to km10)
-                const kmColumnsWidth = lastKmRect.right - firstKmRect.left;
+                const kmColumnsWidth = firstKmRect.width - 2;
                 graphContainer.style.width = `${kmColumnsWidth}px`;
                 
                 // Also adjust the SVG viewBox to match the actual width
