@@ -1757,10 +1757,6 @@
                 const kmColumnsWidth = firstKmCell.getBoundingClientRect().width;
                 graphContainer.style.width = `${kmColumnsWidth}px`;
                 
-                // Also adjust the SVG viewBox to match the actual width
-                //const graph = document.getElementById('altitude-graph');
-                //graph.setAttribute('viewBox', `0 0 ${kmColumnsWidth} 80`);
-                
                 // Recalculate and reposition the kilometer lines
                 repositionKilometerLines(kmColumnsWidth);
 
