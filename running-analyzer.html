@@ -1079,23 +1079,18 @@
         const liveHrEl = document.getElementById('live-hr');
         // Initialize the application
         function initApp() {
-            // Set up event listeners
             fileInput.addEventListener('change', handleFileSelection);
             analyzeButton.addEventListener('click', analyzeFiles);
             backButton.addEventListener('click', resetView);
             themeToggle.addEventListener('click', toggleTheme);
             exportCsvButton.addEventListener('click', exportToCsv);
-            // Drag and drop events
             dropZone.addEventListener('dragover', handleDragOver);
             dropZone.addEventListener('dragleave', handleDragLeave);
             dropZone.addEventListener('drop', handleDrop);
-            // ADDED: Event listener for the distance slider
             distanceSlider.addEventListener('input', (e) => updateMapInteraction(parseFloat(e.target.value)));
-            // Show alert after a delay
             setTimeout(() => {
                 fileFormatAlert.style.display = 'block';
             }, 1000);
-            // Initialize theme
             initTheme();
         }
         // Theme management functions
@@ -1270,7 +1265,7 @@
                 const lastSession = sessions[sessions.length - 1];
                 if (lastSession && lastSession.trackpoints && lastSession.trackpoints.length > 0) {
                     lastRunTrackpoints = lastSession.trackpoints;
-                    initializeInteractiveMap(lastRunTrackpoints);
+                    initializeInteractiveMap(lastRunTrackpoints, lastSession.avgPace);
                 }
             }, 100);
         }
@@ -1758,7 +1753,7 @@
             document.body.removeChild(link);
         }
         // ADDED: All new functions for map visualization and interaction
-        function initializeInteractiveMap(trackpoints) {
+        function initializeInteractiveMap(trackpoints, overallAvgPace) {
             console.log('Initializing interactive map...');
             mapCard.style.display = 'block';
             if (currentMap) {
@@ -1767,8 +1762,8 @@
                 currentMap = null;
                 distanceMarker = null;
             }
-            // MODIFIED: Pre-calculate rolling gradients before drawing the map
-            calculateRollingGradients(trackpoints, 50); // Using a 50-meter window
+            // MODIFIED: Pre-process trackpoints for smoothed gradient and pace
+            preprocessTrackpoints(trackpoints, 50, 15, overallAvgPace);
             displayMapAndTrack(trackpoints);
             const totalDistanceKm = trackpoints[trackpoints.length - 1].distance / 1000;
             distanceSlider.max = totalDistanceKm.toFixed(2);
@@ -1776,29 +1771,40 @@
             updateMapInteraction(0);
         }
         /**
-         * MODIFIED: Pre-calculates a rolling gradient for each trackpoint.
-         * This smooths out the data for a better visual representation of effort.
-         * @param {Array} trackpoints - The array of trackpoint objects.
-         * @param {number} windowSizeMeters - The distance window (e.g., 50m) for averaging.
+         * MODIFIED: Pre-calculates rolling gradient and pace for each trackpoint.
+         * This smooths the data for a better visual representation.
+         * @param {Array} trackpoints The array of trackpoint objects.
+         * @param {number} gradientWindowMeters The distance window for averaging gradient.
+         * @param {number} paceWindowSeconds The time window for averaging pace.
+         * @param {number} fallbackPace The overall average pace for the run.
          */
-        function calculateRollingGradients(trackpoints, windowSizeMeters) {
+        function preprocessTrackpoints(trackpoints, gradientWindowMeters, paceWindowSeconds, fallbackPace) {
             if (trackpoints.length === 0) return;
-            trackpoints[0].avgGradient = 0; // The first point has no gradient.
-            let j = 0; // Pointer for the start of the window
-            for (let i = 1; i < trackpoints.length; i++) {
-                // Advance the start of the window
-                while (trackpoints[i].distance - trackpoints[j].distance > windowSizeMeters) {
-                    j++;
+            let gradPtr = 0; // Pointer for the start of the gradient window
+            let pacePtr = 0; // Pointer for the start of the pace window
+            for (let i = 0; i < trackpoints.length; i++) {
+                // Advance the gradient window pointer
+                while (trackpoints[i].distance - trackpoints[gradPtr].distance > gradientWindowMeters) {
+                    gradPtr++;
                 }
-                const distChange = trackpoints[i].distance - trackpoints[j].distance;
-                const altChange = trackpoints[i].altitude - trackpoints[j].altitude;
-                if (distChange > 0) {
-                    trackpoints[i].avgGradient = altChange / distChange;
+                // Advance the pace window pointer
+                while ((trackpoints[i].time - trackpoints[pacePtr].time) / 1000 > paceWindowSeconds) {
+                    pacePtr++;
+                }
+                // Calculate and assign smoothed gradient
+                const gradDist = trackpoints[i].distance - trackpoints[gradPtr].distance;
+                const gradAlt = trackpoints[i].altitude - trackpoints[gradPtr].altitude;
+                trackpoints[i].avgGradient = (gradDist > 0) ? gradAlt / gradDist : 0;
+                // Calculate and assign smoothed pace
+                const paceDist = trackpoints[i].distance - trackpoints[pacePtr].distance;
+                const paceTime = (trackpoints[i].time - trackpoints[pacePtr].time) / 1000;
+                if (paceDist > 0 && paceTime > 0) {
+                    trackpoints[i].avgPace = (paceTime / 60) / (paceDist / 1000);
                 } else {
-                    trackpoints[i].avgGradient = 0;
+                    trackpoints[i].avgPace = fallbackPace; // Use overall average for the start
                 }
             }
-            console.log("Calculated rolling gradients for all trackpoints.");
+            console.log("Pre-processed trackpoints for smoothed gradient and pace.");
         }
         function displayMapAndTrack(trackpoints) {
             currentMap = L.map('map');
@@ -1808,12 +1814,10 @@
             L.tileLayer(tileUrl, {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             }).addTo(currentMap);
-            // MODIFIED: This loop now uses the pre-calculated rolling gradient.
             for (let i = 1; i < trackpoints.length; i++) {
                 const prevPoint = trackpoints[i - 1];
                 const currentPoint = trackpoints[i];
                 if (prevPoint.lat && prevPoint.lng && currentPoint.lat && currentPoint.lng) {
-                    // Average the gradient of the two points for a smoother line segment color
                     const segmentGradient = (prevPoint.avgGradient + currentPoint.avgGradient) / 2;
                     const color = getColorForGradient(segmentGradient);
                     L.polyline([
@@ -1831,9 +1835,8 @@
             console.log(`Map initialized and track rendered with ${trackpoints.length} points.`);
         }
         function getColorForGradient(gradient) {
-            const maxChallengeGradient = 0.08; // +/- 8% grade for max color intensity
+            const maxChallengeGradient = 0.08;
             const clampedGradient = Math.max(-maxChallengeGradient, Math.min(maxChallengeGradient, gradient));
-            // Normalize the value: -max -> 0, 0 -> 0.5, +max -> 1
             const normalized = (clampedGradient + maxChallengeGradient) / (maxChallengeGradient * 2);
             let r, g, b;
             if (normalized < 0.5) { // Downhill: Blue to Green
@@ -1850,28 +1853,16 @@
             return `rgb(${r},${g},${b})`;
         }
         function updateMapInteraction(distanceKm) {
-            console.log(`Slider interaction: distance = ${distanceKm} km`);
             const targetDistanceMeters = distanceKm * 1000;
             const {
                 point,
                 index
             } = findTrackpointByDistance(targetDistanceMeters);
             if (!point) return;
+            // MODIFIED: Use pre-calculated smoothed pace
+            livePaceEl.textContent = point.avgPace ? formatPace(point.avgPace) : '--:--';
             liveAltitudeEl.textContent = point.altitude ? `${point.altitude.toFixed(1)} m` : '-- m';
             liveHrEl.textContent = point.heartRate ? `${point.heartRate} BPM` : '-- BPM';
-            if (index > 0) {
-                const prevPoint = lastRunTrackpoints[index - 1];
-                const distDelta = point.distance - prevPoint.distance;
-                const timeDelta = (point.time - prevPoint.time) / 1000;
-                if (distDelta > 0 && timeDelta > 0) {
-                    const pace = (timeDelta / 60) / (distDelta / 1000);
-                    livePaceEl.textContent = formatPace(pace);
-                } else {
-                    livePaceEl.textContent = '--:--';
-                }
-            } else {
-                livePaceEl.textContent = '--:--';
-            }
             const latLng = [point.lat, point.lng];
             if (!distanceMarker) {
                 distanceMarker = L.circleMarker(latLng, {
@@ -1881,11 +1872,9 @@
                     fillColor: 'var(--accent)',
                     fillOpacity: 1
                 }).addTo(currentMap);
-                console.log('Created map marker.');
             } else {
                 distanceMarker.setLatLng(latLng);
             }
-            console.log('Updated marker and data for trackpoint:', point);
         }
         function findTrackpointByDistance(targetDistanceMeters) {
             if (lastRunTrackpoints.length === 0) return {
