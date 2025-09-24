@@ -1006,7 +1006,15 @@
                             <div class="live-data-title">Heart Rate</div>
                             <div id="live-hr" class="live-data-value">-- BPM</div>
                         </div>
-                    </div>
+                        <div class="live-data-item">
+                            <div class="live-data-title">Distance</div>
+                            <div id="live-distance" class="live-data-value">-- km</div>
+                        </div>
+                        <div class="live-data-item">
+                            <div class="live-data-title">Time</div>
+                            <div id="live-time" class="live-data-value">--:--:--</div>
+                        </div>
+                        </div>
                     <div id="map"></div>
                 </div>
                 <div class="distance-slider-container">
@@ -1077,6 +1085,10 @@
         const livePaceEl = document.getElementById('live-pace');
         const liveAltitudeEl = document.getElementById('live-altitude');
         const liveHrEl = document.getElementById('live-hr');
+        // ADDED 20250924124114
+        const liveDistanceEl = document.getElementById('live-distance');
+        const liveTimeEl = document.getElementById('live-time');
+        // END ADDED 20250924124114
         // Initialize the application
         function initApp() {
             fileInput.addEventListener('change', handleFileSelection);
@@ -1825,7 +1837,7 @@
                         [currentPoint.lat, currentPoint.lng]
                     ], {
                         color: color,
-                        weight: 4,
+                        weight: 6, // ADDED 20250924124114: Increased track width from 4 to 6
                         opacity: 0.85
                     }).addTo(currentMap);
                 }
@@ -1834,25 +1846,29 @@
             currentMap.fitBounds(bounds.pad(0.1));
             console.log(`Map initialized and track rendered with ${trackpoints.length} points.`);
         }
+        // ADDED 20250924124114: Replaced gradient color function with a 5-color discrete scale
         function getColorForGradient(gradient) {
-            const maxChallengeGradient = 0.08;
-            const clampedGradient = Math.max(-maxChallengeGradient, Math.min(maxChallengeGradient, gradient));
-            const normalized = (clampedGradient + maxChallengeGradient) / (maxChallengeGradient * 2);
-            let r, g, b;
-            if (normalized < 0.5) { // Downhill: Blue to Green
-                const ratio = normalized * 2;
-                r = 0;
-                g = Math.round(255 * ratio);
-                b = Math.round(255 * (1 - ratio));
-            } else { // Uphill: Green to Red
-                const ratio = (normalized - 0.5) * 2;
-                r = Math.round(255 * ratio);
-                g = Math.round(255 * (1 - ratio));
-                b = 0;
+            console.log(`[DEBUG 20250924124114] Calculating color for gradient: ${gradient}`); // ADDED 20250924124114
+            let color;
+            if (gradient < -0.04) {
+                color = 'blue'; // Steep Downhill
+            } else if (gradient < -0.01) {
+                color = 'cyan'; // Moderate Downhill
+            } else if (gradient < 0.01) {
+                color = 'green'; // Flat
+            } else if (gradient < 0.04) {
+                color = 'orange'; // Moderate Uphill
+            } else {
+                color = 'red'; // Steep Uphill
             }
-            return `rgb(${r},${g},${b})`;
+            console.log(`[DEBUG 20250924124114] Assigned color: ${color}`); // ADDED 20250924124114
+            return color;
         }
+        // END ADDED 20250924124114
         function updateMapInteraction(distanceKm) {
+            // ADDED 20250924124114: Debug log
+            console.log(`[DEBUG 20250924124114] Updating map interaction for distance: ${distanceKm} km`);
+            // END ADDED 20250924124114
             const targetDistanceMeters = distanceKm * 1000;
             const {
                 point,
@@ -1863,6 +1879,11 @@
             livePaceEl.textContent = point.avgPace ? formatPace(point.avgPace) : '--:--';
             liveAltitudeEl.textContent = point.altitude ? `${point.altitude.toFixed(1)} m` : '-- m';
             liveHrEl.textContent = point.heartRate ? `${point.heartRate} BPM` : '-- BPM';
+            // ADDED 20250924124114: Update new live data panels for Distance and Time
+            liveDistanceEl.textContent = point.distance ? `${(point.distance / 1000).toFixed(2)} km` : '-- km';
+            liveTimeEl.textContent = point.time ? formatTimeOfDay(point.time) : '--:--:--';
+            console.log(`[DEBUG 20250924124114] Point data - Distance: ${point.distance}, Time: ${point.time}`);
+            // END ADDED 20250924124114
             const latLng = [point.lat, point.lng];
             if (!distanceMarker) {
                 distanceMarker = L.circleMarker(latLng, {
@@ -1916,6 +1937,17 @@
             const secs = Math.round(seconds % 60);
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
+        // ADDED 20250924124114: Helper function to format time of day
+        function formatTimeOfDay(date) {
+            if (!(date instanceof Date) || isNaN(date)) {
+                return '--:--:--';
+            }
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            const seconds = date.getSeconds().toString().padStart(2, '0');
+            return `${hours}:${minutes}:${seconds}`;
+        }
+        // END ADDED 20250924124114
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
