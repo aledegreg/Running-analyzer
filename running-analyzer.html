@@ -637,7 +637,7 @@
             width: 150px;
             height: 10px;
             border-radius: 5px;
-            background: linear-gradient(to right, blue 0%, blue 20%, cyan 20%, cyan 40%, green 40%, green 60%, orange 60%, orange 80%, red 80%, red 100%); /* ADDED 20250924125515: Updated legend to match discrete colors */
+            background: linear-gradient(to right, blue 0%, blue 20%, cyan 20%, cyan 40%, green 40%, green 60%, orange 60%, orange 80%, red 80%, red 100%);
         }
         @media (max-width: 768px) {
             .map-container {
@@ -1279,6 +1279,7 @@
                     lastRunTrackpoints = lastSession.trackpoints;
                     initializeInteractiveMap(lastRunTrackpoints, lastSession.avgPace);
                 }
+                alignSlider(); // ADDED 20250925213420
             }, 100);
         }
         async function parseWorkout(file) {
@@ -1540,6 +1541,7 @@
         const table = document.getElementById('sessions-table');
         const observer = new ResizeObserver(entries => {
             adjustGraphWidth();
+            alignSlider(); // ADDED 20250925213420
         });
         observer.observe(table);
         function updateSessionsTable(altitudeData) {
@@ -1724,6 +1726,17 @@
                 th.textContent = formattedChange;
                 altitudeValues.appendChild(th);
             });
+            // ADDED 20250925213420: Add vertical cursor line to the altitude graph
+            const cursorLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            cursorLine.setAttribute('id', 'altitude-cursor-line');
+            cursorLine.setAttribute('y1', '0');
+            cursorLine.setAttribute('y2', '80');
+            cursorLine.setAttribute('x1', '0');
+            cursorLine.setAttribute('x2', '0');
+            cursorLine.setAttribute('stroke', 'var(--danger)');
+            cursorLine.setAttribute('stroke-width', '1.5');
+            graph.appendChild(cursorLine);
+            // END ADDED 20250925213420
             adjustGraphWidth();
         }
         function adjustGraphWidth() {
@@ -1848,7 +1861,7 @@
         }
         // ADDED 20250924124114: Replaced gradient color function with a 5-color discrete scale
         function getColorForGradient(gradient) {
-            console.log(`[DEBUG 20250924124114] Calculating color for gradient: ${gradient}`); // ADDED 20250924124114
+            // console.log(`[DEBUG 20250924124114] Calculating color for gradient: ${gradient}`); 
             let color;
             if (gradient < -0.04) {
                 color = 'blue'; // Steep Downhill
@@ -1861,14 +1874,12 @@
             } else {
                 color = 'red'; // Steep Uphill
             }
-            console.log(`[DEBUG 20250924124114] Assigned color: ${color}`); // ADDED 20250924124114
+            // console.log(`[DEBUG 20250924124114] Assigned color: ${color}`); 
             return color;
         }
         // END ADDED 20250924124114
         function updateMapInteraction(distanceKm) {
-            // ADDED 20250924124114: Debug log
-            console.log(`[DEBUG 20250924124114] Updating map interaction for distance: ${distanceKm} km`);
-            // END ADDED 20250924124114
+            // console.log(`[DEBUG 20250924124114] Updating map interaction for distance: ${distanceKm} km`);
             const targetDistanceMeters = distanceKm * 1000;
             const {
                 point,
@@ -1882,7 +1893,7 @@
             // ADDED 20250924124114: Update new live data panels for Distance and Time
             liveDistanceEl.textContent = point.distance ? `${(point.distance / 1000).toFixed(2)} km` : '-- km';
             liveTimeEl.textContent = point.time ? formatTimeOfDay(point.time) : '--:--:--';
-            console.log(`[DEBUG 20250924124114] Point data - Distance: ${point.distance}, Time: ${point.time}`);
+            // console.log(`[DEBUG 20250924124114] Point data - Distance: ${point.distance}, Time: ${point.time}`);
             // END ADDED 20250924124114
             const latLng = [point.lat, point.lng];
             if (!distanceMarker) {
@@ -1896,6 +1907,15 @@
             } else {
                 distanceMarker.setLatLng(latLng);
             }
+            // ADDED 20250925213420: Update altitude graph cursor position
+            const altitudeCursor = document.getElementById('altitude-cursor-line');
+            if (altitudeCursor) {
+                const totalDistance = lastRunTrackpoints[lastRunTrackpoints.length - 1].distance;
+                const xPos = (point.distance / totalDistance) * 1000; // Scale position to graph width (0-1000)
+                altitudeCursor.setAttribute('x1', xPos);
+                altitudeCursor.setAttribute('x2', xPos);
+            }
+            // END ADDED 20250925213420
         }
         function findTrackpointByDistance(targetDistanceMeters) {
             if (lastRunTrackpoints.length === 0) return {
@@ -1948,6 +1968,23 @@
             return `${hours}:${minutes}:${seconds}`;
         }
         // END ADDED 20250924124114
+        // ADDED 20250925213420: Function to align the distance slider with the table columns
+        function alignSlider() {
+            console.log("[DEBUG 20250925213420] Aligning slider...");
+            const tableHeader = document.querySelector('#sessions-table thead tr:first-child');
+            const sliderContainer = document.querySelector('.distance-slider-container');
+            if (tableHeader && sliderContainer) {
+                const dateCell = tableHeader.querySelector('th:nth-child(1)');
+                const paceCell = tableHeader.querySelector('th:nth-child(2)');
+                if (dateCell && paceCell) {
+                    const leftOffset = dateCell.offsetWidth + paceCell.offsetWidth;
+                    sliderContainer.style.paddingLeft = `${leftOffset}px`;
+                    sliderContainer.style.paddingRight = `8px`; // Account for potential scrollbar/borders
+                    console.log(`[DEBUG 20250925213420] Slider left padding set to: ${leftOffset}px`);
+                }
+            }
+        }
+        // END ADDED 20250925213420
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
